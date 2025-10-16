@@ -9,13 +9,14 @@ import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
+import Footer from "@/components/Footer";
 
 interface DocumentType {
   id: string;
   name: string;
   path: string;
   url: string;
-  userId: string;
+  userID: string;
   createdAt: string;
 }
 
@@ -48,7 +49,7 @@ export default function DashboardPage() {
       // Get user metadata including role
       const userData = {
         id: data.user.id,
-        email: data.user.email,
+        email: data.user.email ?? "",
         user_metadata: data.user.user_metadata,
       };
       setUser(userData);
@@ -58,11 +59,12 @@ export default function DashboardPage() {
 
   // ✅ Fetch documents
   const fetchDocuments = async () => {
-    if (!user?.email) return;
+    if (!user?.id) return;
+
     const { data, error } = await supabase
-      .from<DocumentType>("documents")
+      .from("documents")
       .select("*")
-      .eq("userId", user.email)
+      .eq("userID", user.id)
       .order("createdAt", { ascending: false });
 
     if (error) {
@@ -80,42 +82,44 @@ export default function DashboardPage() {
 
   // ✅ Real-time updates (Supabase v2)
   useEffect(() => {
-    if (!user?.email) return;
+    if (!user?.id) return;
 
     const channel = supabase
-      .channel(`documents-${user.email}`)
+      .channel(`documents-${user.id}`)
       .on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
           table: "documents",
-          filter: `userId=eq.${user.email}`,
+          filter: `userID=eq.${user.id}`,
         },
         (payload) => {
           if (payload.eventType === "INSERT") {
-            setDocuments((prev) => [payload.new, ...prev]);
-            setFilteredDocs((prev) => [payload.new, ...prev]);
-            toast.success(`New document uploaded: ${payload.new.name}`);
+            setDocuments((prev) => [payload.new as DocumentType, ...prev]);
+            setFilteredDocs((prev) => [payload.new as DocumentType, ...prev]);
+            toast.success(`New document uploaded: ${(payload.new as DocumentType).name}`);
           }
           if (payload.eventType === "UPDATE") {
             setDocuments((prev) =>
-              prev.map((doc) => (doc.id === payload.new.id ? payload.new : doc))
+              prev.map((doc) => (doc.id === (payload.new as DocumentType).id ? (payload.new as DocumentType) : doc))
             );
             setFilteredDocs((prev) =>
-              prev.map((doc) => (doc.id === payload.new.id ? payload.new : doc))
+              prev.map((doc) => (doc.id === (payload.new as DocumentType).id ? (payload.new as DocumentType) : doc))
             );
           }
           if (payload.eventType === "DELETE") {
-            setDocuments((prev) => prev.filter((doc) => doc.id !== payload.old.id));
-            setFilteredDocs((prev) => prev.filter((doc) => doc.id !== payload.old.id));
+            setDocuments((prev) => prev.filter((doc) => doc.id !== (payload.old as DocumentType).id));
+            setFilteredDocs((prev) => prev.filter((doc) => doc.id !== (payload.old as DocumentType).id));
             toast.success("Document deleted!");
           }
         }
       )
       .subscribe();
 
-    return () => supabase.removeChannel(channel);
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   // ✅ Search filter
@@ -143,17 +147,18 @@ export default function DashboardPage() {
 
   // ✅ Upload file
   const handleUpload = async () => {
-    if (!file || !user?.email) return;
-    const filePath = `user-${user.email}/${file.name}`;
+    if (!file || !user?.id) return;
+    const filePath = `user-${user.id}/${file.name}`;
 
     const { error: uploadError } = await supabase.storage.from("documents").upload(filePath, file, { upsert: true });
     if (uploadError) return toast.error(`Upload failed: ${uploadError.message}`);
 
-    const { data: { publicUrl }, error: urlError } = supabase.storage.from("documents").getPublicUrl(filePath);
-    if (urlError) return toast.error(`Failed to get public URL: ${urlError.message}`);
+    const { data } = supabase.storage.from("documents").getPublicUrl(filePath);
+    const publicUrl = data?.publicUrl;
+    if (!publicUrl) return toast.error("Failed to get public URL");
 
     const { error: dbError } = await supabase.from("documents").insert([
-      { name: file.name, path: filePath, url: publicUrl, userId: user.email, createdAt: new Date().toISOString() },
+      { name: file.name, path: filePath, url: publicUrl, userID: user.id, createdAt: new Date().toISOString() },
     ]);
 
     if (dbError) toast.error(`Failed to save metadata: ${dbError.message}`);
@@ -182,7 +187,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Toaster position="top-right" />
 
       {/* Navbar */}
@@ -225,7 +230,7 @@ export default function DashboardPage() {
                   className="w-10 h-10 rounded-full overflow-hidden border-2 border-white focus:outline-none"
                 >
                   <Image
-                    src={user.user_metadata?.avatar || "/default-avatar.png"}
+                    src={user.user_metadata?.avatar || "/default-avatar.jpeg"}
                     alt="Profile"
                     width={40}
                     height={40}
@@ -252,7 +257,7 @@ export default function DashboardPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8 flex-1">
         {/* Welcome Header */}
         <div className="bg-gradient-to-r from-blue-600 to-teal-400 text-white p-6 rounded-b-3xl mb-8 shadow-lg">
           <h1 className="text-3xl sm:text-4xl font-extrabold">Welcome back, {user?.email || "User"}! 👋</h1>
@@ -291,6 +296,8 @@ export default function DashboardPage() {
           )}
         </Card>
       </div>
+      <Footer />
     </div>
   );
 }
+

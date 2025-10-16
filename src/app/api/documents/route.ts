@@ -1,20 +1,14 @@
 // src/app/api/documents/route.ts
+
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route"; // adjust path if needed
+import { authOptions } from "../auth/[...nextauth]/route";
+import { createClient } from "@supabase/supabase-js";
 
-interface DocumentType {
-  id: number;
-  name: string;
-  createdAt: string;
-  ownerEmail: string;
-}
-
-// Mock database
-let mockDocuments: DocumentType[] = [
-  { id: 1, name: "Document 1", createdAt: new Date().toISOString(), ownerEmail: "user1@gmail.com" },
-  { id: 2, name: "Document 2", createdAt: new Date().toISOString(), ownerEmail: "user2@gmail.com" },
-];
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
@@ -23,8 +17,41 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Filter documents for the logged-in user
-  const userDocs = mockDocuments.filter(doc => doc.ownerEmail === session.user?.email);
+  // Get Supabase UID from session
+  const userID = session.user?.id;
 
-  return NextResponse.json({ documents: userDocs });
+  const { data, error } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("userID", userID);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  return NextResponse.json({ documents: data });
+}
+
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const userID = session.user?.id;
+  const body = await req.json();
+
+  // Add userID to payload
+  const payload = { ...body, userID };
+
+  const { data, error } = await supabase
+    .from("documents")
+    .insert([payload]);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  return NextResponse.json({ document: data?.[0] });
 }

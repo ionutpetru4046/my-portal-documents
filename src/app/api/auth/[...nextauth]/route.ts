@@ -19,12 +19,28 @@ export const authOptions = {
         });
 
         if (error || !data.user) return null;
+        // Add id to user object for session
         return { id: data.user.id, email: data.user.email, name: data.user.email };
       },
     }),
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt" as const },
   pages: { signIn: "/login" },
+  callbacks: {
+    async session({ session, token }: { session: any; token: any }) {
+      if (session.user && token.id) {
+        // @ts-ignore
+        session.user.id = token.id;
+      }
+      return session;
+    },
+    async jwt({ token, user }: { token: any; user?: any }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
