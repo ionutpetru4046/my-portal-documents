@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { supabase } from "@/lib/supabaseClient";
-import { Card, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
@@ -17,7 +17,7 @@ interface DocumentType {
   path: string;
   url: string;
   userID: string;
-  createdAt: string;
+  created_at: string;
 }
 
 interface UserType {
@@ -34,53 +34,62 @@ export default function DashboardPage() {
   const [user, setUser] = useState<UserType | null>(null);
   const [documents, setDocuments] = useState<DocumentType[]>([]);
   const [file, setFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredDocs, setFilteredDocs] = useState<DocumentType[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
-  // ✅ Check logged-in user and roles
+  // ✅ Fetch logged-in user safely
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) return router.push("/login");
+    const getUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) {
+        router.push("/login");
+        return;
+      }
 
-      // Get user metadata including role
-      const userData = {
+      const userData: UserType = {
         id: data.user.id,
         email: data.user.email ?? "",
         user_metadata: data.user.user_metadata,
       };
       setUser(userData);
+
+      if (userData.user_metadata?.avatar) {
+        setAvatarPreview(userData.user_metadata.avatar);
+      }
     };
-    fetchUser();
+
+    getUser();
   }, [router]);
 
-  // ✅ Fetch documents
-  const fetchDocuments = async () => {
-    if (!user?.id) return;
-
+  // ✅ Fetch user documents
+  const fetchDocuments = async (userID: string) => {
     const { data, error } = await supabase
       .from("documents")
       .select("*")
-      .eq("userID", user.id)
-      .order("createdAt", { ascending: false });
+      .eq("userID", userID)
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error(error);
       toast.error("Failed to fetch documents");
-    } else {
-      setDocuments(data || []);
-      setFilteredDocs(data || []);
+      return;
     }
+
+    setDocuments(data || []);
+    setFilteredDocs(data || []);
   };
 
+  // ✅ Load docs after user is ready
   useEffect(() => {
-    if (user) fetchDocuments();
+    if (user?.id) fetchDocuments(user.id);
   }, [user]);
 
-  // ✅ Real-time updates (Supabase v2)
+  // ✅ Real-time updates
   useEffect(() => {
     if (!user?.id) return;
 
@@ -97,21 +106,13 @@ export default function DashboardPage() {
         (payload) => {
           if (payload.eventType === "INSERT") {
             setDocuments((prev) => [payload.new as DocumentType, ...prev]);
-            setFilteredDocs((prev) => [payload.new as DocumentType, ...prev]);
-            toast.success(`New document uploaded: ${(payload.new as DocumentType).name}`);
-          }
-          if (payload.eventType === "UPDATE") {
-            setDocuments((prev) =>
-              prev.map((doc) => (doc.id === (payload.new as DocumentType).id ? (payload.new as DocumentType) : doc))
-            );
-            setFilteredDocs((prev) =>
-              prev.map((doc) => (doc.id === (payload.new as DocumentType).id ? (payload.new as DocumentType) : doc))
-            );
+            toast.success(`Uploaded: ${(payload.new as DocumentType).name}`);
           }
           if (payload.eventType === "DELETE") {
-            setDocuments((prev) => prev.filter((doc) => doc.id !== (payload.old as DocumentType).id));
-            setFilteredDocs((prev) => prev.filter((doc) => doc.id !== (payload.old as DocumentType).id));
-            toast.success("Document deleted!");
+            setDocuments((prev) =>
+              prev.filter((d) => d.id !== (payload.old as DocumentType).id)
+            );
+            toast.success("Document deleted");
           }
         }
       )
@@ -120,72 +121,108 @@ export default function DashboardPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
+  }, [user?.id]);
 
   // ✅ Search filter
   useEffect(() => {
     if (!searchQuery) setFilteredDocs(documents);
     else {
-      setFilteredDocs(
-        documents.filter((doc) =>
-          doc.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
+      const filtered = documents.filter((doc) =>
+        doc.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
+      setFilteredDocs(filtered);
     }
   }, [searchQuery, documents]);
 
   // ✅ Click outside dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ✅ Upload file
+  // ✅ Upload File
   const handleUpload = async () => {
     if (!file || !user?.id) return;
+    setUploading(true);
+
     const filePath = `user-${user.id}/${file.name}`;
 
-    const { error: uploadError } = await supabase.storage.from("documents").upload(filePath, file, { upsert: true });
-    if (uploadError) return toast.error(`Upload failed: ${uploadError.message}`);
+    const { error: uploadError } = await supabase.storage
+      .from("documents")
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) {
+      toast.error(`Upload failed: ${uploadError.message}`);
+      setUploading(false);
+      return;
+    }
 
     const { data } = supabase.storage.from("documents").getPublicUrl(filePath);
     const publicUrl = data?.publicUrl;
-    if (!publicUrl) return toast.error("Failed to get public URL");
+
+    if (!publicUrl) {
+      toast.error("Failed to get public URL");
+      setUploading(false);
+      return;
+    }
 
     const { error: dbError } = await supabase.from("documents").insert([
-      { name: file.name, path: filePath, url: publicUrl, userID: user.id, createdAt: new Date().toISOString() },
+      {
+        name: file.name,
+        path: filePath,
+        url: publicUrl,
+        userID: user.id,
+      },
     ]);
 
     if (dbError) toast.error(`Failed to save metadata: ${dbError.message}`);
-    else {
-      toast.success("File uploaded successfully!");
-      setFile(null);
-    }
+    else toast.success("File uploaded successfully!");
+
+    setFile(null);
+    setUploading(false);
   };
 
-  // ✅ Download, Share, Delete
+  // ✅ Helpers
+  const isImage = (name: string) =>
+    /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(name);
+
   const handleDownload = (doc: DocumentType) => window.open(doc.url, "_blank");
+
   const handleShare = async (doc: DocumentType) => {
     await navigator.clipboard.writeText(doc.url);
     setCopiedKey(doc.id);
     toast.success("Link copied!");
     setTimeout(() => setCopiedKey(null), 2000);
   };
+
   const handleDelete = async (doc: DocumentType) => {
     if (!window.confirm(`Delete "${doc.name}"?`)) return;
 
-    const { error: storageError } = await supabase.storage.from("documents").remove([doc.path]);
-    if (storageError) return toast.error(`Failed to delete file: ${storageError.message}`);
+    const { error: storageError } = await supabase.storage
+      .from("documents")
+      .remove([doc.path]);
 
-    const { error: dbError } = await supabase.from("documents").delete().eq("id", doc.id);
+    if (storageError)
+      return toast.error(`Failed to delete file: ${storageError.message}`);
+
+    const { error: dbError } = await supabase
+      .from("documents")
+      .delete()
+      .eq("id", doc.id);
+
     if (dbError) toast.error(`Failed to delete metadata: ${dbError.message}`);
   };
 
+  // ✅ JSX
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Toaster position="top-right" />
@@ -206,19 +243,6 @@ export default function DashboardPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full max-w-lg text-white"
               />
-              {searchQuery && filteredDocs.length > 0 && (
-                <div className="absolute top-full mt-1 w-full max-w-lg bg-white rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
-                  {filteredDocs.map((doc) => (
-                    <div
-                      key={doc.id}
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
-                      onClick={() => window.open(doc.url, "_blank")}
-                    >
-                      {doc.name}
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           )}
 
@@ -230,7 +254,7 @@ export default function DashboardPage() {
                   className="w-10 h-10 rounded-full overflow-hidden border-2 border-white focus:outline-none"
                 >
                   <Image
-                    src={user.user_metadata?.avatar || "/default-avatar.jpeg"}
+                    src={avatarPreview || "/default-avatar.jpeg"}
                     alt="Profile"
                     width={40}
                     height={40}
@@ -240,11 +264,24 @@ export default function DashboardPage() {
 
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2">
-                    <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100 text-gray-700">Profile</Link>
-                    <Link href="/dashboard" className="block px-4 py-2 hover:bg-gray-100 text-gray-700">Dashboard</Link>
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 hover:bg-gray-100 text-gray-700"
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      href="/dashboard"
+                      className="block px-4 py-2 hover:bg-gray-100 text-gray-700"
+                    >
+                      Dashboard
+                    </Link>
                     <button
                       className="w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700"
-                      onClick={async () => { await supabase.auth.signOut(); router.push("/login"); }}
+                      onClick={async () => {
+                        await supabase.auth.signOut();
+                        router.push("/login");
+                      }}
                     >
                       Logout
                     </button>
@@ -256,48 +293,94 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="p-4 sm:p-6 lg:p-8 flex-1">
-        {/* Welcome Header */}
+        {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-teal-400 text-white p-6 rounded-b-3xl mb-8 shadow-lg">
-          <h1 className="text-3xl sm:text-4xl font-extrabold">Welcome back, {user?.email || "User"}! 👋</h1>
-          <p className="mt-2 text-gray-100 text-lg">Manage your documents efficiently.</p>
-          {user?.user_metadata?.role && (
-            <p className="mt-1 text-gray-200 text-sm">Role: {user.user_metadata.role}</p>
-          )}
+          <h1 className="text-3xl sm:text-4xl font-extrabold">
+            Welcome back, {user?.email || "User"}! 👋
+          </h1>
+          <p className="mt-2 text-gray-100 text-lg">
+            Manage your documents efficiently.
+          </p>
         </div>
 
         {/* Upload */}
         <Card className="shadow-md hover:shadow-xl transition p-4 mb-8 flex flex-col sm:flex-row gap-4 items-center">
-          <input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} className="border p-2 rounded" />
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleUpload} disabled={!file}>Upload</Button>
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="border p-2 rounded"
+            disabled={uploading}
+          />
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={handleUpload}
+            disabled={!file || uploading}
+          >
+            {uploading ? "Uploading..." : "Upload"}
+          </Button>
         </Card>
 
-        {/* Documents List */}
-        <Card className="shadow-md hover:shadow-xl transition p-4 mb-8">
+        {/* Documents */}
+        <Card className="shadow-md hover:shadow-xl transition p-4">
           <CardTitle className="text-lg mb-2">Your Documents</CardTitle>
           {documents.length === 0 ? (
             <p className="text-gray-500">No documents uploaded yet.</p>
           ) : (
-            <ul className="divide-y divide-gray-200">
-              {documents.map((doc) => (
-                <li key={doc.id} className="py-2 flex justify-between items-center">
-                  <span>{doc.name}</span>
-                  <div className="flex gap-2">
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => handleDownload(doc)}>Download</Button>
-                    <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={() => handleShare(doc)}>
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {filteredDocs.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="border rounded-lg p-3 bg-white shadow-sm hover:shadow-md transition"
+                >
+                  {isImage(doc.name) ? (
+                    <Image
+                      src={doc.url}
+                      alt={doc.name}
+                      width={200}
+                      height={200}
+                      className="w-full h-40 object-cover rounded-md"
+                    />
+                  ) : (
+                    <div className="w-full h-40 bg-gray-100 flex items-center justify-center rounded-md text-gray-500">
+                      📄
+                    </div>
+                  )}
+                  <p className="mt-2 text-sm font-semibold truncate">
+                    {doc.name}
+                  </p>
+                  <div className="flex justify-between mt-2">
+                    <Button
+                      size="sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => handleDownload(doc)}
+                    >
+                      View
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                      onClick={() => handleShare(doc)}
+                    >
                       {copiedKey === doc.id ? "Copied!" : "Share"}
                     </Button>
-                    <Button className="bg-red-600 hover:bg-red-700 text-white" onClick={() => handleDelete(doc)}>Delete</Button>
+                    <Button
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                      onClick={() => handleDelete(doc)}
+                    >
+                      Delete
+                    </Button>
                   </div>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </Card>
       </div>
+
       <Footer />
     </div>
   );
 }
-
