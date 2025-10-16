@@ -1,6 +1,9 @@
 "use client"
 
+
+import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabaseClient"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,16 +21,41 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import toast from "react-hot-toast"
+
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  function handleLogin(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    // ⚡️ Here you'd normally validate credentials
-    // For now, just simulate a successful login
-    router.push("/dashboard") // 👈 Redirect to dashboard
-  }
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Login successful!");
+      await supabase.auth.getSession();
+      router.push("/dashboard");
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/dashboard` },
+    });
+    setLoading(false);
+    if (error) toast.error(error.message);
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -47,7 +75,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </Field>
               <Field>
@@ -60,11 +91,20 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Logging in..." : "Login"}
+                </Button>
+                <Button variant="outline" type="button" onClick={handleGoogleLogin} disabled={loading}>
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">
@@ -79,5 +119,5 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
