@@ -205,22 +205,34 @@ export default function DashboardPage() {
   };
 
   const handleDelete = async (doc: DocumentType) => {
-    if (!window.confirm(`Delete "${doc.name}"?`)) return;
+  if (!window.confirm(`Delete "${doc.name}"?`)) return;
 
-    const { error: storageError } = await supabase.storage
+  try {
+    // 1️⃣ Remove from Supabase Storage
+    const { data: removed, error: storageError } = await supabase.storage
       .from("documents")
       .remove([doc.path]);
 
-    if (storageError)
-      return toast.error(`Failed to delete file: ${storageError.message}`);
+    if (storageError) throw new Error(`Failed to delete file: ${storageError.message}`);
 
-    const { error: dbError } = await supabase
+    // 2️⃣ Remove metadata from DB
+    const { data: deleted, error: dbError } = await supabase
       .from("documents")
       .delete()
       .eq("id", doc.id);
 
-    if (dbError) toast.error(`Failed to delete metadata: ${dbError.message}`);
-  };
+    if (dbError) throw new Error(`Failed to delete metadata: ${dbError.message}`);
+
+    // 3️⃣ Update local state
+    setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
+    setFilteredDocs((prev) => prev.filter((d) => d.id !== doc.id));
+
+    toast.success("Document deleted successfully!");
+  } catch (err: any) {
+    toast.error(err.message);
+  }
+};
+
 
   // ✅ JSX
   return (
