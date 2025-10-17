@@ -62,7 +62,7 @@ export default function AboutPage() {
           MyPortal was built to simplify document management for professionals and teams, helping you focus on what matters most.
         </p>
         <Link
-          href="/upload"
+          href="/dashboard"
           className="bg-white text-blue-600 font-semibold px-8 py-4 rounded-xl shadow hover:bg-gray-100 transition"
         >
           Upload Your First Document
