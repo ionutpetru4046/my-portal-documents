@@ -77,7 +77,7 @@ export default function Navbar() {
       {/* Center: Links */}
       <div className="hidden md:flex gap-6">
         <Link href="/about" className="hover:underline hover:text-yellow-200 transition">
-          About
+          About Us
         </Link>
         <Link href="/contact" className="hover:underline hover:text-yellow-200 transition">
           Contact
@@ -130,12 +130,12 @@ export default function Navbar() {
         ) : (
           <>
             <Link href="/login">
-              <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">
+              <Button className="bg-white text-blue-700 hover:bg-gray-100 cursor-pointer font-semibold">
                 Login
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 font-semibold">
+              <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 cursor-pointer font-semibold">
                 Get Started
               </Button>
             </Link>
