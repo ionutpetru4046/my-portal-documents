@@ -4,81 +4,99 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white">
+    <main className="min-h-screen flex flex-col bg-gradient-to-tr from-indigo-50 via-white to-purple-50">
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center py-32 px-6 bg-gradient-to-r from-blue-600 to-teal-400 text-white rounded-b-3xl shadow-lg">
-        <h1 className="text-5xl sm:text-6xl font-extrabold mb-6">
-          Your Documents Portal
-        </h1>
-        <p className="text-lg sm:text-xl max-w-2xl mb-10">
-          Store & Access Your Documents Digitally. Manage all your important files securely in one place.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link
-            href="/subscribe"
-            className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition"
-          >
-            Get Started
-          </Link>
+      <section className="relative overflow-hidden">
+        {/* Decorative gradient blobs */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-indigo-300/40 blur-3xl" />
+          <div className="absolute top-20 -right-24 w-80 h-80 rounded-full bg-purple-300/40 blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 py-24 sm:py-28">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-block px-3 py-1 text-xs font-semibold tracking-widest rounded-full bg-indigo-100 text-indigo-700 mb-4">
+              Digital Document Hub
+            </span>
+            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900">
+              Securely store, preview, and manage all your documents
+            </h1>
+            <p className="mt-6 text-lg text-gray-600">
+              Upload files, set expirations and reminders, and stay on top of what matters. A fast, modern portal for everyday document workflows.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/signup"
+                className="px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-md shadow-indigo-600/20 transition"
+              >
+                Create Account
+              </Link>
+              <Link
+                href="/dashboard"
+                className="px-8 py-3 rounded-xl bg-white text-indigo-700 border border-indigo-200 hover:bg-indigo-50 font-semibold transition"
+              >
+                Go to Dashboard
+              </Link>
+            </div>
+            {/* Glass card */}
+            <div className="mt-10 backdrop-blur-xl bg-white/50 border border-indigo-100 rounded-2xl p-4 sm:p-6 inline-flex items-center gap-3 shadow-md">
+              <span className="text-sm text-gray-600">Set expiration + reminders • Admin insights • Fast search</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-24 px-6 bg-gray-50">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-16">
-          Why Choose Us
-        </h2>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-          <div className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center hover:shadow-xl transition">
-            <div className="bg-blue-100 text-blue-600 rounded-full p-4 mb-4">
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 9h4v2H8V9z" />
-              </svg>
+      <section className="py-16 sm:py-20 px-6">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">Why Choose Us</h2>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="group bg-white/80 backdrop-blur rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition">
+            <div className="w-12 h-12 grid place-items-center rounded-xl bg-indigo-100 text-indigo-700 mb-4 group-hover:scale-105 transition">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2.94 6.34A2 2 0 014.74 5h10.52a2 2 0 011.8 1.34l.9 2.7a2 2 0 01-1.9 2.66H3.94A2 2 0 012.04 10l.9-2.7z"/><path d="M4 12h12v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"/></svg>
             </div>
-            <h3 className="text-2xl font-semibold mb-2">Secure Storage</h3>
-            <p className="text-gray-600">
-              All your files are encrypted and stored securely.
-            </p>
+            <h3 className="text-xl font-semibold mb-1">Secure by Default</h3>
+            <p className="text-gray-600">Backed by robust storage and access rules. Share via safe links.</p>
           </div>
-
-          <div className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center hover:shadow-xl transition">
-            <div className="bg-green-100 text-green-600 rounded-full p-4 mb-4">
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4 3h12v14H4V3z" />
-              </svg>
+          <div className="group bg-white/80 backdrop-blur rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition">
+            <div className="w-12 h-12 grid place-items-center rounded-xl bg-green-100 text-green-700 mb-4 group-hover:scale-105 transition">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3h12v10H4z"/><path d="M2 15h16v2H2z"/></svg>
             </div>
-            <h3 className="text-2xl font-semibold mb-2">Upload Easily</h3>
-            <p className="text-gray-600">
-              Upload PDFs and images quickly and efficiently.
-            </p>
+            <h3 className="text-xl font-semibold mb-1">Effortless Uploads</h3>
+            <p className="text-gray-600">Drag & drop, quick previews, and version-friendly naming.</p>
           </div>
-
-          <div className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center hover:shadow-xl transition">
-            <div className="bg-teal-100 text-teal-600 rounded-full p-4 mb-4">
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 5h16v10H2V5z" />
-              </svg>
+          <div className="group bg-white/80 backdrop-blur rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition">
+            <div className="w-12 h-12 grid place-items-center rounded-xl bg-amber-100 text-amber-700 mb-4 group-hover:scale-105 transition">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 6h2v5H9zM9 12h2v2H9z"/></svg>
             </div>
-            <h3 className="text-2xl font-semibold mb-2">Analytics & Stats</h3>
-            <p className="text-gray-600">
-              Track activity and manage documents efficiently.
-            </p>
+            <h3 className="text-xl font-semibold mb-1">Smart Reminders</h3>
+            <p className="text-gray-600">Set expiration dates and reminders so nothing falls through the cracks.</p>
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-24 px-6 bg-gradient-to-r from-blue-500 to-teal-400 text-white text-center rounded-t-3xl shadow-lg">
-        <h2 className="text-4xl font-bold mb-6">Ready to get started?</h2>
-        <p className="text-lg mb-10 max-w-2xl mx-auto">
-          Create your account now and start managing your documents effortlessly.
-        </p>
-        <Link
-          href="/signup"
-          className="bg-white text-blue-600 px-10 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition"
-        >
-          Get Started
-        </Link>
+      {/* Split Callouts */}
+      <section className="px-6 pb-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          <div className="rounded-2xl bg-white/80 backdrop-blur p-8 border border-gray-100 shadow-sm">
+            <h3 className="text-2xl font-semibold mb-2">Admin Insights</h3>
+            <p className="text-gray-600 mb-4">See user document counts, expirations, and act quickly with filters.</p>
+            <Link href="/admin/expirations" className="inline-block px-5 py-2 rounded-xl border border-indigo-200 text-indigo-700 hover:bg-indigo-50 font-semibold transition">Explore Expirations</Link>
+          </div>
+          <div className="rounded-2xl bg-white/80 backdrop-blur p-8 border border-gray-100 shadow-sm">
+            <h3 className="text-2xl font-semibold mb-2">Privacy First</h3>
+            <p className="text-gray-600 mb-4">Your content stays yours. Fine-grained access and share controls.</p>
+            <Link href="/privacy" className="inline-block px-5 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 font-semibold transition">Read Privacy</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4">Ready to get started?</h2>
+        <p className="text-white/90 mb-8 max-w-2xl mx-auto">Create your account and start managing documents with speed and clarity.</p>
+        <div className="flex gap-4 justify-center">
+          <Link href="/signup" className="bg-white text-indigo-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">Sign Up</Link>
+          <Link href="/dashboard" className="bg-white/10 border border-white/30 text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/20 transition">Go to Dashboard</Link>
+        </div>
       </section>
     </main>
   );

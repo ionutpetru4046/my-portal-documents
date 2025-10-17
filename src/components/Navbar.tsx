@@ -44,8 +44,7 @@ export default function Navbar() {
   return (
     <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 py-4 flex items-center justify-between">
       {/* Left Side: Brand */}
-      <Link href="/" className="text-xl font-extrabold tracking-wide">
-        Document<span className="text-yellow-200">Manager</span>
+      <Link href="/" className="text-xl font-extrabold tracking-wide">Document <span className="text-yellow-200"> Manager</span>
       </Link>
 
       {/* Center: Links */}
