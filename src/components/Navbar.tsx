@@ -68,12 +68,11 @@ export default function Navbar() {
             <span className="hidden sm:inline text-sm bg-white/20 px-3 py-1 rounded-full">
               {user.email}
             </span>
-            <Button
-              onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold"
-            >
-              Logout
-            </Button>
+            <Link href="/dashboard">
+              <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">
+                Dashboard
+              </Button>
+            </Link>
           </>
         ) : (
           <>
