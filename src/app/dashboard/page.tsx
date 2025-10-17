@@ -358,6 +358,13 @@ export default function DashboardPage() {
                       {(doc as any).expiration_date && expiresIn !== null && expiresIn < 0 && (
                         <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Expired</span>
                       )}
+                      {/* Active status when not expiring soon/expired, or no expiration set */}
+                      {(
+                        (!((doc as any).expiration_date) || (expiresIn !== null && expiresIn > 7)) &&
+                        !((doc as any).expiration_date && expiresIn !== null && (expiresIn <= 7 || expiresIn < 0))
+                      ) && (
+                        <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">Active</span>
+                      )}
                     </div>
                     <div className="flex justify-between mt-4">
                       <Button
