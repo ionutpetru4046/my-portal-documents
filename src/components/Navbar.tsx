@@ -70,7 +70,7 @@ export default function Navbar() {
           <span className="block w-5 h-0.5 bg-white" />
         </button>
         <Link href="/" className="text-xl font-extrabold tracking-wide">
-          Document<span className="text-yellow-200">Manager</span>
+          Digital <span className="text-yellow-200"> Document Hub</span>
         </Link>
       </div>
 

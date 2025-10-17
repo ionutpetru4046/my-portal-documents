@@ -1,0 +1,28 @@
+{
+  "Navbar": {
+    "brand": "DocumentManager",
+    "about": "نبذة",
+    "contact": "اتصل بنا",
+    "pricing": "الأسعار",
+    "upload": "رفع",
+    "login": "تسجيل الدخول",
+    "getStarted": "ابدأ الآن",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "Home": {
+    "badge": "منصة المستندات",
+    "title": "قم بتخزين المستندات وإدارتها بأمان",
+    "subtitle": "ارفع الملفات واضبط تواريخ الانتهاء والتذكيرات بسهولة.",
+    "ctaPrimary": "إنشاء حساب",
+    "ctaSecondary": "اذهب للوحة التحكم",
+    "featureTitle": "لماذا نحن",
+    "adminInsights": "أدوات المشرف",
+    "privacyFirst": "الخصوصية أولاً",
+    "finalCtaTitle": "هل أنت مستعد للبدء؟",
+    "finalCtaText": "أنشئ حسابك وابدأ إدارة المستندات بسرعة ووضوح.",
+    "ctaSignup": "سجل الآن"
+  }
+}
+

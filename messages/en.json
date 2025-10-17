@@ -1,0 +1,28 @@
+{
+  "Navbar": {
+    "brand": "DocumentManager",
+    "about": "About",
+    "contact": "Contact",
+    "pricing": "Pricing",
+    "upload": "Upload",
+    "login": "Login",
+    "getStarted": "Get Started",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "Home": {
+    "badge": "Digital Document Hub",
+    "title": "Securely store, preview, and manage all your documents",
+    "subtitle": "Upload files, set expirations and reminders, and stay on top of what matters.",
+    "ctaPrimary": "Create Account",
+    "ctaSecondary": "Go to Dashboard",
+    "featureTitle": "Why Choose Us",
+    "adminInsights": "Admin Insights",
+    "privacyFirst": "Privacy First",
+    "finalCtaTitle": "Ready to get started?",
+    "finalCtaText": "Create your account and start managing documents with speed and clarity.",
+    "ctaSignup": "Sign Up"
+  }
+}
+

@@ -1,0 +1,28 @@
+{
+  "Navbar": {
+    "brand": "DocumentManager",
+    "about": "À propos",
+    "contact": "Contact",
+    "pricing": "Tarifs",
+    "upload": "Téléverser",
+    "login": "Connexion",
+    "getStarted": "Commencer",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "Home": {
+    "badge": "Plateforme de Documents",
+    "title": "Stockez, prévisualisez et gérez vos documents en toute sécurité",
+    "subtitle": "Téléversez des fichiers, définissez des expirations et des rappels.",
+    "ctaPrimary": "Créer un compte",
+    "ctaSecondary": "Aller au Tableau de bord",
+    "featureTitle": "Pourquoi nous",
+    "adminInsights": "Insights Admin",
+    "privacyFirst": "Confidentialité d'abord",
+    "finalCtaTitle": "Prêt à commencer ?",
+    "finalCtaText": "Créez votre compte et gérez vos documents rapidement et clairement.",
+    "ctaSignup": "S'inscrire"
+  }
+}
+
