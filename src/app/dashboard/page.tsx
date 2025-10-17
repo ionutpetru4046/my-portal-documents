@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer";
 import Sidebar from "@/components/Sidebar";
+import Reveal from "@/components/Reveal";
 
 interface DocumentType {
   id: string;
@@ -249,51 +250,55 @@ export default function DashboardPage() {
         {/* Main Content */}
         <main className="flex-1 p-6 sm:p-8 lg:p-10">
           {/* Header */}
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-3xl mb-8 shadow-xl">
-            <h1 className="text-3xl sm:text-4xl font-extrabold">
-              Welcome back, {user?.email || "User"}! 👋
-            </h1>
-            <p className="mt-2 text-gray-200 text-lg">
-              Manage your documents efficiently.
-            </p>
-          </div>
+          <Reveal animation="fade-up">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-3xl mb-8 shadow-xl">
+              <h1 className="text-3xl sm:text-4xl font-extrabold">
+                Welcome back, {user?.email || "User"}! 👋
+              </h1>
+              <p className="mt-2 text-gray-200 text-lg">
+                Manage your documents efficiently.
+              </p>
+            </div>
+          </Reveal>
 
           {/* Upload */}
-          <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center bg-white rounded-3xl">
-            <input
-              type="file"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              className="border p-3 rounded-xl w-full sm:w-auto"
-              disabled={uploading}
-            />
-            {/* New: Expiration date input */}
-            <input
-              type="date"
-              value={expirationDate}
-              onChange={e => setExpirationDate(e.target.value)}
-              className="border p-3 rounded-xl w-full sm:w-auto"
-              disabled={uploading}
-              placeholder="Expiration Date"
-              style={{ minWidth: 180 }}
-            />
-            {/* New: Reminder date/time input */}
-            <input
-              type="datetime-local"
-              value={reminderAt}
-              onChange={e => setReminderAt(e.target.value)}
-              className="border p-3 rounded-xl w-full sm:w-auto"
-              disabled={uploading}
-              placeholder="Remind Me At"
-              style={{ minWidth: 220 }}
-            />
-            <Button
-              className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 transition"
-              onClick={handleUpload}
-              disabled={!file || uploading}
-            >
-              {uploading ? "Uploading..." : "Upload"}
-            </Button>
-          </Card>
+          <Reveal animation="fade-up" delay={60}>
+            <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center bg-white rounded-3xl">
+              <input
+                type="file"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                className="border p-3 rounded-xl w-full sm:w-auto"
+                disabled={uploading}
+              />
+              {/* New: Expiration date input */}
+              <input
+                type="date"
+                value={expirationDate}
+                onChange={e => setExpirationDate(e.target.value)}
+                className="border p-3 rounded-xl w-full sm:w-auto"
+                disabled={uploading}
+                placeholder="Expiration Date"
+                style={{ minWidth: 180 }}
+              />
+              {/* New: Reminder date/time input */}
+              <input
+                type="datetime-local"
+                value={reminderAt}
+                onChange={e => setReminderAt(e.target.value)}
+                className="border p-3 rounded-xl w-full sm:w-auto"
+                disabled={uploading}
+                placeholder="Remind Me At"
+                style={{ minWidth: 220 }}
+              />
+              <Button
+                className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 transition"
+                onClick={handleUpload}
+                disabled={!file || uploading}
+              >
+                {uploading ? "Uploading..." : "Upload"}
+              </Button>
+            </Card>
+          </Reveal>
 
           {/* Search */}
           <div className="mb-6">
@@ -314,8 +319,8 @@ export default function DashboardPage() {
                 const expiresIn = daysUntil((doc as any).expiration_date);
                 const reminderIn = daysUntil((doc as any).reminder_at);
                 return (
+                  <Reveal key={doc.id} animation="fade-up" delay={index * 40}>
                   <div
-                    key={doc.id}
                     className="border border-gray-200 rounded-3xl p-4 bg-white shadow hover:shadow-2xl transition flex flex-col"
                   >
                     {isImage(doc.name) ? (
@@ -383,6 +388,7 @@ export default function DashboardPage() {
                       </Button>
                     </div>
                   </div>
+                  </Reveal>
                 );
               })}
             </div>
