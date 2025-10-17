@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -10,13 +10,34 @@ import { FiMenu, FiX } from "react-icons/fi";
 export default function Sidebar({ open, setOpen }: { open?: boolean, setOpen?: (v: boolean) => void }) {
   const router = useRouter();
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      const um = data.user?.user_metadata as any;
+      const am = data.user?.app_metadata as any;
+      const email: string | undefined = data.user?.email ?? undefined;
+
+      const allowlistEnv = process.env.NEXT_PUBLIC_ADMIN_EMAILS || "";
+      const allowlist = allowlistEnv.split(",").map(e => e.trim().toLowerCase()).filter(Boolean);
+      const emailAllowed = email ? allowlist.includes(email.toLowerCase()) : false;
+
+      const isAdminMeta =
+        (um && (um.role === "admin" || (Array.isArray(um.roles) && um.roles.includes("admin")))) ||
+        (am && (am.role === "admin" || (Array.isArray(am.roles) && am.roles.includes("admin"))));
+
+      setIsAdmin(!!isAdminMeta || emailAllowed);
+    };
+    fetchUser();
+  }, []);
 
   const closeMenu = () => {
     setMobileMenu(false);
     setOpen?.(false);
   };
 
-  const menuContent = (
+  const MenuLinks = () => (
     <nav className="flex-1 flex flex-col mt-4">
       <Link
         href="/dashboard"
@@ -32,6 +53,25 @@ export default function Sidebar({ open, setOpen }: { open?: boolean, setOpen?: (
       >
         Profile
       </Link>
+      {isAdmin && (
+        <div className="mt-4 pt-4 border-t border-gray-200 mx-4">
+          <div className="px-2 text-xs uppercase tracking-widest text-gray-500 mb-2">Admin</div>
+          <Link
+            href="/admin/users"
+            className="px-6 py-3 hover:bg-indigo-100 hover:text-indigo-700 transition rounded-lg mx-2 my-1"
+            onClick={closeMenu}
+          >
+            Users
+          </Link>
+          <Link
+            href="/admin/expirations"
+            className="px-6 py-3 hover:bg-indigo-100 hover:text-indigo-700 transition rounded-lg mx-2 my-1"
+            onClick={closeMenu}
+          >
+            Expirations
+          </Link>
+        </div>
+      )}
       <button
         className="px-6 py-3 text-left hover:bg-red-100 hover:text-red-700 transition rounded-lg mx-2 my-1"
         onClick={async () => {
@@ -52,7 +92,7 @@ export default function Sidebar({ open, setOpen }: { open?: boolean, setOpen?: (
         <div className="p-6 text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center">
           Digital Docs
         </div>
-        {menuContent}
+        <MenuLinks />
       </aside>
 
       {/* Mobile hamburger */}
@@ -74,7 +114,7 @@ export default function Sidebar({ open, setOpen }: { open?: boolean, setOpen?: (
                 <FiX size={24} />
               </Button>
             </div>
-            {menuContent}
+            <MenuLinks />
           </aside>
         </div>
       )}
