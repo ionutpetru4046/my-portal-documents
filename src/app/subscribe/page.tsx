@@ -2,9 +2,15 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 export default function SubscribePage() {
   const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+  const router = useRouter();
+
+  const isLoggedIn = Boolean(user?.id && user?.email && user?.id !== "");
 
   const handleCheckout = async (plan: string) => {
     setLoading(true);
@@ -130,11 +136,17 @@ export default function SubscribePage() {
             </ul>
 
             <button
-              onClick={() =>
-                plan.paid
-                  ? handleCheckout(plan.key!)
-                  : alert("You selected the free plan!")
-              }
+              onClick={() => {
+                if (plan.paid) {
+                  if (isLoggedIn) {
+                    handleCheckout(plan.key!);
+                  } else {
+                    router.push("/signup");
+                  }
+                } else {
+                  alert("You selected the free plan!");
+                }
+              }}
               disabled={loading}
               className={`mt-auto py-3 rounded-xl font-medium transition ${plan.button}`}
             >

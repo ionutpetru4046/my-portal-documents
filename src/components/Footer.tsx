@@ -82,7 +82,7 @@ export default function Footer() {
 
       {/* Bottom Info */}
       <div className="mt-10 border-t border-white/40 pt-6 text-center text-white/80 text-sm">
-        &copy; {new Date().getFullYear()} MyPortal. All rights reserved.  
+        &copy; {new Date().getFullYear()} Digital Document Hub. All rights reserved.  
         <Link href="/terms" className="ml-2 hover:text-white transition">Terms</Link> |  
         <Link href="/privacy" className="ml-2 hover:text-white transition">Privacy</Link>
       </div>
