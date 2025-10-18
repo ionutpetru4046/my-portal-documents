@@ -8,6 +8,9 @@ export default function HomePage() {
     <main className="min-h-screen flex flex-col bg-gradient-to-tr from-indigo-50 via-white to-purple-50">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
+        <div className="absolute inset-0 -z-20" aria-hidden="true">
+          <img src="/default-avatar.jpeg" alt="Hero background" className="w-full h-full object-cover opacity-80" />
+        </div>
         {/* Decorative gradient blobs */}
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-indigo-300/40 blur-3xl" />

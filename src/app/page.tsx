@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-tr from-indigo-50 via-white to-purple-50">
+    <main className="min-h-screen flex flex-col bg-transparent">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Decorative gradient blobs */}
