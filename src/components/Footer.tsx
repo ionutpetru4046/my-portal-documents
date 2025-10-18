@@ -22,9 +22,6 @@ export default function Footer() {
             <li>
               <Link href="/dashboard" className="hover:text-gray-200 transition">Dashboard</Link>
             </li>
-            <li>
-              <Link href="/upload" className="hover:text-gray-200 transition">Upload</Link>
-            </li>
           </ul>
         </div>
 
@@ -54,16 +51,16 @@ export default function Footer() {
         <div>
           <h3 className="text-xl font-bold mb-4">Follow Us</h3>
           <div className="flex space-x-4">
-            <a href="https://www.facebook.com/YourPageName" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
               <FaFacebookF size={20} />
             </a>
-            <a href="https://twitter.com/YourProfileName" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
               <FaTwitter size={20} />
             </a>
-            <a href="https://www.instagram.com/YourProfileName" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
               <FaInstagram size={20} />
             </a>
-            <a href="https://www.linkedin.com/in/YourProfileName" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
               <FaLinkedinIn size={20} />
             </a>
           </div>
