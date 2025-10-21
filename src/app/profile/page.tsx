@@ -2,13 +2,20 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
-import { FiUser, FiMail, FiLock, FiEdit, FiTrash2, FiCheckCircle, FiFileText, FiActivity, FiBell, FiEdit2 } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiEdit, FiTrash2, FiCheckCircle, FiFileText, FiActivity, FiBell } from "react-icons/fi";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import toast, { Toaster } from "react-hot-toast";
-import Sidebar from "@/components/Sidebar";
+// import Sidebar from "@/components/Sidebar";
 import { supabase } from "@/lib/supabaseClient";
 import Reveal from "@/components/Reveal";
+
+interface Notif {
+  id: string;
+  name: string;
+  type: "expiring" | "expired" | "reminder";
+  info: string;
+}
 
 function daysUntil(dateStr: string) {
   if (!dateStr) return null;
@@ -18,31 +25,44 @@ function daysUntil(dateStr: string) {
 }
 
 export default function ProfilePage() {
-  const { user, setUser } = useUser(); 
+  const { user, setUser } = useUser();
   const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({ name: user.name, email: user.email });
+  const [formData, setFormData] = useState({ name: "", email: "" }); // Safe initial state
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // NEW: document and notification states
   const [docCount, setDocCount] = useState(0);
   const [notifCount, setNotifCount] = useState(0);
   const [notifList, setNotifList] = useState<Notif[]>([]);
 
+  // Sync formData with user when loaded
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || "",
+        email: user.email || "",
+      });
+    }
+  }, [user]);
+
+  // Fetch document stats
   useEffect(() => {
     async function fetchDocumentStats() {
       if (!user?.id) return;
-      // fetch doc metadata from Supabase
       const { data, error } = await supabase
         .from("documents")
         .select("id,name,expiration_date,reminder_at,userID")
         .eq("userID", user.id);
       if (error) return;
+
       setDocCount(data.length);
+
       let count = 0;
-      const notifs = [];
+      const notifs: Notif[] = [];
+
       for (const doc of data) {
         const expiresIn = daysUntil(doc.expiration_date);
         const reminderIn = daysUntil(doc.reminder_at);
+
         if (doc.expiration_date && expiresIn !== null && expiresIn <= 7 && expiresIn >= 0) {
           count++;
           notifs.push({ id: doc.id, name: doc.name, type: 'expiring', info: `Expiring in ${expiresIn}d` });
@@ -56,17 +76,20 @@ export default function ProfilePage() {
           notifs.push({ id: doc.id, name: doc.name, type: 'reminder', info: `Reminder due in ${reminderIn}d` });
         }
       }
+
       setNotifCount(count);
       setNotifList(notifs);
     }
+
     fetchDocumentStats();
   }, [user?.id]);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleUpdateProfile = () => {
+    if (!user) return;
     setUser({ ...user, ...formData });
     setEditMode(false);
     toast.success("Profile updated!");
@@ -81,17 +104,25 @@ export default function ProfilePage() {
   };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files && e.target.files[0] && user) {
       const fileUrl = URL.createObjectURL(e.target.files[0]);
       setUser({ ...user, avatar: fileUrl });
     }
   };
 
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-gray-700 text-lg">Loading profile...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-tr from-indigo-200 via-purple-200 to-indigo-100 text-gray-900">
       <Toaster position="top-right" />
       <div className="flex flex-1">
-        <Sidebar />
+        {/* <Sidebar /> */}
         <main className="flex-1 p-6">
           {/* Header */}
           <Reveal animation="fade-up">
@@ -129,7 +160,7 @@ export default function ProfilePage() {
                       Change Avatar
                     </Button>
                   </div>
-                  {/* Editable Fields */}
+
                   <div className="flex flex-col gap-4">
                     <div>
                       <label className="block text-gray-700 font-medium">Name</label>
@@ -158,6 +189,7 @@ export default function ProfilePage() {
                       />
                     </div>
                   </div>
+
                   <div className="flex justify-between mt-4">
                     {editMode ? (
                       <Button
@@ -185,69 +217,76 @@ export default function ProfilePage() {
               </Card>
             </Reveal>
 
-            {/* Stats: real doc count, real notifications, hardcoded activity (optional) */}
+            {/* Stats */}
             <div className="col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Documents */}
               <Reveal animation="fade-up" delay={60}>
-              <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4" style={{ borderTopColor: `var(--tw-blue-500)` }}>
-                <div className="flex items-center gap-3 mb-3">
-                  <FiFileText className="w-7 h-7 text-blue-500" />
-                  <CardTitle className="text-md font-semibold">Documents</CardTitle>
-                </div>
-                <CardContent className="flex flex-col gap-2">
-                  <input
-                    type="number"
-                    value={docCount}
-                    readOnly
-                    className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
-                  />
-                  <span className="text-xs text-gray-500">Total uploaded docs</span>
-                </CardContent>
-              </Card>
+                <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4 border-blue-500">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FiFileText className="w-7 h-7 text-blue-500" />
+                    <CardTitle className="text-md font-semibold">Documents</CardTitle>
+                  </div>
+                  <CardContent className="flex flex-col gap-2">
+                    <input
+                      type="number"
+                      value={docCount}
+                      readOnly
+                      className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
+                    />
+                    <span className="text-xs text-gray-500">Total uploaded docs</span>
+                  </CardContent>
+                </Card>
               </Reveal>
+
+              {/* Notifications */}
               <Reveal animation="fade-up" delay={90}>
-              <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4" style={{ borderTopColor: `var(--tw-yellow-400)` }}>
-                <div className="flex items-center gap-3 mb-3">
-                  <FiBell className="w-7 h-7 text-yellow-400" />
-                  <CardTitle className="text-md font-semibold">Notifications</CardTitle>
-                </div>
-                <CardContent className="flex flex-col gap-2">
-                  <input
-                    type="number"
-                    value={notifCount}
-                    readOnly
-                    className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
-                  />
-                  <span className="text-xs text-gray-500">Reminders & Expirations</span>
-                  {/* Show notification details here */}
-                  {notifList.length > 0 && (
-                    <ul className="text-xs mt-2 space-y-1">
-                      {notifList.map(n => (
-                        <li key={n.id + n.type} className="flex gap-1 items-center">
-                          <span className={n.type === 'expiring' ? 'text-red-600' : n.type === 'expired' ? 'text-gray-600' : 'text-yellow-700'}>
-                            ●</span> <span className="font-semibold">{n.name}</span><span className="ml-2">({n.info})</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </CardContent>
-              </Card>
+                <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4 border-yellow-400">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FiBell className="w-7 h-7 text-yellow-400" />
+                    <CardTitle className="text-md font-semibold">Notifications</CardTitle>
+                  </div>
+                  <CardContent className="flex flex-col gap-2">
+                    <input
+                      type="number"
+                      value={notifCount}
+                      readOnly
+                      className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
+                    />
+                    <span className="text-xs text-gray-500">Reminders & Expirations</span>
+                    {notifList.length > 0 && (
+                      <ul className="text-xs mt-2 space-y-1">
+                        {notifList.map(n => (
+                          <li key={n.id + n.type} className="flex gap-1 items-center">
+                            <span className={n.type === 'expiring' ? 'text-red-600' : n.type === 'expired' ? 'text-gray-600' : 'text-yellow-700'}>
+                              ●
+                            </span>
+                            <span className="font-semibold">{n.name}</span>
+                            <span className="ml-2">({n.info})</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </CardContent>
+                </Card>
               </Reveal>
+
+              {/* Recent Activity */}
               <Reveal animation="fade-up" delay={120}>
-              <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4" style={{ borderTopColor: `var(--tw-green-500)` }}>
-                <div className="flex items-center gap-3 mb-3">
-                  <FiActivity className="w-7 h-7 text-green-500" />
-                  <CardTitle className="text-md font-semibold">Recent Activity</CardTitle>
-                </div>
-                <CardContent className="flex flex-col gap-2">
-                  <input
-                    type="text"
-                    value="(coming soon)"
-                    readOnly
-                    className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
-                  />
-                  <span className="text-xs text-gray-500">Last event (feature coming)</span>
-                </CardContent>
-              </Card>
+                <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4 border-green-500">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FiActivity className="w-7 h-7 text-green-500" />
+                    <CardTitle className="text-md font-semibold">Recent Activity</CardTitle>
+                  </div>
+                  <CardContent className="flex flex-col gap-2">
+                    <input
+                      type="text"
+                      value="(coming soon)"
+                      readOnly
+                      className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
+                    />
+                    <span className="text-xs text-gray-500">Last event (feature coming)</span>
+                  </CardContent>
+                </Card>
               </Reveal>
             </div>
           </div>

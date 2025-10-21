@@ -2,15 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import { supabase } from "@/lib/supabaseClient";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
-import Footer from "@/components/Footer";
-import Sidebar from "@/components/Sidebar";
+// import Footer from "@/components/Footer";
+// import Sidebar from "@/components/Sidebar";
 import Reveal from "@/components/Reveal";
 
 interface DocumentType {
@@ -20,6 +19,8 @@ interface DocumentType {
   url: string;
   userID: string;
   created_at: string;
+  expiration_date?: string;
+  reminder_at?: string;
 }
 
 interface UserType {
@@ -35,19 +36,20 @@ export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
   const [documents, setDocuments] = useState<DocumentType[]>([]);
+  const [filteredDocs, setFilteredDocs] = useState<DocumentType[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredDocs, setFilteredDocs] = useState<DocumentType[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  const [expirationDate, setExpirationDate] = useState("");
+  const [reminderAt, setReminderAt] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [expirationDate, setExpirationDate] = useState("");
-  const [reminderAt, setReminderAt] = useState("");
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // ✅ Get logged-in user
   useEffect(() => {
@@ -62,8 +64,7 @@ export default function DashboardPage() {
       };
       setUser(userData);
 
-      if (userData.user_metadata?.avatar)
-        setAvatarPreview(userData.user_metadata.avatar);
+      if (userData.user_metadata?.avatar) setAvatarPreview(userData.user_metadata.avatar);
     };
     fetchUser();
   }, [router]);
@@ -78,10 +79,8 @@ export default function DashboardPage() {
       .eq("userID", user.id)
       .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error(error);
-      toast.error("Failed to fetch documents");
-    } else {
+    if (error) toast.error("Failed to fetch documents");
+    else {
       setDocuments(data || []);
       setFilteredDocs(data || []);
     }
@@ -99,12 +98,7 @@ export default function DashboardPage() {
       .channel(`documents-${user.id}`)
       .on(
         "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "documents",
-          filter: `userID=eq.${user.id}`,
-        },
+        { event: "*", schema: "public", table: "documents", filter: `userID=eq.${user.id}` },
         (payload) => {
           if (payload.eventType === "INSERT") {
             setDocuments((prev) => [payload.new as DocumentType, ...prev]);
@@ -141,11 +135,11 @@ export default function DashboardPage() {
       if (!isModalOpen) return;
       if (e.key === "Escape") setIsModalOpen(false);
       if (e.key === "ArrowLeft") setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev));
-      if (e.key === "ArrowRight") setCurrentIndex((prev) => (prev < documents.length - 1 ? prev + 1 : prev));
+      if (e.key === "ArrowRight") setCurrentIndex((prev) => (prev < filteredDocs.length - 1 ? prev + 1 : prev));
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [isModalOpen, documents.length]);
+  }, [isModalOpen, filteredDocs.length]);
 
   // ✅ Upload file
   const handleUpload = async () => {
@@ -153,7 +147,6 @@ export default function DashboardPage() {
     setUploading(true);
 
     const filePath = `user-${user.id}/${file.name}`;
-
     const { error: uploadError } = await supabase.storage
       .from("documents")
       .upload(filePath, file, { upsert: true });
@@ -172,7 +165,6 @@ export default function DashboardPage() {
       return;
     }
 
-    // New fields: expiration_date and reminder_at
     const { error: dbError } = await supabase.from("documents").insert([
       {
         name: file.name,
@@ -192,31 +184,23 @@ export default function DashboardPage() {
     setUploading(false);
   };
 
-  // ✅ Helpers
-  const isImage = (name: string) =>
-    /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(name);
+  const isImage = (name: string) => /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(name);
 
-  // Helper for date diff
-  function daysUntil(dateStr: string) {
+  const daysUntil = (dateStr?: string) => {
     if (!dateStr) return null;
     const now = new Date();
     const d = new Date(dateStr);
     return Math.ceil((d.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-  }
+  };
 
   const handleDelete = async (doc: DocumentType) => {
     if (!window.confirm(`Delete "${doc.name}"?`)) return;
 
     try {
-      const { error: storageError } = await supabase.storage
-        .from("documents")
-        .remove([doc.path]);
+      const { error: storageError } = await supabase.storage.from("documents").remove([doc.path]);
       if (storageError) throw new Error(storageError.message);
 
-      const { error: dbError } = await supabase
-        .from("documents")
-        .delete()
-        .eq("id", doc.id);
+      const { error: dbError } = await supabase.from("documents").delete().eq("id", doc.id);
       if (dbError) throw new Error(dbError.message);
 
       setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
@@ -243,11 +227,29 @@ export default function DashboardPage() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Toaster position="top-right" />
 
-      <div className="flex flex-1">
-        {/* Sidebar */}
-        <Sidebar />
+      {/* Hamburger for mobile */}
+      <button
+        className="sm:hidden p-2 fixed top-4 left-4 z-50 bg-indigo-600 text-white rounded-xl shadow"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        ☰
+      </button>
 
-        {/* Main Content */}
+      <div className="flex flex-1 relative">
+        {/* Sidebar */}
+        <div
+          className={`hidden inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${
+            isSidebarOpen ? "block" : "hidden"
+          } sm:hidden`}
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+        {/* <Sidebar
+          className={`fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50 transition-transform ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } sm:translate-x-0 sm:relative sm:block`}
+        /> */}
+
+        {/* Main content */}
         <main className="flex-1 p-6 sm:p-8 lg:p-10">
           {/* Header */}
           <Reveal animation="fade-up">
@@ -255,43 +257,37 @@ export default function DashboardPage() {
               <h1 className="text-3xl sm:text-4xl font-extrabold">
                 Welcome back, {user?.email || "User"}! 👋
               </h1>
-              <p className="mt-2 text-gray-200 text-lg">
-                Manage your documents efficiently.
-              </p>
+              <p className="mt-2 text-gray-200 text-lg">Manage your documents efficiently.</p>
             </div>
           </Reveal>
 
           {/* Upload */}
           <Reveal animation="fade-up" delay={60}>
-            <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center bg-white rounded-3xl">
+            <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center flex-wrap bg-white rounded-3xl">
               <input
                 type="file"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
                 className="border p-3 rounded-xl w-full sm:w-auto"
                 disabled={uploading}
               />
-              {/* New: Expiration date input */}
               <input
                 type="date"
                 value={expirationDate}
-                onChange={e => setExpirationDate(e.target.value)}
+                onChange={(e) => setExpirationDate(e.target.value)}
                 className="border p-3 rounded-xl w-full sm:w-auto"
                 disabled={uploading}
-                placeholder="Expiration Date"
                 style={{ minWidth: 180 }}
               />
-              {/* New: Reminder date/time input */}
               <input
                 type="datetime-local"
                 value={reminderAt}
-                onChange={e => setReminderAt(e.target.value)}
+                onChange={(e) => setReminderAt(e.target.value)}
                 className="border p-3 rounded-xl w-full sm:w-auto"
                 disabled={uploading}
-                placeholder="Remind Me At"
                 style={{ minWidth: 220 }}
               />
               <Button
-                className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 transition"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 w-full sm:w-auto"
                 onClick={handleUpload}
                 disabled={!file || uploading}
               >
@@ -310,84 +306,78 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* Documents Grid */}
+          {/* Document Grid */}
           {filteredDocs.length === 0 ? (
             <p className="text-gray-500 text-center">No documents uploaded yet.</p>
           ) : (
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredDocs.map((doc, index) => {
-                const expiresIn = daysUntil((doc as any).expiration_date);
-                const reminderIn = daysUntil((doc as any).reminder_at);
+                const expiresIn = daysUntil(doc.expiration_date);
+                const reminderIn = daysUntil(doc.reminder_at);
                 return (
                   <Reveal key={doc.id} animation="fade-up" delay={index * 40}>
-                  <div
-                    className="border border-gray-200 rounded-3xl p-4 bg-white shadow hover:shadow-2xl transition flex flex-col"
-                  >
-                    {isImage(doc.name) ? (
-                      <div
-                        className="cursor-pointer w-full h-40 relative rounded-2xl overflow-hidden"
-                        onClick={() => openModal(index)}
-                      >
-                        <Image
-                          src={doc.url}
-                          alt={doc.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full h-40 bg-gray-100 flex items-center justify-center rounded-2xl text-gray-400 text-4xl">
-                        📄
-                      </div>
-                    )}
-                    <p className="mt-3 text-sm font-semibold truncate">{doc.name}</p>
-                    {/* DATES DISPLAY */}
-                    {((doc as any).expiration_date || (doc as any).reminder_at) && (
-                      <div className="text-xs text-gray-500 flex flex-col gap-1 mt-1">
-                        {(doc as any).expiration_date && (
-                          <span>Expires: {new Date((doc as any).expiration_date).toLocaleDateString()}</span>
+                    <div className="border border-gray-200 rounded-3xl p-4 bg-white shadow hover:shadow-2xl transition flex flex-col">
+                      {isImage(doc.name) ? (
+                        <div
+                          className="cursor-pointer w-full h-40 relative rounded-2xl overflow-hidden"
+                          onClick={() => openModal(index)}
+                        >
+                          <Image src={doc.url} alt={doc.name} fill className="object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-full h-40 bg-gray-100 flex items-center justify-center rounded-2xl text-gray-400 text-4xl">
+                          📄
+                        </div>
+                      )}
+                      <p className="mt-3 text-sm font-semibold truncate">{doc.name}</p>
+
+                      {/* Dates */}
+                      {(doc.expiration_date || doc.reminder_at) && (
+                        <div className="text-xs text-gray-500 flex flex-col gap-1 mt-1">
+                          {doc.expiration_date && (
+                            <span>Expires: {new Date(doc.expiration_date).toLocaleDateString()}</span>
+                          )}
+                          {doc.reminder_at && (
+                            <span>Reminder: {new Date(doc.reminder_at).toLocaleString()}</span>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Badges */}
+                      <div className="flex gap-2 mt-2 mb-1 text-xs flex-wrap">
+                        {doc.expiration_date && expiresIn !== null && expiresIn <= 7 && expiresIn >= 0 && (
+                          <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">Expiring in {expiresIn}d</span>
                         )}
-                        {(doc as any).reminder_at && (
-                          <span>Reminder: {new Date((doc as any).reminder_at).toLocaleString()}</span>
+                        {doc.reminder_at && reminderIn !== null && reminderIn <= 1 && reminderIn >= 0 && (
+                          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Reminder Due Soon</span>
+                        )}
+                        {doc.expiration_date && expiresIn !== null && expiresIn < 0 && (
+                          <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Expired</span>
+                        )}
+                        {((!doc.expiration_date || (expiresIn !== null && expiresIn > 7)) &&
+                          !(doc.expiration_date && expiresIn !== null && (expiresIn <= 7 || expiresIn < 0))) && (
+                          <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">Active</span>
                         )}
                       </div>
-                    )}
-                    {/* BADGES */}
-                    <div className="flex gap-2 mt-2 mb-1 text-xs">
-                      {(doc as any).expiration_date && expiresIn !== null && expiresIn <= 7 && expiresIn >= 0 && (
-                        <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">Expiring in {expiresIn}d</span>
-                      )}
-                      {(doc as any).reminder_at && reminderIn !== null && reminderIn <= 1 && reminderIn >= 0 && (
-                        <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Reminder Due Soon</span>
-                      )}
-                      {(doc as any).expiration_date && expiresIn !== null && expiresIn < 0 && (
-                        <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Expired</span>
-                      )}
-                      {/* Active status when not expiring soon/expired, or no expiration set */}
-                      {(
-                        (!((doc as any).expiration_date) || (expiresIn !== null && expiresIn > 7)) &&
-                        !((doc as any).expiration_date && expiresIn !== null && (expiresIn <= 7 || expiresIn < 0))
-                      ) && (
-                        <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">Active</span>
-                      )}
+
+                      {/* Action buttons */}
+                      <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                        <Button
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white rounded-xl flex-1"
+                          onClick={() => handleShare(doc)}
+                        >
+                          {copiedKey === doc.id ? "Copied!" : "Share"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-red-600 hover:bg-red-700 text-white rounded-xl flex-1"
+                          onClick={() => handleDelete(doc)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex justify-between mt-4">
-                      <Button
-                        size="sm"
-                        className="bg-green-600 hover:bg-green-700 text-white rounded-xl px-3 py-1 transition"
-                        onClick={() => handleShare(doc)}
-                      >
-                        {copiedKey === doc.id ? "Copied!" : "Share"}
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="bg-red-600 hover:bg-red-700 text-white rounded-xl px-3 py-1 transition"
-                        onClick={() => handleDelete(doc)}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
                   </Reveal>
                 );
               })}
@@ -404,7 +394,7 @@ export default function DashboardPage() {
                 ✕
               </button>
               <button
-                className="absolute left-6 text-white text-4xl"
+                className="absolute left-2 sm:left-6 text-white text-4xl"
                 onClick={() => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev))}
                 disabled={currentIndex === 0}
               >
@@ -415,10 +405,10 @@ export default function DashboardPage() {
                 alt={filteredDocs[currentIndex].name}
                 width={900}
                 height={900}
-                className="max-h-[90vh] object-contain rounded-xl"
+                className="max-h-[90vh] max-w-full object-contain rounded-xl"
               />
               <button
-                className="absolute right-6 text-white text-4xl"
+                className="absolute right-2 sm:right-6 text-white text-4xl"
                 onClick={() => setCurrentIndex((prev) => (prev < filteredDocs.length - 1 ? prev + 1 : prev))}
                 disabled={currentIndex === filteredDocs.length - 1}
               >
@@ -429,7 +419,7 @@ export default function DashboardPage() {
         </main>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

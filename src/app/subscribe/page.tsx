@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient"; // Make sure you have this
+import { supabase } from "@/lib/supabaseClient";
 
 export default function SubscribePage() {
   const [loading, setLoading] = useState(false);
@@ -23,16 +23,11 @@ export default function SubscribePage() {
       });
 
       const data = await res.json();
-      console.log("Stripe response:", data);
-
-      if (data.url) {
-        window.location.href = data.url;
-      } else if (data.error) {
-        alert(data.error);
-      }
+      if (data.url) window.location.href = data.url;
+      else if (data.error) alert(data.error);
     } catch (err) {
       console.error(err);
-      alert("Something went wrong!");
+      alert("Something went wrong with Stripe!");
     } finally {
       setLoading(false);
     }
@@ -88,25 +83,28 @@ export default function SubscribePage() {
     setLoading(true);
 
     if (plan.paid) {
-      // Paid plan goes through Stripe checkout
       await handleCheckout(plan.key!);
     } else {
-      // Free plan: update user in Supabase and redirect to dashboard
+      // Free plan: update user plan safely
       try {
+        if (!user.id) throw new Error("User ID not found");
+
         const { error } = await supabase
-          .from("users") // your table name
+          .from("users") // make sure table exists
           .update({ plan: "free" })
           .eq("id", user.id);
 
         if (error) {
-          console.error("Supabase update error:", error.message);
-          alert("Could not update plan. Try again.");
+          console.error("Supabase update error:", error);
+          alert(
+            "Could not update plan. Make sure the 'plan' column exists in Supabase."
+          );
         } else {
           router.push("/dashboard");
         }
       } catch (err) {
-        console.error(err);
-        alert("Something went wrong!");
+        console.error("Unexpected error:", err);
+        alert("Something went wrong while updating your plan.");
       }
     }
 
