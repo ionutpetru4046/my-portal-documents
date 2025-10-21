@@ -41,6 +41,7 @@ export default function SubscribePage() {
         "Upload up to 5 files",
         "Basic document viewer",
         "Community support",
+        "Up to 3 Days Maintanance"
       ],
       button: "border border-gray-400 text-gray-800 hover:bg-gray-100",
       paid: false,
