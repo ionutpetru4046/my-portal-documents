@@ -59,7 +59,7 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="text-4xl font-bold text-gray-800 text-center mb-16"
         >
-          Why Choose Digital Documents?
+          Why Choose Digital <br/> Documents Hub?
         </motion.h2>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {[
