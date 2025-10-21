@@ -132,12 +132,12 @@ export default function ProfilePage() {
             </div>
           </Reveal>
 
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="max-w-7xl grid grid-cols-1 gap-6 md:grid-cols-3">
             {/* User Info */}
             <Reveal animation="fade-up" delay={40}>
-              <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-6 rounded-3xl bg-white">
+              <Card className="shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl bg-white">
                 <CardHeader>
-                  <CardTitle className="text-lg font-semibold mb-4">Profile Info</CardTitle>
+                  <CardTitle className="text-lg font-semibold">Profile Info</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-6">
                   <div className="flex flex-col items-center">
