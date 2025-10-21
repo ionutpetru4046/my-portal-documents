@@ -32,18 +32,16 @@ export default function AdminUsersPage() {
         return;
       }
 
-      // Try to get emails from documents.ownerEmail if it exists
       let docs: any[] | null = null;
       let error: any = null;
       let triedWithEmail = false;
-      {
-        const res = await supabase.from("documents").select("userID, ownerEmail");
-        docs = res.data as any[] | null;
-        error = res.error;
-        triedWithEmail = true;
-      }
+
+      const res = await supabase.from("documents").select("userID, ownerEmail");
+      docs = res.data as any[] | null;
+      error = res.error;
+      triedWithEmail = true;
+
       if (error) {
-        // Fallback without email if column doesn't exist
         const res2 = await supabase.from("documents").select("userID");
         docs = res2.data as any[] | null;
         error = res2.error;
@@ -81,49 +79,66 @@ export default function AdminUsersPage() {
   if (notAdmin) return <div className="p-6">You are not authorized to view this page.</div>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Users - Document Counts</h1>
-      <div className="flex gap-3 mb-3">
+    <div className="p-4 sm:p-6">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4">Users - Document Counts</h1>
+
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-4 items-start sm:items-center">
         <input
           placeholder="Search by User ID or Email"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="border rounded px-3 py-2"
+          className="border rounded px-3 py-2 w-full sm:w-1/3"
         />
-        <select className="border rounded px-3 py-2" value={sortKey} onChange={e => setSortKey(e.target.value as SortKey)}>
+        <select
+          className="border rounded px-3 py-2 w-full sm:w-1/4"
+          value={sortKey}
+          onChange={e => setSortKey(e.target.value as SortKey)}
+        >
           <option value="count">Sort by Count</option>
           <option value="userID">Sort by User ID</option>
           <option value="email">Sort by Email</option>
         </select>
-        <select className="border rounded px-3 py-2" value={sortDir} onChange={e => setSortDir(e.target.value as any)}>
+        <select
+          className="border rounded px-3 py-2 w-full sm:w-1/4"
+          value={sortDir}
+          onChange={e => setSortDir(e.target.value as any)}
+        >
           <option value="desc">Desc</option>
           <option value="asc">Asc</option>
         </select>
       </div>
-      <table className="w-full text-left">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2">User ID</th>
-            <th className="py-2">Email</th>
-            <th className="py-2">Documents</th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map(r => (
-            <tr key={r.userID} className="border-b">
-              <td className="py-2">{r.userID}</td>
-              <td className="py-2">{r.email || "-"}</td>
-              <td className="py-2">{r.count}</td>
-              <td className="py-2">
-                <Link className="text-indigo-600 hover:underline" href={`/admin/expirations?userID=${encodeURIComponent(r.userID)}`}>
-                  View Documents
-                </Link>
-              </td>
+
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[600px] border-collapse">
+          <thead>
+            <tr className="border-b bg-gray-100">
+              <th className="py-2 px-3 text-left">User ID</th>
+              <th className="py-2 px-3 text-left">Email</th>
+              <th className="py-2 px-3 text-left">Documents</th>
+              <th className="py-2 px-3 text-left"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filtered.map(r => (
+              <tr key={r.userID} className="border-b hover:bg-gray-50">
+                <td className="py-2 px-3 break-words">{r.userID}</td>
+                <td className="py-2 px-3 break-words">{r.email || "-"}</td>
+                <td className="py-2 px-3">{r.count}</td>
+                <td className="py-2 px-3">
+                  <Link
+                    className="text-indigo-600 hover:underline"
+                    href={`/admin/expirations?userID=${encodeURIComponent(r.userID)}`}
+                  >
+                    View Documents
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -1,17 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiChevronDown } from "react-icons/fi";
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [adminDropdown, setAdminDropdown] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -49,6 +53,10 @@ export default function Navbar() {
   const userAvatarUrl = user?.user_metadata?.avatar as string | undefined;
   const userEmail = user?.email as string | undefined;
   const initials = userEmail ? userEmail.charAt(0).toUpperCase() : "U";
+  const isAdmin = user?.user_metadata?.role === "admin" || false;
+
+  const navLinkClass = (href: string) =>
+    `hover:underline hover:text-yellow-200 transition ${pathname === href ? "underline font-semibold" : ""}`;
 
   return (
     <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 py-4 flex items-center justify-between">
@@ -69,63 +77,81 @@ export default function Navbar() {
       </div>
 
       {/* Desktop Links */}
-      <div className="hidden md:flex gap-6">
-        <Link href="/about" className="hover:underline hover:text-yellow-200 transition">
-          About Us
-        </Link>
-        <Link href="/contact" className="hover:underline hover:text-yellow-200 transition">
-          Contact
-        </Link>
-        <Link href="/subscribe" className="hover:underline hover:text-yellow-200 transition">
-          Pricing
-        </Link>
+      <div className="hidden md:flex items-center gap-6 relative">
+        <Link href="/about" className={navLinkClass("/about")}>About Us</Link>
+        <Link href="/contact" className={navLinkClass("/contact")}>Contact</Link>
+        <Link href="/subscribe" className={navLinkClass("/subscribe")}>Pricing</Link>
+
+        {isAdmin && (
+          <div className="relative">
+            <button
+              onClick={() => setAdminDropdown(!adminDropdown)}
+              className="flex items-center gap-1 hover:text-yellow-200 transition"
+            >
+              Admin <FiChevronDown />
+            </button>
+            <AnimatePresence>
+              {adminDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute top-10 right-0 w-48 bg-white text-gray-800 rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden z-50"
+                >
+                  <Link
+                    href="/admin/users"
+                    className="block px-4 py-2 text-sm hover:bg-gray-50"
+                    onClick={() => setAdminDropdown(false)}
+                  >
+                    Users
+                  </Link>
+                  <Link
+                    href="/admin/expirations"
+                    className="block px-4 py-2 text-sm hover:bg-gray-50"
+                    onClick={() => setAdminDropdown(false)}
+                  >
+                    Expirations
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
       </div>
 
       {/* Desktop User / CTA */}
       <div className="hidden md:flex items-center gap-3">
         {user ? (
-          <>
-            <div className="relative" ref={menuRef}>
-              <button
-                aria-label="User menu"
-                className="w-9 h-9 rounded-full bg-white/20 border border-white/30 flex items-center justify-center overflow-hidden"
-                onClick={() => setMenuOpen((v) => !v)}
-              >
-                {userAvatarUrl ? (
-                  <img src={userAvatarUrl} alt="avatar" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-sm font-bold">{initials}</span>
-                )}
-              </button>
-              {menuOpen && (
-                <div className="absolute right-0 mt-2 w-44 bg-white text-gray-800 rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden z-50">
-                  <div className="px-4 py-2 text-xs text-gray-500">Signed in as</div>
-                  <div className="px-4 pb-2 text-sm truncate">{userEmail}</div>
-                  <div className="border-t" />
-                  <Link href="/profile" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">
-                    Profile
-                  </Link>
-                  <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">
-                    Dashboard
-                  </Link>
-                  <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                    Logout
-                  </button>
-                </div>
+          <div className="relative" ref={menuRef}>
+            <button
+              aria-label="User menu"
+              className="w-9 h-9 rounded-full bg-white/20 border border-white/30 flex items-center justify-center overflow-hidden"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {userAvatarUrl ? (
+                <img src={userAvatarUrl} alt="avatar" className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-sm font-bold">{initials}</span>
               )}
-            </div>
-          </>
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-44 bg-white text-gray-800 rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden z-50">
+                <div className="px-4 py-2 text-xs text-gray-500">Signed in as</div>
+                <div className="px-4 pb-2 text-sm truncate">{userEmail}</div>
+                <div className="border-t" />
+                <Link href="/profile" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">Profile</Link>
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">Dashboard</Link>
+                <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</button>
+              </div>
+            )}
+          </div>
         ) : (
           <>
             <Link href="/login">
-              <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">
-                Login
-              </Button>
+              <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">Login</Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 font-semibold">
-                Get Started
-              </Button>
+              <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 font-semibold">Get Started</Button>
             </Link>
           </>
         )}
@@ -138,18 +164,35 @@ export default function Navbar() {
           <div className="relative bg-white text-gray-900 w-64 max-w-full h-full p-6 flex flex-col overflow-y-auto shadow-xl">
             <div className="flex items-center justify-between mb-6">
               <span className="text-lg font-extrabold">Menu</span>
-              <button
-                className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center"
-                onClick={() => setMobileOpen(false)}
-                aria-label="Close menu"
-              >
-                ✕
-              </button>
+              <button className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center" onClick={() => setMobileOpen(false)}>✕</button>
             </div>
             <nav className="flex flex-col gap-3">
               <Link href="/about" className="px-3 py-2 rounded hover:bg-gray-50" onClick={() => setMobileOpen(false)}>About</Link>
               <Link href="/contact" className="px-3 py-2 rounded hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Contact</Link>
               <Link href="/subscribe" className="px-3 py-2 rounded hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Pricing</Link>
+              {isAdmin && (
+                <div className="mt-2 border-t border-gray-200">
+                  <button
+                    onClick={() => setAdminDropdown(!adminDropdown)}
+                    className="w-full flex justify-between items-center px-3 py-2 hover:bg-gray-50 rounded"
+                  >
+                    Admin <FiChevronDown />
+                  </button>
+                  <AnimatePresence>
+                    {adminDropdown && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="pl-4 flex flex-col gap-1 mt-1"
+                      >
+                        <Link href="/admin/users" className="px-3 py-2 hover:bg-gray-50 rounded" onClick={() => { setAdminDropdown(false); setMobileOpen(false); }}>Users</Link>
+                        <Link href="/admin/expirations" className="px-3 py-2 hover:bg-gray-50 rounded" onClick={() => { setAdminDropdown(false); setMobileOpen(false); }}>Expirations</Link>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </nav>
             <div className="mt-6 border-t pt-6 flex flex-col gap-3">
               {user ? (

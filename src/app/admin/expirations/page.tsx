@@ -45,13 +45,11 @@ export default function AdminExpirationsPage() {
       const url = new URL(window.location.href);
       const filterUserID = url.searchParams.get("userID");
 
-      // Try select with ownerEmail first
       let res = await (filterUserID
         ? supabase.from("documents").select("id,name,userID,ownerEmail,expiration_date,reminder_at").eq("userID", filterUserID)
         : supabase.from("documents").select("id,name,userID,ownerEmail,expiration_date,reminder_at"));
 
       if (res.error) {
-        // Fallback without ownerEmail if column missing
         res = await (filterUserID
           ? supabase.from("documents").select("id,name,userID,expiration_date,reminder_at").eq("userID", filterUserID)
           : supabase.from("documents").select("id,name,userID,expiration_date,reminder_at"));
@@ -78,46 +76,58 @@ export default function AdminExpirationsPage() {
   if (notAdmin) return <div className="p-6">You are not authorized to view this page.</div>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">All Documents - Expirations</h1>
-      <div className="flex gap-3 mb-3">
+    <div className="p-4 sm:p-6">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4">All Documents - Expirations</h1>
+
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-4 items-start sm:items-center">
         <input
           placeholder="Search by document name, email, or user ID"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="border rounded px-3 py-2"
+          className="border rounded px-3 py-2 w-full sm:w-1/2"
         />
-        <select className="border rounded px-3 py-2" value={sortDir} onChange={e => setSortDir(e.target.value as any)}>
+        <select
+          className="border rounded px-3 py-2 w-full sm:w-1/4"
+          value={sortDir}
+          onChange={e => setSortDir(e.target.value as any)}
+        >
           <option value="asc">Soonest first</option>
           <option value="desc">Farthest first</option>
         </select>
       </div>
-      <table className="w-full text-left">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2">Name</th>
-            <th className="py-2">User ID</th>
-            <th className="py-2">Email</th>
-            <th className="py-2">Expiration</th>
-            <th className="py-2">Reminder</th>
-            <th className="py-2">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map(d => (
-            <tr key={d.id} className="border-b">
-              <td className="py-2">{d.name}</td>
-              <td className="py-2">
-                <Link className="text-indigo-600 hover:underline" href={`/admin/expirations?userID=${encodeURIComponent(d.userID)}`}>{d.userID}</Link>
-              </td>
-              <td className="py-2">{d.ownerEmail || "-"}</td>
-              <td className="py-2">{d.expiration_date ? new Date(d.expiration_date).toLocaleDateString() : "-"}</td>
-              <td className="py-2">{d.reminder_at ? new Date(d.reminder_at).toLocaleString() : "-"}</td>
-              <td className="py-2">{badge(d.expiration_date)}</td>
+
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[700px] border-collapse">
+          <thead>
+            <tr className="border-b bg-gray-100">
+              <th className="py-2 px-3 text-left">Name</th>
+              <th className="py-2 px-3 text-left">User ID</th>
+              <th className="py-2 px-3 text-left">Email</th>
+              <th className="py-2 px-3 text-left">Expiration</th>
+              <th className="py-2 px-3 text-left">Reminder</th>
+              <th className="py-2 px-3 text-left">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filtered.map(d => (
+              <tr key={d.id} className="border-b hover:bg-gray-50">
+                <td className="py-2 px-3 break-words">{d.name}</td>
+                <td className="py-2 px-3 break-words">
+                  <Link className="text-indigo-600 hover:underline" href={`/admin/expirations?userID=${encodeURIComponent(d.userID)}`}>
+                    {d.userID}
+                  </Link>
+                </td>
+                <td className="py-2 px-3 break-words">{d.ownerEmail || "-"}</td>
+                <td className="py-2 px-3">{d.expiration_date ? new Date(d.expiration_date).toLocaleDateString() : "-"}</td>
+                <td className="py-2 px-3">{d.reminder_at ? new Date(d.reminder_at).toLocaleString() : "-"}</td>
+                <td className="py-2 px-3">{badge(d.expiration_date)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
