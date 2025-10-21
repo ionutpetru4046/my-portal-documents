@@ -137,12 +137,13 @@ export default function SubscribePage() {
 
             <button
               onClick={() => {
+                console.log('Button clicked for plan:', plan.name, '| isLoggedIn:', isLoggedIn);
+                if (!isLoggedIn) {
+                  router.push("/signup");
+                  return;
+                }
                 if (plan.paid) {
-                  if (isLoggedIn) {
-                    handleCheckout(plan.key!);
-                  } else {
-                    router.push("/signup");
-                  }
+                  handleCheckout(plan.key!);
                 } else {
                   alert("You selected the free plan!");
                 }

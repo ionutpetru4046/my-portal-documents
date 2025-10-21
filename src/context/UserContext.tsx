@@ -12,48 +12,46 @@ type User = {
 };
 
 type UserContextType = {
-  user: User;
-  setUser: (user: User) => void;
-};
-
-const defaultUser: User = {
-  id: "",
-  name: "John Doe",
-  email: "john@example.com",
-  avatar: "https://i.pravatar.cc/100",
+  user: User | null;
+  setUser: (user: User | null) => void;
 };
 
 const UserContext = createContext<UserContextType>({
-  user: defaultUser,
+  user: null,
   setUser: () => {},
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUserState] = useState<User>(defaultUser);
+  const [user, setUserState] = useState<User | null>(null);
 
   useEffect(() => {
     async function syncUser() {
-      const storedUser = localStorage.getItem("myportal-user");
-      if (storedUser) setUserState(JSON.parse(storedUser));
       // Fetch Supabase user
       const { data } = await supabase.auth.getUser();
       if (data.user) {
         const newUser = {
           id: data.user.id,
           name: data.user.user_metadata?.name || data.user.email || "",
-          email: data.user.email,
+          email: data.user.email || "",
           avatar: data.user.user_metadata?.avatar || "https://i.pravatar.cc/100",
         };
         setUserState(newUser);
         localStorage.setItem("myportal-user", JSON.stringify(newUser));
+      } else {
+        setUserState(null);
+        localStorage.removeItem("myportal-user");
       }
     }
     syncUser();
   }, []);
 
-  const setUser = (newUser: User) => {
+  const setUser = (newUser: User | null) => {
     setUserState(newUser);
-    localStorage.setItem("myportal-user", JSON.stringify(newUser));
+    if (newUser) {
+      localStorage.setItem("myportal-user", JSON.stringify(newUser));
+    } else {
+      localStorage.removeItem("myportal-user");
+    }
   };
 
   return (
