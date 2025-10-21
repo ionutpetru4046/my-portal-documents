@@ -5,8 +5,9 @@ import { UploadedFilesProvider } from "@/context/UploadedFilesContext";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
-import "./globals.css";
 import Footer from "@/components/Footer";
+import "./globals.css";
+import FAQPage from "@/components/Faq";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,10 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SessionProviderWrapper>
           <UserProvider>
             <UploadedFilesProvider>
-              {/* Single Navbar for all pages */}
               <Navbar />
-              {/* Page content */}
               <main className="flex-1">{children}</main>
+              <FAQPage />
               <Footer />
               <Toaster position="top-right" reverseOrder={false} />
             </UploadedFilesProvider>

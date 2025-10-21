@@ -33,9 +33,6 @@ export default function Footer() {
           <h3 className="text-xl font-bold mb-4">FAQ & Support</h3>
           <ul className="space-y-2">
             <li>
-              <Link href="/faq" className="hover:text-gray-200 transition">FAQ</Link>
-            </li>
-            <li>
               <Link href="/help" className="hover:text-gray-200 transition">Help Center</Link>
             </li>
             <li>
