@@ -6,8 +6,9 @@ import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer";
-import "./globals.css";
 import FAQPage from "@/components/Faq";
+import { Analytics } from "@vercel/analytics/react";
+import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <UploadedFilesProvider>
               <Navbar />
               <main className="flex-1">{children}</main>
+              <Analytics />
               <FAQPage />
               <Footer />
               <Toaster position="top-right" reverseOrder={false} />
