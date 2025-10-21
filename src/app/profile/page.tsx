@@ -205,6 +205,78 @@ export default function ProfilePage() {
 
           {/* Stats Cards: Documents, Notifications, Activity */}
           {/* ...keep your existing styling exactly */}
+          {/* Stats */}
+          <div className="col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Documents */}
+              <Reveal animation="fade-up" delay={60}>
+                <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4 border-blue-500">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FiFileText className="w-7 h-7 text-blue-500" />
+                    <CardTitle className="text-md font-semibold">Documents</CardTitle>
+                  </div>
+                  <CardContent className="flex flex-col gap-2">
+                    <input
+                      type="number"
+                      value={docCount}
+                      readOnly
+                      className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
+                    />
+                    <span className="text-xs text-gray-500">Total uploaded docs</span>
+                  </CardContent>
+                </Card>
+              </Reveal>
+
+              {/* Notifications */}
+              <Reveal animation="fade-up" delay={90}>
+                <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4 border-yellow-400">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FiBell className="w-7 h-7 text-yellow-400" />
+                    <CardTitle className="text-md font-semibold">Notifications</CardTitle>
+                  </div>
+                  <CardContent className="flex flex-col gap-2">
+                    <input
+                      type="number"
+                      value={notifCount}
+                      readOnly
+                      className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
+                    />
+                    <span className="text-xs text-gray-500">Reminders & Expirations</span>
+                    {notifList.length > 0 && (
+                      <ul className="text-xs mt-2 space-y-1">
+                        {notifList.map(n => (
+                          <li key={n.id + n.type} className="flex gap-1 items-center">
+                            <span className={n.type === 'expiring' ? 'text-red-600' : n.type === 'expired' ? 'text-gray-600' : 'text-yellow-700'}>
+                              ●
+                            </span>
+                            <span className="font-semibold">{n.name}</span>
+                            <span className="ml-2">({n.info})</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </CardContent>
+                </Card>
+              </Reveal>
+
+              {/* Recent Activity */}
+              <Reveal animation="fade-up" delay={120}>
+                <Card className="shadow-lg hover:shadow-2xl transition duration-300 p-4 rounded-3xl bg-white border-t-4 border-green-500">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FiActivity className="w-7 h-7 text-green-500" />
+                    <CardTitle className="text-md font-semibold">Recent Activity</CardTitle>
+                  </div>
+                  <CardContent className="flex flex-col gap-2">
+                    <input
+                      type="text"
+                      value="(coming soon)"
+                      readOnly
+                      className="w-full border p-2 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-gray-50 text-gray-800 font-bold"
+                    />
+                    <span className="text-xs text-gray-500">Last event (feature coming)</span>
+                  </CardContent>
+                </Card>
+              </Reveal>
+            </div>
         </div>
       </main>
     </div>
