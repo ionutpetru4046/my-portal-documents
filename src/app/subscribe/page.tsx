@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient"; // Make sure you have this
 
 export default function SubscribePage() {
   const [loading, setLoading] = useState(false);
@@ -78,18 +79,38 @@ export default function SubscribePage() {
     },
   ];
 
-  const handlePlanClick = (plan: typeof plans[number]) => {
+  const handlePlanClick = async (plan: typeof plans[number]) => {
     if (!isLoggedIn) {
       router.push("/signup");
       return;
     }
 
+    setLoading(true);
+
     if (plan.paid) {
-      handleCheckout(plan.key!);
+      // Paid plan goes through Stripe checkout
+      await handleCheckout(plan.key!);
     } else {
-      // Redirect free plan users directly to dashboard
-      router.push("/dashboard");
+      // Free plan: update user in Supabase and redirect to dashboard
+      try {
+        const { error } = await supabase
+          .from("users") // your table name
+          .update({ plan: "free" })
+          .eq("id", user.id);
+
+        if (error) {
+          console.error("Supabase update error:", error.message);
+          alert("Could not update plan. Try again.");
+        } else {
+          router.push("/dashboard");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong!");
+      }
     }
+
+    setLoading(false);
   };
 
   return (
