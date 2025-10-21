@@ -1,64 +1,64 @@
-// src/context/UserContext.tsx
+// context/UserContext.tsx
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
-type User = {
+interface User {
   id: string;
   name: string;
   email: string;
-  avatar: string;
-};
+  avatar?: string;
+  role?: string;
+}
 
-type UserContextType = {
+interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => void;
-};
+}
 
-const UserContext = createContext<UserContextType>({
+const UserContext = createContext<UserContextProps>({
   user: null,
   setUser: () => {},
 });
 
-export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUserState] = useState<User | null>(null);
+export const useUser = () => useContext(UserContext);
+
+export function UserProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    async function syncUser() {
-      // Fetch Supabase user
+    const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        const newUser = {
+        setUser({
           id: data.user.id,
-          name: data.user.user_metadata?.name || data.user.email || "",
           email: data.user.email || "",
-          avatar: data.user.user_metadata?.avatar || "https://i.pravatar.cc/100",
-        };
-        setUserState(newUser);
-        localStorage.setItem("myportal-user", JSON.stringify(newUser));
-      } else {
-        setUserState(null);
-        localStorage.removeItem("myportal-user");
+          name: data.user.user_metadata?.name || data.user.email || "User",
+          avatar: data.user.user_metadata?.avatar || "",
+          role: data.user.user_metadata?.role || "user",
+        });
       }
-    }
-    syncUser();
+    };
+
+    fetchUser();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || "",
+          name: session.user.user_metadata?.name || session.user.email || "User",
+          avatar: session.user.user_metadata?.avatar || "",
+          role: session.user.user_metadata?.role || "user",
+        });
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  const setUser = (newUser: User | null) => {
-    setUserState(newUser);
-    if (newUser) {
-      localStorage.setItem("myportal-user", JSON.stringify(newUser));
-    } else {
-      localStorage.removeItem("myportal-user");
-    }
-  };
-
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-export const useUser = () => useContext(UserContext);
+  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
+}

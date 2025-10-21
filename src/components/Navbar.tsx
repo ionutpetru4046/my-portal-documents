@@ -7,9 +7,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown } from "react-icons/fi";
+import { useUser } from "@/context/UserContext";
 
 export default function Navbar() {
-  const [user, setUser] = useState<any>(null);
+  const { user, setUser } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [adminDropdown, setAdminDropdown] = useState(false);
@@ -17,23 +18,44 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Fetch fresh user data on mount to get avatar & name
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
-      setUser(data.user);
+      if (data.user) {
+        const u = {
+          id: data.user.id,
+          email: data.user.email || "",
+          name: data.user.user_metadata?.name || data.user.email || "User",
+          avatar: data.user.user_metadata?.avatar || "",
+          role: data.user.user_metadata?.role || "user",
+        };
+        setUser(u);
+      }
     };
-
     fetchUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
+      if (session?.user) {
+        const u = {
+          id: session.user.id,
+          email: session.user.email || "",
+          name: session.user.user_metadata?.name || session.user.email || "User",
+          avatar: session.user.user_metadata?.avatar || "",
+          role: session.user.user_metadata?.role || "user",
+        };
+        setUser(u);
+      } else {
+        setUser(null);
+      }
     });
 
     return () => {
       listener.subscription.unsubscribe();
     };
-  }, [router]);
+  }, [setUser]);
 
+  // Close menu on outside click
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -50,13 +72,10 @@ export default function Navbar() {
     router.push("/login");
   };
 
-  const userAvatarUrl = user?.user_metadata?.avatar as string | undefined;
-  const userEmail = user?.email as string | undefined;
-  const initials = userEmail ? userEmail.charAt(0).toUpperCase() : "U";
-  const isAdmin = user?.user_metadata?.role === "admin" || false;
-
   const navLinkClass = (href: string) =>
     `hover:underline hover:text-yellow-200 transition ${pathname === href ? "underline font-semibold" : ""}`;
+
+  const isAdmin = user?.role === "admin";
 
   return (
     <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 py-4 flex items-center justify-between">
@@ -128,16 +147,16 @@ export default function Navbar() {
               className="w-9 h-9 rounded-full bg-white/20 border border-white/30 flex items-center justify-center overflow-hidden"
               onClick={() => setMenuOpen((v) => !v)}
             >
-              {userAvatarUrl ? (
-                <img src={userAvatarUrl} alt="avatar" className="w-full h-full object-cover" />
+              {user.avatar ? (
+                <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-sm font-bold">{initials}</span>
+                <span className="text-sm font-bold">{user.name?.charAt(0).toUpperCase() || "U"}</span>
               )}
             </button>
             {menuOpen && (
               <div className="absolute right-0 mt-2 w-44 bg-white text-gray-800 rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden z-50">
                 <div className="px-4 py-2 text-xs text-gray-500">Signed in as</div>
-                <div className="px-4 pb-2 text-sm truncate">{userEmail}</div>
+                <div className="px-4 pb-2 text-sm truncate">{user.email}</div>
                 <div className="border-t" />
                 <Link href="/profile" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">Profile</Link>
                 <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">Dashboard</Link>
