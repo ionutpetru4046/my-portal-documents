@@ -10,7 +10,7 @@ export default function SubscribePage() {
   const { user } = useUser();
   const router = useRouter();
 
-  const isLoggedIn = Boolean(user?.id && user?.email && user?.id !== "");
+  const isLoggedIn = Boolean(user);
 
   const handleCheckout = async (plan: string) => {
     setLoading(true);
@@ -78,6 +78,20 @@ export default function SubscribePage() {
     },
   ];
 
+  const handlePlanClick = (plan: typeof plans[number]) => {
+    if (!isLoggedIn) {
+      router.push("/signup");
+      return;
+    }
+
+    if (plan.paid) {
+      handleCheckout(plan.key!);
+    } else {
+      // Redirect free plan users directly to dashboard
+      router.push("/dashboard");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col items-center justify-center px-4 py-12">
       <motion.div
@@ -136,18 +150,7 @@ export default function SubscribePage() {
             </ul>
 
             <button
-              onClick={() => {
-                console.log('Button clicked for plan:', plan.name, '| isLoggedIn:', isLoggedIn);
-                if (!isLoggedIn) {
-                  router.push("/signup");
-                  return;
-                }
-                if (plan.paid) {
-                  handleCheckout(plan.key!);
-                } else {
-                  alert("You selected the free plan!");
-                }
-              }}
+              onClick={() => handlePlanClick(plan)}
               disabled={loading}
               className={`mt-auto py-3 rounded-xl font-medium transition ${plan.button}`}
             >
