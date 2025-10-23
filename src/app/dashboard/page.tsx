@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
 import Reveal from "@/components/Reveal";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface DocumentType {
   id: string;
@@ -246,38 +247,77 @@ export default function DashboardPage() {
 
           {/* Upload */}
           <Reveal animation="fade-up" delay={60}>
-            <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center flex-wrap bg-white rounded-3xl">
-              <input
-                type="file"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="border p-3 rounded-xl w-full sm:w-auto"
-                disabled={uploading}
-              />
-              <input
-                type="date"
-                value={expirationDate}
-                onChange={(e) => setExpirationDate(e.target.value)}
-                className="border p-3 rounded-xl w-full sm:w-auto"
-                disabled={uploading}
-                style={{ minWidth: 180 }}
-              />
-              <input
-                type="datetime-local"
-                value={reminderAt}
-                onChange={(e) => setReminderAt(e.target.value)}
-                className="border p-3 rounded-xl w-full sm:w-auto"
-                disabled={uploading}
-                style={{ minWidth: 220 }}
-              />
-              <Button
-                className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 w-full sm:w-auto"
-                onClick={handleUpload}
-                disabled={!file || uploading}
-              >
-                {uploading ? "Uploading..." : "Upload"}
-              </Button>
-            </Card>
-          </Reveal>
+  <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col gap-4 bg-white rounded-3xl">
+    {/* ✅ Dynamic Info Section with Animation */}
+    <AnimatePresence>
+      {(file || expirationDate || reminderAt) && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.4 }}
+          className="text-center sm:text-left mb-2"
+        >
+          {file && (
+            <p className="text-gray-700 font-medium">
+              📄 Selected file:{" "}
+              <span className="font-semibold text-indigo-600">{file.name}</span>
+            </p>
+          )}
+          {expirationDate && (
+            <p className="text-gray-700">
+              ⏳ Expiration date selected:{" "}
+              <span className="font-semibold text-purple-600">
+                {new Date(expirationDate).toLocaleDateString()}
+              </span>
+            </p>
+          )}
+          {reminderAt && (
+            <p className="text-gray-700">
+              🔔 Reminder set for:{" "}
+              <span className="font-semibold text-blue-600">
+                {new Date(reminderAt).toLocaleString()}
+              </span>
+            </p>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    {/* Upload Inputs */}
+    <div className="flex flex-col sm:flex-row gap-4 items-center flex-wrap justify-center sm:justify-start">
+      <input
+        type="file"
+        onChange={(e) => setFile(e.target.files?.[0] || null)}
+        className="border p-3 rounded-xl w-full sm:w-auto"
+        disabled={uploading}
+      />
+      <input
+        type="date"
+        value={expirationDate}
+        onChange={(e) => setExpirationDate(e.target.value)}
+        className="border p-3 rounded-xl w-full sm:w-auto"
+        disabled={uploading}
+        style={{ minWidth: 180 }}
+      />
+      <input
+        type="datetime-local"
+        value={reminderAt}
+        onChange={(e) => setReminderAt(e.target.value)}
+        className="border p-3 rounded-xl w-full sm:w-auto"
+        disabled={uploading}
+        style={{ minWidth: 220 }}
+      />
+      <Button
+        className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 w-full sm:w-auto"
+        onClick={handleUpload}
+        disabled={!file || uploading}
+      >
+        {uploading ? "Uploading..." : "Upload"}
+      </Button>
+    </div>
+  </Card>
+</Reveal>
 
           {/* Search */}
           <div className="mb-6">
@@ -398,11 +438,9 @@ export default function DashboardPage() {
                 ›
               </button>
             </div>
-          )}
+          )}  
         </main>
       </div>
-
-      {/* <Footer /> */}
     </div>
   );
 }
