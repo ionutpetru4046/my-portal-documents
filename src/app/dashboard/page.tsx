@@ -48,8 +48,6 @@ export default function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   // ✅ Get logged-in user
   useEffect(() => {
     const fetchUser = async () => {
@@ -119,7 +117,9 @@ export default function DashboardPage() {
       )
       .subscribe();
 
-    return () => supabase.removeChannel(channel);
+    return () => {
+      void supabase.removeChannel(channel);
+    };
   }, [user]);
 
   // ✅ Search filter
@@ -242,18 +242,11 @@ export default function DashboardPage() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Toaster position="top-right" />
       <div className="flex flex-1 relative">
-        {/* Sidebar */}
-        <div
-          className={`hidden inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${
-            isSidebarOpen ? "block" : "hidden"
-          } sm:hidden`}
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
         {/* Main content */}
         <main className="flex-1 p-6 sm:p-8 lg:p-10">
           {/* Header */}
           <Reveal animation="fade-up">
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-3xl mb-8 shadow-xl">
+            <div className="bg-linear-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-3xl mb-8 shadow-xl">
               <h1 className="text-3xl sm:text-4xl font-extrabold">
                 Welcome back, {user?.email || "User"}! 👋
               </h1>
@@ -372,6 +365,8 @@ export default function DashboardPage() {
                             alt={doc.name}
                             fill
                             className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            priority
                           />
                         </div>
                       ) : (

@@ -138,7 +138,7 @@ export default function ProfilePage() {
       <main className="flex-1 p-6">
         <Reveal animation="fade-up">
           <div className="bg-linear-to-r from-indigo-600 to-purple-600 text-white p-8 rounded-b-3xl mb-10 shadow-xl text-center">
-            <h1 className="text-3xl sm:text-4xl font-extrabold">Welcome, {user.name || user.email} 👋</h1>
+            <h1 className="text-3xl sm:text-4xl font-extrabold">Welcome back, {user.name || user.email} 👋</h1>
             <p className="mt-2 text-gray-200 text-lg">Manage your profile and stats interactively.</p>
           </div>
         </Reveal>
