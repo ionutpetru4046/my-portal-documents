@@ -309,11 +309,11 @@ export default function Navbar() {
                 {user ? (
                   <>
                     <Link
-                      href="/upload"
+                      href="/dashboard"
                       className="px-3 py-2 rounded bg-indigo-600 text-white text-center hover:bg-indigo-700"
                       onClick={() => setMobileOpen(false)}
                     >
-                      Upload
+                      Dashboard
                     </Link>
                     <Link
                       href="/profile"
