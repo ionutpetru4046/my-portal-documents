@@ -167,10 +167,10 @@ export default function Navbar() {
         ) : (
           <>
             <Link href="/login">
-              <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">Login</Button>
+              <Button className="bg-white text-blue-700 cursor-pointer hover:bg-gray-100 font-semibold">Login</Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 font-semibold">Get Started</Button>
+              <Button className="bg-yellow-400 text-blue-900 cursor-pointer hover:bg-yellow-300 font-semibold">Get Started</Button>
             </Link>
           </>
         )}
