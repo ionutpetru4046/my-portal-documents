@@ -18,7 +18,6 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Fetch fresh user data on mount to get avatar & name
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
@@ -55,7 +54,6 @@ export default function Navbar() {
     };
   }, [setUser]);
 
-  // Close menu on outside click
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -73,23 +71,27 @@ export default function Navbar() {
   };
 
   const navLinkClass = (href: string) =>
-    `hover:underline hover:text-yellow-200 transition ${pathname === href ? "underline font-semibold" : ""}`;
+    `hover:underline hover:text-yellow-200 transition ${
+      pathname === href ? "underline font-semibold" : ""
+    }`;
 
   const isAdmin = user?.role === "admin";
 
   return (
-    <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 py-4 flex items-center justify-between">
+    <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 py-4 flex items-center justify-between relative z-50">
       {/* Logo + Hamburger */}
       <div className="flex items-center gap-3">
+        {/* ✅ Hamburger - visible on mobile only */}
         <button
-          className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg bg-white/15 border border-white/25"
+          className="md:hidden inline-flex flex-col justify-center items-center w-10 h-10 rounded-lg border border-white/25 bg-white/15 hover:bg-white/25 transition"
           onClick={() => setMobileOpen(true)}
           aria-label="Open menu"
         >
-          <span className="block w-5 h-0.5 bg-white mb-1" />
-          <span className="block w-5 h-0.5 bg-white mb-1" />
-          <span className="block w-5 h-0.5 bg-white" />
+          <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
+          <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
+          <span className="block w-5 h-0.5 bg-white rounded" />
         </button>
+
         <Link href="/" className="text-xl font-extrabold tracking-wide">
           Digital <span className="text-yellow-200">Document Hub</span>
         </Link>
@@ -97,9 +99,15 @@ export default function Navbar() {
 
       {/* Desktop Links */}
       <div className="hidden md:flex items-center gap-6 relative">
-        <Link href="/about" className={navLinkClass("/about")}>About Us</Link>
-        <Link href="/contact" className={navLinkClass("/contact")}>Contact</Link>
-        <Link href="/subscribe" className={navLinkClass("/subscribe")}>Pricing</Link>
+        <Link href="/about" className={navLinkClass("/about")}>
+          About Us
+        </Link>
+        <Link href="/contact" className={navLinkClass("/contact")}>
+          Contact
+        </Link>
+        <Link href="/subscribe" className={navLinkClass("/subscribe")}>
+          Pricing
+        </Link>
 
         {isAdmin && (
           <div className="relative">
@@ -148,9 +156,15 @@ export default function Navbar() {
               onClick={() => setMenuOpen((v) => !v)}
             >
               {user.avatar ? (
-                <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
+                <img
+                  src={user.avatar}
+                  alt="avatar"
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <span className="text-sm font-bold">{user.name?.charAt(0).toUpperCase() || "U"}</span>
+                <span className="text-sm font-bold">
+                  {user.name?.charAt(0).toUpperCase() || "U"}
+                </span>
               )}
             </button>
             {menuOpen && (
@@ -158,78 +172,189 @@ export default function Navbar() {
                 <div className="px-4 py-2 text-xs text-gray-500">Signed in as</div>
                 <div className="px-4 pb-2 text-sm truncate">{user.email}</div>
                 <div className="border-t" />
-                <Link href="/profile" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">Profile</Link>
-                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2 text-sm hover:bg-gray-50">Dashboard</Link>
-                <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</button>
+                <Link
+                  href="/profile"
+                  onClick={() => setMenuOpen(false)}
+                  className="block px-4 py-2 text-sm hover:bg-gray-50"
+                >
+                  Profile
+                </Link>
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMenuOpen(false)}
+                  className="block px-4 py-2 text-sm hover:bg-gray-50"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                >
+                  Logout
+                </button>
               </div>
             )}
           </div>
         ) : (
           <>
             <Link href="/login">
-              <Button className="bg-white text-blue-700 cursor-pointer hover:bg-gray-100 font-semibold">Login</Button>
+              <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">
+                Login
+              </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-yellow-400 text-blue-900 cursor-pointer hover:bg-yellow-300 font-semibold">Get Started</Button>
+              <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 font-semibold">
+                Get Started
+              </Button>
             </Link>
           </>
         )}
       </div>
 
-      {/* Mobile slide-over */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden flex">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
-          <div className="relative bg-white text-gray-900 w-64 max-w-full h-full p-6 flex flex-col overflow-y-auto shadow-xl">
-            <div className="flex items-center justify-between mb-6">
-              <span className="text-lg font-extrabold">Menu</span>
-              <button className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center" onClick={() => setMobileOpen(false)}>✕</button>
+      {/* ✅ Mobile Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-0 z-50 flex md:hidden"
+          >
+            {/* Overlay */}
+            <div
+              className="absolute inset-0 bg-black/40"
+              onClick={() => setMobileOpen(false)}
+            />
+
+            {/* Drawer */}
+            <div className="relative bg-white text-gray-900 w-64 h-full p-6 flex flex-col overflow-y-auto shadow-xl">
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-lg font-extrabold">Menu</span>
+                <button
+                  className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <nav className="flex flex-col gap-3">
+                <Link
+                  href="/about"
+                  className="px-3 py-2 rounded hover:bg-gray-50"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  About
+                </Link>
+                <Link
+                  href="/contact"
+                  className="px-3 py-2 rounded hover:bg-gray-50"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Contact
+                </Link>
+                <Link
+                  href="/subscribe"
+                  className="px-3 py-2 rounded hover:bg-gray-50"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Pricing
+                </Link>
+
+                {isAdmin && (
+                  <div className="mt-2 border-t border-gray-200">
+                    <button
+                      onClick={() => setAdminDropdown(!adminDropdown)}
+                      className="w-full flex justify-between items-center px-3 py-2 hover:bg-gray-50 rounded"
+                    >
+                      Admin <FiChevronDown />
+                    </button>
+                    <AnimatePresence>
+                      {adminDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="pl-4 flex flex-col gap-1 mt-1"
+                        >
+                          <Link
+                            href="/admin/users"
+                            className="px-3 py-2 hover:bg-gray-50 rounded"
+                            onClick={() => {
+                              setAdminDropdown(false);
+                              setMobileOpen(false);
+                            }}
+                          >
+                            Users
+                          </Link>
+                          <Link
+                            href="/admin/expirations"
+                            className="px-3 py-2 hover:bg-gray-50 rounded"
+                            onClick={() => {
+                              setAdminDropdown(false);
+                              setMobileOpen(false);
+                            }}
+                          >
+                            Expirations
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+              </nav>
+
+              <div className="mt-6 border-t pt-6 flex flex-col gap-3">
+                {user ? (
+                  <>
+                    <Link
+                      href="/upload"
+                      className="px-3 py-2 rounded bg-indigo-600 text-white text-center hover:bg-indigo-700"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Upload
+                    </Link>
+                    <Link
+                      href="/profile"
+                      className="px-3 py-2 rounded hover:bg-gray-50"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      className="px-3 py-2 rounded text-left text-red-600 hover:bg-red-50"
+                      onClick={() => {
+                        setMobileOpen(false);
+                        handleLogout();
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="px-3 py-2 rounded bg-gray-100 text-center hover:bg-gray-200"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="px-3 py-2 rounded bg-yellow-400 text-blue-900 text-center hover:bg-yellow-300"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
-            <nav className="flex flex-col gap-3">
-              <Link href="/about" className="px-3 py-2 rounded hover:bg-gray-50" onClick={() => setMobileOpen(false)}>About</Link>
-              <Link href="/contact" className="px-3 py-2 rounded hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Contact</Link>
-              <Link href="/subscribe" className="px-3 py-2 rounded hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Pricing</Link>
-              {isAdmin && (
-                <div className="mt-2 border-t border-gray-200">
-                  <button
-                    onClick={() => setAdminDropdown(!adminDropdown)}
-                    className="w-full flex justify-between items-center px-3 py-2 hover:bg-gray-50 rounded"
-                  >
-                    Admin <FiChevronDown />
-                  </button>
-                  <AnimatePresence>
-                    {adminDropdown && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="pl-4 flex flex-col gap-1 mt-1"
-                      >
-                        <Link href="/admin/users" className="px-3 py-2 hover:bg-gray-50 rounded" onClick={() => { setAdminDropdown(false); setMobileOpen(false); }}>Users</Link>
-                        <Link href="/admin/expirations" className="px-3 py-2 hover:bg-gray-50 rounded" onClick={() => { setAdminDropdown(false); setMobileOpen(false); }}>Expirations</Link>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-            </nav>
-            <div className="mt-6 border-t pt-6 flex flex-col gap-3">
-              {user ? (
-                <>
-                  <Link href="/upload" className="px-3 py-2 rounded bg-indigo-600 text-white text-center hover:bg-indigo-700" onClick={() => setMobileOpen(false)}>Upload</Link>
-                  <Link href="/profile" className="px-3 py-2 rounded hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Profile</Link>
-                  <button className="px-3 py-2 rounded text-left text-red-600 hover:bg-red-50" onClick={() => { setMobileOpen(false); handleLogout(); }}>Logout</button>
-                </>
-              ) : (
-                <>
-                  <Link href="/login" className="px-3 py-2 rounded bg-gray-100 text-center hover:bg-gray-200" onClick={() => setMobileOpen(false)}>Login</Link>
-                  <Link href="/signup" className="px-3 py-2 rounded bg-yellow-400 text-blue-900 text-center hover:bg-yellow-300" onClick={() => setMobileOpen(false)}>Get Started</Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
