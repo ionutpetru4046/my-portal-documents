@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-blue-600 to-teal-400 text-white pt-12 pb-6">
+    <footer className="bg-linear-to-r from-blue-600 to-teal-400 text-white pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
 
         {/* Quick Links */}
@@ -33,10 +33,10 @@ export default function Footer() {
           <h3 className="text-xl font-bold mb-4">FAQ & Support</h3>
           <ul className="space-y-2">
             <li>
-              <Link href="/help" className="hover:text-gray-200 transition">Help Center</Link>
+              <Link href="/contact" className="hover:text-gray-200 transition">Contact Us</Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-gray-200 transition">Contact Us</Link>
+              <Link href="/help" className="hover:text-gray-200 transition">Help Center</Link>
             </li>
             <li>
               <Link href="/terms" className="hover:text-gray-200 transition">Terms</Link>
