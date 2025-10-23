@@ -63,7 +63,8 @@ export default function DashboardPage() {
       };
       setUser(userData);
 
-      if (userData.user_metadata?.avatar) setAvatarPreview(userData.user_metadata.avatar);
+      if (userData.user_metadata?.avatar)
+        setAvatarPreview(userData.user_metadata.avatar);
     };
     fetchUser();
   }, [router]);
@@ -97,7 +98,12 @@ export default function DashboardPage() {
       .channel(`documents-${user.id}`)
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "documents", filter: `userID=eq.${user.id}` },
+        {
+          event: "*",
+          schema: "public",
+          table: "documents",
+          filter: `userID=eq.${user.id}`,
+        },
         (payload) => {
           if (payload.eventType === "INSERT") {
             setDocuments((prev) => [payload.new as DocumentType, ...prev]);
@@ -133,8 +139,12 @@ export default function DashboardPage() {
     const handleKey = (e: KeyboardEvent) => {
       if (!isModalOpen) return;
       if (e.key === "Escape") setIsModalOpen(false);
-      if (e.key === "ArrowLeft") setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev));
-      if (e.key === "ArrowRight") setCurrentIndex((prev) => (prev < filteredDocs.length - 1 ? prev + 1 : prev));
+      if (e.key === "ArrowLeft")
+        setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev));
+      if (e.key === "ArrowRight")
+        setCurrentIndex((prev) =>
+          prev < filteredDocs.length - 1 ? prev + 1 : prev
+        );
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -183,7 +193,8 @@ export default function DashboardPage() {
     setUploading(false);
   };
 
-  const isImage = (name: string) => /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(name);
+  const isImage = (name: string) =>
+    /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(name);
 
   const daysUntil = (dateStr?: string) => {
     if (!dateStr) return null;
@@ -196,10 +207,15 @@ export default function DashboardPage() {
     if (!window.confirm(`Delete "${doc.name}"?`)) return;
 
     try {
-      const { error: storageError } = await supabase.storage.from("documents").remove([doc.path]);
+      const { error: storageError } = await supabase.storage
+        .from("documents")
+        .remove([doc.path]);
       if (storageError) throw new Error(storageError.message);
 
-      const { error: dbError } = await supabase.from("documents").delete().eq("id", doc.id);
+      const { error: dbError } = await supabase
+        .from("documents")
+        .delete()
+        .eq("id", doc.id);
       if (dbError) throw new Error(dbError.message);
 
       setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
@@ -241,83 +257,87 @@ export default function DashboardPage() {
               <h1 className="text-3xl sm:text-4xl font-extrabold">
                 Welcome back, {user?.email || "User"}! 👋
               </h1>
-              <p className="mt-2 text-gray-200 text-lg">Manage your documents efficiently.</p>
+              <p className="mt-2 text-gray-200 text-lg">
+                Manage your documents efficiently.
+              </p>
             </div>
           </Reveal>
 
           {/* Upload */}
           <Reveal animation="fade-up" delay={60}>
-  <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col gap-4 bg-white rounded-3xl">
-    {/* ✅ Dynamic Info Section with Animation */}
-    <AnimatePresence>
-      {(file || expirationDate || reminderAt) && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.4 }}
-          className="text-center sm:text-left mb-2"
-        >
-          {file && (
-            <p className="text-gray-700 font-medium">
-              📄 Selected file:{" "}
-              <span className="font-semibold text-indigo-600">{file.name}</span>
-            </p>
-          )}
-          {expirationDate && (
-            <p className="text-gray-700">
-              ⏳ Expiration date selected:{" "}
-              <span className="font-semibold text-purple-600">
-                {new Date(expirationDate).toLocaleDateString()}
-              </span>
-            </p>
-          )}
-          {reminderAt && (
-            <p className="text-gray-700">
-              🔔 Reminder set for:{" "}
-              <span className="font-semibold text-blue-600">
-                {new Date(reminderAt).toLocaleString()}
-              </span>
-            </p>
-          )}
-        </motion.div>
-      )}
-    </AnimatePresence>
+            <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col gap-4 bg-white rounded-3xl">
+              {/* ✅ Dynamic Info Section with Animation */}
+              <AnimatePresence>
+                {(file || expirationDate || reminderAt) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.4 }}
+                    className="text-center sm:text-left mb-2"
+                  >
+                    {file && (
+                      <p className="text-gray-700 font-medium">
+                        📄 Selected file:{" "}
+                        <span className="font-semibold text-indigo-600">
+                          {file.name}
+                        </span>
+                      </p>
+                    )}
+                    {expirationDate && (
+                      <p className="text-gray-700">
+                        ⏳ Expiration date selected:{" "}
+                        <span className="font-semibold text-purple-600">
+                          {new Date(expirationDate).toLocaleDateString()}
+                        </span>
+                      </p>
+                    )}
+                    {reminderAt && (
+                      <p className="text-gray-700">
+                        🔔 Reminder set for:{" "}
+                        <span className="font-semibold text-blue-600">
+                          {new Date(reminderAt).toLocaleString()}
+                        </span>
+                      </p>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-    {/* Upload Inputs */}
-    <div className="flex flex-col sm:flex-row gap-4 items-center flex-wrap justify-center sm:justify-start">
-      <input
-        type="file"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-        className="border p-3 rounded-xl w-full sm:w-auto"
-        disabled={uploading}
-      />
-      <input
-        type="date"
-        value={expirationDate}
-        onChange={(e) => setExpirationDate(e.target.value)}
-        className="border p-3 rounded-xl w-full sm:w-auto"
-        disabled={uploading}
-        style={{ minWidth: 180 }}
-      />
-      <input
-        type="datetime-local"
-        value={reminderAt}
-        onChange={(e) => setReminderAt(e.target.value)}
-        className="border p-3 rounded-xl w-full sm:w-auto"
-        disabled={uploading}
-        style={{ minWidth: 220 }}
-      />
-      <Button
-        className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 w-full sm:w-auto"
-        onClick={handleUpload}
-        disabled={!file || uploading}
-      >
-        {uploading ? "Uploading..." : "Upload"}
-      </Button>
-    </div>
-  </Card>
-</Reveal>
+              {/* Upload Inputs */}
+              <div className="flex flex-col sm:flex-row gap-4 items-center flex-wrap justify-center sm:justify-start">
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  className="border p-3 rounded-xl w-full sm:w-auto"
+                  disabled={uploading}
+                />
+                <input
+                  type="date"
+                  value={expirationDate}
+                  onChange={(e) => setExpirationDate(e.target.value)}
+                  className="border p-3 rounded-xl w-full sm:w-auto"
+                  disabled={uploading}
+                  style={{ minWidth: 180 }}
+                />
+                <input
+                  type="datetime-local"
+                  value={reminderAt}
+                  onChange={(e) => setReminderAt(e.target.value)}
+                  className="border p-3 rounded-xl w-full sm:w-auto"
+                  disabled={uploading}
+                  style={{ minWidth: 220 }}
+                />
+                <Button
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 w-full sm:w-auto"
+                  onClick={handleUpload}
+                  disabled={!file || uploading}
+                >
+                  {uploading ? "Uploading..." : "Upload"}
+                </Button>
+              </div>
+            </Card>
+          </Reveal>
 
           {/* Search */}
           <div className="mb-6">
@@ -331,7 +351,9 @@ export default function DashboardPage() {
 
           {/* Document Grid */}
           {filteredDocs.length === 0 ? (
-            <p className="text-gray-500 text-center">No documents uploaded yet.</p>
+            <p className="text-gray-500 text-center">
+              No documents uploaded yet.
+            </p>
           ) : (
             <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredDocs.map((doc, index) => {
@@ -345,42 +367,78 @@ export default function DashboardPage() {
                           className="cursor-pointer w-full h-40 relative rounded-2xl overflow-hidden"
                           onClick={() => openModal(index)}
                         >
-                          <Image src={doc.url} alt={doc.name} fill className="object-cover" />
+                          <Image
+                            src={doc.url}
+                            alt={doc.name}
+                            fill
+                            className="object-cover"
+                          />
                         </div>
                       ) : (
                         <div className="w-full h-40 bg-gray-100 flex items-center justify-center rounded-2xl text-gray-400 text-4xl">
                           📄
                         </div>
                       )}
-                      <p className="mt-3 text-sm font-semibold truncate">{doc.name}</p>
+                      <p className="mt-3 text-sm font-semibold truncate">
+                        {doc.name}
+                      </p>
 
                       {/* Dates */}
                       {(doc.expiration_date || doc.reminder_at) && (
                         <div className="text-xs text-gray-500 flex flex-col gap-1 mt-1">
                           {doc.expiration_date && (
-                            <span>Expires: {new Date(doc.expiration_date).toLocaleDateString()}</span>
+                            <span>
+                              Expires:{" "}
+                              {new Date(
+                                doc.expiration_date
+                              ).toLocaleDateString()}
+                            </span>
                           )}
                           {doc.reminder_at && (
-                            <span>Reminder: {new Date(doc.reminder_at).toLocaleString()}</span>
+                            <span>
+                              Reminder:{" "}
+                              {new Date(doc.reminder_at).toLocaleString()}
+                            </span>
                           )}
                         </div>
                       )}
 
                       {/* Badges */}
                       <div className="flex gap-2 mt-2 mb-1 text-xs flex-wrap">
-                        {doc.expiration_date && expiresIn !== null && expiresIn <= 7 && expiresIn >= 0 && (
-                          <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">Expiring in {expiresIn}d</span>
-                        )}
-                        {doc.reminder_at && reminderIn !== null && reminderIn <= 1 && reminderIn >= 0 && (
-                          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Reminder Due Soon</span>
-                        )}
-                        {doc.expiration_date && expiresIn !== null && expiresIn < 0 && (
-                          <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Expired</span>
-                        )}
-                        {((!doc.expiration_date || (expiresIn !== null && expiresIn > 7)) &&
-                          !(doc.expiration_date && expiresIn !== null && (expiresIn <= 7 || expiresIn < 0))) && (
-                          <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">Active</span>
-                        )}
+                        {doc.expiration_date &&
+                          expiresIn !== null &&
+                          expiresIn <= 7 &&
+                          expiresIn >= 0 && (
+                            <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                              Expiring in {expiresIn}d
+                            </span>
+                          )}
+                        {doc.reminder_at &&
+                          reminderIn !== null &&
+                          reminderIn <= 1 &&
+                          reminderIn >= 0 && (
+                            <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                              Reminder Due Soon
+                            </span>
+                          )}
+                        {doc.expiration_date &&
+                          expiresIn !== null &&
+                          expiresIn < 0 && (
+                            <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
+                              Expired
+                            </span>
+                          )}
+                        {(!doc.expiration_date ||
+                          (expiresIn !== null && expiresIn > 7)) &&
+                          !(
+                            doc.expiration_date &&
+                            expiresIn !== null &&
+                            (expiresIn <= 7 || expiresIn < 0)
+                          ) && (
+                            <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                              Active
+                            </span>
+                          )}
                       </div>
 
                       {/* Action buttons */}
@@ -418,7 +476,9 @@ export default function DashboardPage() {
               </button>
               <button
                 className="absolute left-2 sm:left-6 text-white text-4xl"
-                onClick={() => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev))}
+                onClick={() =>
+                  setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev))
+                }
                 disabled={currentIndex === 0}
               >
                 ‹
@@ -432,13 +492,17 @@ export default function DashboardPage() {
               />
               <button
                 className="absolute right-2 sm:right-6 text-white text-4xl"
-                onClick={() => setCurrentIndex((prev) => (prev < filteredDocs.length - 1 ? prev + 1 : prev))}
+                onClick={() =>
+                  setCurrentIndex((prev) =>
+                    prev < filteredDocs.length - 1 ? prev + 1 : prev
+                  )
+                }
                 disabled={currentIndex === filteredDocs.length - 1}
               >
                 ›
               </button>
             </div>
-          )}  
+          )}
         </main>
       </div>
     </div>
