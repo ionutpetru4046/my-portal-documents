@@ -13,7 +13,7 @@ export default function AboutPage() {
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="flex flex-col items-center justify-center text-center py-32 px-6 bg-gradient-to-r from-blue-600 to-teal-400 text-white rounded-b-3xl shadow-lg"
+        className="flex flex-col items-center justify-center text-center py-32 px-6 bg-linear-to-r from-blue-600 to-teal-400 text-white rounded-b-3xl shadow-lg"
       >
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
@@ -101,7 +101,7 @@ export default function AboutPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="py-24 px-6 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-t-3xl shadow-lg text-center"
+        className="py-24 px-6 bg-linear-to-r from-blue-500 to-teal-400 text-white rounded-t-3xl shadow-lg text-center"
       >
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
