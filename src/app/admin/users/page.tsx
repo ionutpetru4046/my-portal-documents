@@ -123,8 +123,8 @@ export default function AdminUsersPage() {
           <tbody>
             {filtered.map(r => (
               <tr key={r.userID} className="border-b hover:bg-gray-50">
-                <td className="py-2 px-3 break-words">{r.userID}</td>
-                <td className="py-2 px-3 break-words">{r.email || "-"}</td>
+                <td className="py-2 px-3 wrap-break-word">{r.userID}</td>
+                <td className="py-2 px-3 wrap-break-word">{r.email || "-"}</td>
                 <td className="py-2 px-3">{r.count}</td>
                 <td className="py-2 px-3">
                   <Link

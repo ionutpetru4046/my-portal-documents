@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-100 flex items-center justify-center px-6 py-12">
+    <main className="min-h-screen bg-linear-to-br from-blue-50 to-teal-100 flex items-center justify-center px-6 py-12">
       <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left: Contact Form */}
         <motion.div
