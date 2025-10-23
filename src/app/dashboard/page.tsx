@@ -8,8 +8,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
-// import Footer from "@/components/Footer";
-// import Sidebar from "@/components/Sidebar";
 import Reveal from "@/components/Reveal";
 
 interface DocumentType {
@@ -226,15 +224,6 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Toaster position="top-right" />
-
-      {/* Hamburger for mobile */}
-      <button
-        className="sm:hidden p-2 fixed top-4 left-4 z-50 bg-indigo-600 text-white rounded-xl shadow"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-      >
-        ☰
-      </button>
-
       <div className="flex flex-1 relative">
         {/* Sidebar */}
         <div
@@ -243,12 +232,6 @@ export default function DashboardPage() {
           } sm:hidden`}
           onClick={() => setIsSidebarOpen(false)}
         ></div>
-        {/* <Sidebar
-          className={`fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50 transition-transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0 sm:relative sm:block`}
-        /> */}
-
         {/* Main content */}
         <main className="flex-1 p-6 sm:p-8 lg:p-10">
           {/* Header */}
