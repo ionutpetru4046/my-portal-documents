@@ -133,11 +133,11 @@ export default function ProfilePage() {
   if (!user) return <div className="flex justify-center items-center min-h-screen">Loading profile...</div>;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-tr from-indigo-200 via-purple-200 to-indigo-100 text-gray-900">
+    <div className="min-h-screen flex flex-col bg-linear-to-tr from-indigo-200 via-purple-200 to-indigo-100 text-gray-900">
       <Toaster position="top-right" />
       <main className="flex-1 p-6">
         <Reveal animation="fade-up">
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-8 rounded-b-3xl mb-10 shadow-xl text-center">
+          <div className="bg-linear-to-r from-indigo-600 to-purple-600 text-white p-8 rounded-b-3xl mb-10 shadow-xl text-center">
             <h1 className="text-3xl sm:text-4xl font-extrabold">Welcome, {user.name || user.email} 👋</h1>
             <p className="mt-2 text-gray-200 text-lg">Manage your profile and stats interactively.</p>
           </div>
