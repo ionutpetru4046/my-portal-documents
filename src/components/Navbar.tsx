@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown } from "react-icons/fi";
 import { useUser } from "@/context/UserContext";
+import Image from "next/image";
 
 export default function Navbar() {
   const { user, setUser } = useUser();
@@ -78,7 +79,7 @@ export default function Navbar() {
   const isAdmin = user?.role === "admin";
 
   return (
-    <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 py-4 flex items-center justify-between relative z-50">
+    <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 flex items-center justify-between relative z-50">
       {/* Logo + Hamburger */}
       <div className="flex items-center gap-3">
         {/* ✅ Hamburger - visible on mobile only */}
@@ -93,7 +94,15 @@ export default function Navbar() {
         </button>
 
         <Link href="/" className="text-xl font-extrabold tracking-wide">
-          Doc<span className="text-yellow-200">Store</span>
+        <div className="relative w-42 h-32">
+            <Image
+              src="/Digital document logo.png"
+              alt="DigitalStore logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </Link>
       </div>
 
