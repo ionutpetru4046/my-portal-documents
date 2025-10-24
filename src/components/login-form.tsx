@@ -63,70 +63,67 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login
+    <div className={cn("min-h-screen flex items-center justify-center bg-gray-50 px-4", className)} {...props}>
+      <Card className="w-full max-w-md shadow-xl rounded-2xl overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-blue-600 to-teal-400 text-white p-6">
+          <CardTitle className="text-2xl">Welcome Back!</CardTitle>
+          <CardDescription className="text-gray-100">
+            Sign in to your account
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin}>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={loading}
-                />
-              </Field>
+        <CardContent className="p-6 space-y-6">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <Field>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                className="rounded-lg"
+              />
+            </Field>
 
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  disabled={loading}
-                />
-              </Field>
+            <Field>
+              <div className="flex items-center">
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <Link href="/forgot-password" className="ml-auto text-sm text-blue-600 hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                placeholder="********"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+                className="rounded-lg"
+              />
+            </Field>
 
-              <Field>
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Logging in..." : "Login"}
-                </Button>
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={handleGoogleLogin}
-                  disabled={loading}
-                >
-                  {loading ? "Redirecting..." : "Login with Google"}
-                </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
-                  <Link href="/signup" className="underline underline-offset-4">
-                    Sign up
-                  </Link>
-                </FieldDescription>
-              </Field>
-            </FieldGroup>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Logging in..." : "Sign In"}
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2"
+              onClick={handleGoogleLogin}
+              disabled={loading}
+            >
+              <img src="/google-icon-svg.png" alt="Google" className="w-5 h-5" />
+              {loading ? "Redirecting..." : "Sign in with Google"}
+            </Button>
+
+            <FieldDescription className="text-center text-sm mt-4">
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" className="text-blue-600 hover:underline">
+                Sign up
+              </Link>
+            </FieldDescription>
           </form>
         </CardContent>
       </Card>
