@@ -59,7 +59,7 @@ export default function TermsPage() {
 
       <div className="w-full max-w-4xl space-y-4">
         <p className="text-gray-700 text-center mb-6">
-          Welcome to <strong>MyApp</strong>. By using our services, you agree to comply with these Terms & Conditions. Please read them carefully.
+          Welcome to <strong>DocStore</strong>. By using our services, you agree to comply with these Terms & Conditions. Please read them carefully.
         </p>
 
         {termsSections.map((section, index) => (

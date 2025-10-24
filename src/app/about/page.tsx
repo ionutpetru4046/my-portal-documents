@@ -59,7 +59,7 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="text-4xl font-bold text-gray-800 text-center mb-16"
         >
-          Why Choose Digital <br/> Documents Hub?
+          Why Choose DocStore?
         </motion.h2>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {[
@@ -117,7 +117,7 @@ export default function AboutPage() {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="text-lg max-w-2xl mx-auto mb-6"
         >
-          MyPortal was built to simplify document management for professionals and teams, helping you focus on what matters most.
+          DocStore was built to simplify document management for professionals and teams, helping you focus on what matters most.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}

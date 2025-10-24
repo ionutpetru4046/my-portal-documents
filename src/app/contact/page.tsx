@@ -48,7 +48,7 @@ export default function ContactPage() {
           <div className="mt-6 text-gray-700">
             <p className="mb-2 font-medium text-blue-700">Or contact us directly:</p>
             <div className="flex flex-col gap-1">
-              <span>support@myportal.com</span>
+              <span>support@DocStore.com</span>
               <span>+123 456 7890</span>
             </div>
           </div>

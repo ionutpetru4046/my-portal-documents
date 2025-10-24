@@ -9,6 +9,25 @@ export default function Footer() {
     <footer className="bg-linear-to-r from-blue-600 to-teal-400 text-white pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
 
+        {/* Social Media */}
+        <div>
+          <h3 className="text-xl font-bold mb-4">Follow Us</h3>
+          <div className="flex space-x-4">
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+              <FaFacebookF size={20} />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+              <FaTwitter size={20} />
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+              <FaInstagram size={20} />
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
+              <FaLinkedinIn size={20} />
+            </a>
+          </div>
+        </div>
+
         {/* Quick Links */}
         <div>
           <h3 className="text-xl font-bold mb-4">Quick Links</h3>
@@ -47,31 +66,12 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Social Media */}
-        <div>
-          <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-          <div className="flex space-x-4">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
-              <FaFacebookF size={20} />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
-              <FaTwitter size={20} />
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
-              <FaInstagram size={20} />
-            </a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-200 transition">
-              <FaLinkedinIn size={20} />
-            </a>
-          </div>
-        </div>
-
         {/* Location / Contact */}
         <div>
           <h3 className="text-xl font-bold mb-4">Our Location</h3>
           <p>123 Main Street</p>
           <p>City, Country</p>
-          <p>Email: support@myportal.com</p>
+          <p>Email: support@DocStore.com</p>
           <p>Phone: +123 456 7890</p>
         </div>
 
@@ -79,7 +79,7 @@ export default function Footer() {
 
       {/* Bottom Info */}
       <div className="mt-10 border-t border-white/40 pt-6 text-center text-white/80 text-sm">
-        &copy; {new Date().getFullYear()} Digital Document Hub. All rights reserved.  
+        &copy; {new Date().getFullYear()} DocStore. All rights reserved.  
         <Link href="/terms" className="ml-2 hover:text-white transition">Terms</Link> |  
         <Link href="/privacy" className="ml-2 hover:text-white transition">Privacy</Link>
       </div>

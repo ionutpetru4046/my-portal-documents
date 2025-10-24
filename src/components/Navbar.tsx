@@ -93,7 +93,7 @@ export default function Navbar() {
         </button>
 
         <Link href="/" className="text-xl font-extrabold tracking-wide">
-          Digital <span className="text-yellow-200">Document Hub</span>
+          Doc<span className="text-yellow-200">Store</span>
         </Link>
       </div>
 
