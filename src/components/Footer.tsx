@@ -51,13 +51,13 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="relative w-42 h-42">
+          <div className="relative w-32 h-32">
             <Image
               src="/Digital-document-logo.png"
               alt="DocStore logo"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain"
+              className="object-contain rounded-[70px]"
               priority
             />
           </div>

@@ -50,11 +50,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   const handleGoogleLogin = async () => {
     setLoading(true);
 
-    // Dynamically set redirect URI based on environment
-    const redirectTo =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3000/api/auth/callback/dashboard"
-        : "https://your-production-domain.com/api/auth/callback/dashboard";
+    const redirectTo = `${window.location.origin}/dashboard`;
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -121,7 +117,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   onClick={handleGoogleLogin}
                   disabled={loading}
                 >
-                  Login with Google
+                  {loading ? "Redirecting..." : "Login with Google"}
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
