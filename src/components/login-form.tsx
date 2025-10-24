@@ -1,28 +1,26 @@
-"use client"
+"use client";
 
-
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabaseClient"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
-import toast from "react-hot-toast"
-
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import toast from "react-hot-toast";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("");
@@ -33,27 +31,38 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
     setLoading(false);
+
     if (error) {
       toast.error(error.message);
     } else {
       toast.success("Login successful!");
-      await supabase.auth.getSession();
       router.push("/dashboard");
     }
   };
 
   const handleGoogleLogin = async () => {
     setLoading(true);
+
+    // Dynamically set redirect URI based on environment
+    const redirectTo =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/api/auth/callback/dashboard"
+        : "https://your-production-domain.com/api/auth/callback/dashboard";
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo },
     });
+
     setLoading(false);
+
     if (error) toast.error(error.message);
   };
 
@@ -63,7 +72,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your email below to login
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -76,11 +85,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   type="email"
                   placeholder="m@example.com"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading}
                 />
               </Field>
+
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
@@ -95,16 +105,22 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   id="password"
                   type="password"
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading}
                 />
               </Field>
+
               <Field>
                 <Button type="submit" disabled={loading}>
                   {loading ? "Logging in..." : "Login"}
                 </Button>
-                <Button variant="outline" type="button" onClick={handleGoogleLogin} disabled={loading}>
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  disabled={loading}
+                >
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">

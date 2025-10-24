@@ -94,12 +94,13 @@ export default function Navbar() {
         </button>
 
         <Link href="/" className="text-xl font-extrabold tracking-wide">
-        <div className="relative w-42 h-32">
+        <div className="relative w-20 h-20">
             <Image
-              src="/Digital document logo.png"
+              src="/Digital-document-logo.png"
               alt="DigitalStore logo"
               fill
-              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain rounded-[70px]"
               priority
             />
           </div>
