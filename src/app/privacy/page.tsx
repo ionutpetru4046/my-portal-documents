@@ -82,7 +82,7 @@ export default function PrivacyPage() {
 
       <div className="w-full max-w-3xl space-y-4">
         <p className="text-gray-700 text-center mb-6">
-          Your privacy is important to us. This Privacy Policy explains how <strong>DocStore</strong> ("we", "us", "our") collects, uses, and protects your information.
+          Your privacy is important to us. This Privacy Policy explains how <strong>DocuVault</strong> ("we", "us", "our") collects, uses, and protects your information.
         </p>
 
         {privacySections.map((section, index) => (

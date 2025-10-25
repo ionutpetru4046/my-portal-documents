@@ -38,7 +38,7 @@ const categories = [
     articles: [
       {
         title: "Uploading documents",
-        content: "Navigate to the 'Documents' page and click 'Upload'. You can add multiple files.",
+        content: "Navigate to the 'Dashboard' page and click 'Upload'. You can add multiple files.",
       },
       {
         title: "Deleting documents",
@@ -119,7 +119,7 @@ export default function HelpPage() {
             Contact our support team for further assistance.
           </p>
           <a
-            href="mailto:support@myapp.com"
+            href="mailto:support@DocuVault.com"
             className="inline-block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
           >
             Contact Support

@@ -38,7 +38,7 @@ const termsSections = [
   },
   {
     title: "6. Limitation of Liability",
-    content: "To the maximum extent permitted by law, MyApp is not liable for any indirect, incidental, or consequential damages arising from your use of our services."
+    content: "To the maximum extent permitted by law, DocuVault is not liable for any indirect, incidental, or consequential damages arising from your use of our services."
   },
   {
     title: "7. Changes to Terms",
@@ -59,7 +59,7 @@ export default function TermsPage() {
 
       <div className="w-full max-w-4xl space-y-4">
         <p className="text-gray-700 text-center mb-6">
-          Welcome to <strong>DocStore</strong>. By using our services, you agree to comply with these Terms & Conditions. Please read them carefully.
+          Welcome to <strong>DocuVault</strong>. By using our services, you agree to comply with these Terms & Conditions. Please read them carefully.
         </p>
 
         {termsSections.map((section, index) => (

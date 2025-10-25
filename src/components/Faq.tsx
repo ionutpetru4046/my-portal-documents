@@ -11,9 +11,9 @@ import {
 export default function FAQPage() {
   const faqs = [
     {
-      question: "What is this app about?",
+      question: "What is this Website about?",
       answer:
-        "This app helps you manage your tasks, stay organized, and boost productivity with a clean, intuitive interface.",
+        "This website helps you manage your documents, stay organized, and boost productivity with a clean, intuitive interface.",
     },
     {
       question: "Is my data secure?",
@@ -23,17 +23,17 @@ export default function FAQPage() {
     {
       question: "Can I use it for free?",
       answer:
-        "Yes! You can start for free with our basic plan. Premium features are available for advanced users.",
+        "Yes! You can start for free with our basic plan. Premium features are available for advanced users and subscription plan.",
     },
     {
       question: "How can I contact support?",
       answer:
-        "You can reach us anytime through the contact form or by emailing support@yourapp.com.",
+        "You can reach us anytime through the contact form or by emailing support@DocuVault.com.",
     },
   ];
 
   return (
-    <section className="w-full py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+    <section className="w-full py-20 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-4xl mx-auto text-center px-6">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
