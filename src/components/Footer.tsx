@@ -11,7 +11,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-blue-600 to-teal-400 text-white pt-12 pb-6">
+    <footer className="bg-linear-to-r from-blue-600 to-teal-400 text-white pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Social Media */}
         <div>
@@ -125,14 +125,14 @@ export default function Footer() {
           <h3 className="text-xl font-bold mb-4">Our Location</h3>
           <p className="text-white/90">123 Main Street</p>
           <p className="text-white/90">City, Country</p>
-          <p className="text-white/90">Email: support@DocStore.com</p>
+          <p className="text-white/90">Email: support@DocuValut.com</p>
           <p className="text-white/90">Phone: +123 456 7890</p>
         </div>
       </div>
 
       {/* Bottom Info */}
       <div className="mt-10 border-t border-white/40 pt-6 text-center text-white/80 text-sm">
-        &copy; {new Date().getFullYear()} DocStore. All rights reserved.
+        &copy; {new Date().getFullYear()} DocuVault.com All rights reserved.
         <Link href="/terms" className="ml-2 hover:text-white transition">
           Terms
         </Link>{" "}
