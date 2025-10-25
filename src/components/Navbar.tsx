@@ -79,33 +79,20 @@ export default function Navbar() {
   const isAdmin = user?.role === "admin";
 
   return (
-    <nav className="bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 flex items-center justify-between relative z-50">
-      {/* Logo + Hamburger */}
-      <div className="flex items-center gap-3">
-        {/* ✅ Hamburger - visible on mobile only */}
-        <button
-          className="md:hidden inline-flex flex-col justify-center items-center w-10 h-10 rounded-lg border border-white/25 bg-white/15 hover:bg-white/25 transition"
-          onClick={() => setMobileOpen(true)}
-          aria-label="Open menu"
-        >
-          <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
-          <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
-          <span className="block w-5 h-0.5 bg-white rounded" />
-        </button>
-
-        <Link href="/" className="text-xl font-extrabold tracking-wide">
+    <nav className="bg-linear-to-r from-blue-600 to-teal-400 text-white shadow-lg px-6 py-3 flex items-center justify-between relative z-50">
+      {/* Logo */}
+      <Link href="/" className="text-xl font-extrabold tracking-wide">
         <div className="relative w-20 h-20">
-            <Image
-              src="/Digital-document-logo.png"
-              alt="DigitalStore logo"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain rounded-[70px]"
-              priority
-            />
-          </div>
-        </Link>
-      </div>
+          <Image
+            src="/Digital-document-logo.png"
+            alt="DigitalStore logo"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-contain rounded-[70px]"
+            priority
+          />
+        </div>
+      </Link>
 
       {/* Desktop Links */}
       <div className="hidden md:flex items-center gap-6 relative">
@@ -156,80 +143,94 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* Desktop User / CTA */}
-      <div className="hidden md:flex items-center gap-3">
-        {user ? (
-          <div className="relative" ref={menuRef}>
-            <button
-              aria-label="User menu"
-              className="w-9 h-9 rounded-full bg-white/20 border border-white/30 flex items-center justify-center overflow-hidden"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              {user.avatar ? (
-                <img
-                  src={user.avatar}
-                  alt="avatar"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-sm font-bold">
-                  {user.name?.charAt(0).toUpperCase() || "U"}
-                </span>
+      {/* Desktop User / CTA + Mobile Hamburger */}
+      <div className="flex items-center gap-3">
+        {/* Desktop User Menu */}
+        <div className="hidden md:flex items-center gap-3">
+          {user ? (
+            <div className="relative" ref={menuRef}>
+              <button
+                aria-label="User menu"
+                className="w-9 h-9 rounded-full bg-white/20 border border-white/30 flex items-center justify-center overflow-hidden"
+                onClick={() => setMenuOpen((v) => !v)}
+              >
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt="avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-sm font-bold">
+                    {user.name?.charAt(0).toUpperCase() || "U"}
+                  </span>
+                )}
+              </button>
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-44 bg-white text-gray-800 rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden z-50">
+                  <div className="px-4 py-2 text-xs text-gray-500">Signed in as</div>
+                  <div className="px-4 pb-2 text-sm truncate">{user.email}</div>
+                  <div className="border-t" />
+                  <Link
+                    href="/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-4 py-2 text-sm hover:bg-gray-50"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-4 py-2 text-sm hover:bg-gray-50"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    Logout
+                  </button>
+                </div>
               )}
-            </button>
-            {menuOpen && (
-              <div className="absolute right-0 mt-2 w-44 bg-white text-gray-800 rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden z-50">
-                <div className="px-4 py-2 text-xs text-gray-500">Signed in as</div>
-                <div className="px-4 pb-2 text-sm truncate">{user.email}</div>
-                <div className="border-t" />
-                <Link
-                  href="/profile"
-                  onClick={() => setMenuOpen(false)}
-                  className="block px-4 py-2 text-sm hover:bg-gray-50"
-                >
-                  Profile
-                </Link>
-                <Link
-                  href="/dashboard"
-                  onClick={() => setMenuOpen(false)}
-                  className="block px-4 py-2 text-sm hover:bg-gray-50"
-                >
-                  Dashboard
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <>
-            <Link href="/login">
-              <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">
-                Login
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 font-semibold">
-                Get Started
-              </Button>
-            </Link>
-          </>
-        )}
+            </div>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-300 font-semibold">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
+        </div>
+
+        {/* Mobile Hamburger - Now on the right */}
+        <button
+          className="md:hidden inline-flex flex-col justify-center items-center w-10 h-10 rounded-lg border border-white/25 bg-white/15 hover:bg-white/25 transition"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open menu"
+        >
+          <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
+          <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
+          <span className="block w-5 h-0.5 bg-white rounded" />
+        </button>
       </div>
 
-      {/* ✅ Mobile Menu */}
+      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ x: "-100%" }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
+            exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-50 flex md:hidden"
+            className="fixed inset-0 z-50 flex md:hidden justify-end"
           >
             {/* Overlay */}
             <div
@@ -237,7 +238,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
             />
 
-            {/* Drawer */}
+            {/* Drawer - slides from right */}
             <div className="relative bg-white text-gray-900 w-64 h-full p-6 flex flex-col overflow-y-auto shadow-xl">
               <div className="flex items-center justify-between mb-6">
                 <span className="text-lg font-extrabold">Menu</span>

@@ -65,7 +65,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   return (
     <div className={cn("min-h-screen flex items-center justify-center bg-gray-50 px-4", className)} {...props}>
       <Card className="w-full max-w-md shadow-xl rounded-2xl overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-blue-600 to-teal-400 text-white p-6">
+        <CardHeader className="bg-linear-to-r from-blue-600 to-teal-400 text-white p-6">
           <CardTitle className="text-2xl">Welcome Back!</CardTitle>
           <CardDescription className="text-gray-100">
             Sign in to your account
