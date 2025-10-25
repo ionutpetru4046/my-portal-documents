@@ -27,13 +27,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <footer className="bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       {/* Newsletter Section */}
       <div className="border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="text-center lg:text-left">
-              <h3 className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+              <h3 className="text-2xl sm:text-3xl font-bold mb-2 bg-linear-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
                 Stay Updated
               </h3>
               <p className="text-gray-400 text-sm sm:text-base">
@@ -52,7 +52,7 @@ export default function Footer() {
                 />
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-500 hover:from-blue-700 hover:to-teal-600 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 group"
+                  className="px-6 py-3 bg-linear-to-r from-blue-600 to-teal-500 hover:from-blue-700 hover:to-teal-600 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 group"
                 >
                   {subscribed ? (
                     "Subscribed! ✓"
@@ -85,8 +85,8 @@ export default function Footer() {
                     sizes="48px"
                   />
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
-                  DigitalStore
+                <span className="text-2xl font-bold bg-linear-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+                  DocuVault
                 </span>
               </div>
             </Link>
@@ -100,7 +100,7 @@ export default function Footer() {
                 href="https://www.facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
+                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-linear-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
                 aria-label="Facebook"
               >
                 <FaFacebookF className="text-gray-400 group-hover:text-white transition-colors" size={18} />
@@ -109,7 +109,7 @@ export default function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
+                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-linear-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
                 aria-label="Twitter"
               >
                 <FaTwitter className="text-gray-400 group-hover:text-white transition-colors" size={18} />
@@ -118,7 +118,7 @@ export default function Footer() {
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
+                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-linear-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
                 aria-label="Instagram"
               >
                 <FaInstagram className="text-gray-400 group-hover:text-white transition-colors" size={18} />
@@ -127,7 +127,7 @@ export default function Footer() {
                 href="https://www.linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
+                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-linear-to-r hover:from-blue-600 hover:to-teal-500 flex items-center justify-center transition-all duration-300 group border border-white/10"
                 aria-label="LinkedIn"
               >
                 <FaLinkedinIn className="text-gray-400 group-hover:text-white transition-colors" size={18} />
@@ -141,25 +141,25 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link href="/" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   Home
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   About
                 </Link>
               </li>
               <li>
                 <Link href="/subscribe" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   Pricing
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   Contact
                 </Link>
               </li>
@@ -172,25 +172,25 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link href="/help" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   Help Center
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   Contact Us
                 </Link>
               </li>
               <li>
                 <Link href="/terms" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   Terms of Service
                 </Link>
               </li>
               <li>
                 <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-linear-to-r from-blue-500 to-teal-500 transition-all duration-300"></span>
                   Privacy Policy
                 </Link>
               </li>
@@ -202,18 +202,18 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4 text-white">Contact</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-gray-400">
-                <FiMapPin className="mt-1 flex-shrink-0 text-teal-400" size={18} />
+                <FiMapPin className="mt-1 shrink-0 text-teal-400" size={18} />
                 <span className="text-sm">123 Main Street<br />City, Country</span>
               </li>
               <li>
                 <a href="mailto:support@digitalstore.com" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors group">
-                  <FiMail className="flex-shrink-0 text-teal-400 group-hover:scale-110 transition-transform" size={18} />
-                  <span className="text-sm">support@digitalstore.com</span>
+                  <FiMail className="shrink-0 text-teal-400 group-hover:scale-110 transition-transform" size={18} />
+                  <span className="text-sm">support@DocuVault.com</span>
                 </a>
               </li>
               <li>
                 <a href="tel:+1234567890" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors group">
-                  <FiPhone className="flex-shrink-0 text-teal-400 group-hover:scale-110 transition-transform" size={18} />
+                  <FiPhone className="shrink-0 text-teal-400 group-hover:scale-110 transition-transform" size={18} />
                   <span className="text-sm">+123 456 7890</span>
                 </a>
               </li>
@@ -227,7 +227,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
             <p className="text-center sm:text-left">
-              &copy; {new Date().getFullYear()} DigitalStore. All rights reserved.
+              &copy; {new Date().getFullYear()} DocuVault.com All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link href="/terms" className="hover:text-white transition-colors">

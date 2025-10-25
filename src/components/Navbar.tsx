@@ -88,7 +88,7 @@ export default function Navbar() {
   const isAdmin = user?.role === "admin";
 
   return (
-    <nav className="sticky top-0 bg-gradient-to-r from-blue-600 to-teal-400 text-white shadow-lg backdrop-blur-sm z-50">
+    <nav className="sticky top-0 bg-linear-to-r from-blue-600 to-teal-400 text-white shadow-lg backdrop-blur-sm z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -104,7 +104,7 @@ export default function Navbar() {
               />
             </div>
             <span className="hidden sm:block text-xl font-bold tracking-tight">
-              DigitalStore
+              DocuVault
             </span>
           </Link>
 
@@ -136,7 +136,7 @@ export default function Navbar() {
                   >
                     <Link
                       href="/about"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
                       onClick={() => setResourcesDropdown(false)}
                     >
                       <FiBook className="text-blue-600 group-hover:scale-110 transition" />
@@ -147,7 +147,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/contact"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
                       onClick={() => setResourcesDropdown(false)}
                     >
                       <FiMail className="text-teal-600 group-hover:scale-110 transition" />
@@ -158,7 +158,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/subscribe"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
                       onClick={() => setResourcesDropdown(false)}
                     >
                       <FiHelpCircle className="text-purple-600 group-hover:scale-110 transition" />
@@ -193,7 +193,7 @@ export default function Navbar() {
                     >
                       <Link
                         href="/admin/users"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
                         onClick={() => setAdminDropdown(false)}
                       >
                         <FiUsers className="text-blue-600 group-hover:scale-110 transition" />
@@ -204,7 +204,7 @@ export default function Navbar() {
                       </Link>
                       <Link
                         href="/admin/expirations"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
                         onClick={() => setAdminDropdown(false)}
                       >
                         <FiClock className="text-teal-600 group-hover:scale-110 transition" />
@@ -238,7 +238,7 @@ export default function Navbar() {
                         className="w-7 h-7 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-full bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
                         <span className="text-xs font-bold text-white">
                           {user.name?.charAt(0).toUpperCase() || "U"}
                         </span>
@@ -328,7 +328,7 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-[60] flex lg:hidden justify-end"
+            className="fixed inset-0 z-60 flex lg:hidden justify-end"
           >
             {/* Overlay */}
             <div
@@ -340,7 +340,7 @@ export default function Navbar() {
             <div className="relative bg-white text-gray-900 w-80 h-full flex flex-col overflow-y-auto shadow-2xl ml-auto"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-teal-50">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-linear-to-r from-blue-50 to-teal-50">
                 <div className="flex items-center gap-3">
                   <div className="relative w-10 h-10">
                     <Image
@@ -362,7 +362,7 @@ export default function Navbar() {
 
               {/* User Info (if logged in) */}
               {user && (
-                <div className="p-4 bg-gradient-to-r from-blue-600 to-teal-400 text-white">
+                <div className="p-4 bg-linear-to-r from-blue-600 to-teal-400 text-white">
                   <div className="flex items-center gap-3">
                     {user.avatar ? (
                       <img src={user.avatar} alt="avatar" className="w-12 h-12 rounded-full object-cover border-2 border-white" />
@@ -384,7 +384,7 @@ export default function Navbar() {
                 {user && (
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 transition mb-2"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition mb-2"
                     onClick={() => setMobileOpen(false)}
                   >
                     <FiGrid className="text-blue-600" />
@@ -481,7 +481,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/signup"
-                      className="block px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-teal-400 text-white text-center hover:from-blue-700 hover:to-teal-500 transition font-medium"
+                      className="block px-4 py-3 rounded-xl bg-linear-to-r from-blue-600 to-teal-400 text-white text-center hover:from-blue-700 hover:to-teal-500 transition font-medium"
                       onClick={() => setMobileOpen(false)}
                     >
                       Get Started
