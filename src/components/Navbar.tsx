@@ -230,7 +230,7 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-50 flex md:hidden justify-end"
+            className="fixed inset-0 z-50 flex md:hidden"
           >
             {/* Overlay */}
             <div

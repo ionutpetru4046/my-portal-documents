@@ -112,7 +112,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center">
+      <section className="py-16 px-6 bg-linear-to-r from-indigo-600 to-purple-600 text-white text-center">
         <Reveal animation="fade-in">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">Ready to get started?</h2>
         </Reveal>

@@ -241,14 +241,14 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Toaster position="top-right" />
-      <div className="flex flex-1 relative">
-        {/* Main content */}
-        <main className="flex-1 p-6 sm:p-8 lg:p-10">
+      <div className="flex flex-1 w-full">
+        {/* Main content - Fixed container with proper centering */}
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
           {/* Header */}
           <Reveal animation="fade-up">
             <div className="bg-linear-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-3xl mb-8 shadow-xl">
               <h1 className="text-3xl sm:text-4xl font-extrabold">
-                Welcome back, {user?.email || "User"}! 👋
+                Welcome back, {user?.email || "User"}!
               </h1>
               <p className="mt-2 text-gray-200 text-lg">
                 Manage your documents efficiently.
@@ -298,11 +298,11 @@ export default function DashboardPage() {
               </AnimatePresence>
 
               {/* Upload Inputs */}
-              <div className="flex flex-col sm:flex-row gap-4 items-center flex-wrap justify-center sm:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center flex-wrap">
                 <input
                   type="file"
                   onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  className="border p-3 rounded-xl w-full sm:w-auto"
+                  className="border p-3 rounded-xl w-full sm:flex-1 sm:min-w-[200px]"
                   disabled={uploading}
                 />
                 <input
@@ -338,7 +338,7 @@ export default function DashboardPage() {
               placeholder="Search documents..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="rounded-xl shadow-sm"
+              className="rounded-xl shadow-sm w-full"
             />
           </div>
 
@@ -365,7 +365,7 @@ export default function DashboardPage() {
                             alt={doc.name}
                             fill
                             className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             priority
                           />
                         </div>
@@ -464,13 +464,13 @@ export default function DashboardPage() {
           {isModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
               <button
-                className="absolute top-6 right-6 text-white text-3xl"
+                className="absolute top-6 right-6 text-white text-3xl hover:opacity-75 transition"
                 onClick={() => setIsModalOpen(false)}
               >
                 ✕
               </button>
               <button
-                className="absolute left-2 sm:left-6 text-white text-4xl"
+                className="absolute left-2 sm:left-6 text-white text-4xl hover:opacity-75 transition disabled:opacity-30"
                 onClick={() =>
                   setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev))
                 }
@@ -478,15 +478,17 @@ export default function DashboardPage() {
               >
                 ‹
               </button>
-              <Image
-                src={filteredDocs[currentIndex].url}
-                alt={filteredDocs[currentIndex].name}
-                width={900}
-                height={900}
-                className="max-h-[90vh] max-w-full object-contain rounded-xl"
-              />
+              <div className="relative w-full max-w-5xl">
+                <Image
+                  src={filteredDocs[currentIndex].url}
+                  alt={filteredDocs[currentIndex].name}
+                  width={900}
+                  height={900}
+                  className="max-h-[90vh] w-full object-contain rounded-xl"
+                />
+              </div>
               <button
-                className="absolute right-2 sm:right-6 text-white text-4xl"
+                className="absolute right-2 sm:right-6 text-white text-4xl hover:opacity-75 transition disabled:opacity-30"
                 onClick={() =>
                   setCurrentIndex((prev) =>
                     prev < filteredDocs.length - 1 ? prev + 1 : prev
