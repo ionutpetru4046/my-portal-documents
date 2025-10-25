@@ -247,10 +247,10 @@ export default function DashboardPage() {
           {/* Header */}
           <Reveal animation="fade-up">
             <div className="bg-linear-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-3xl mb-8 shadow-xl">
-              <h1 className="text-3xl sm:text-4xl font-extrabold">
+              <h1 className="sm:text-4xl text-center font-extrabold">
                 Welcome back, {user?.email || "User"}!
               </h1>
-              <p className="mt-2 text-gray-200 text-lg">
+              <p className="mt-2 text-gray-200 text-center text-lg">
                 Manage your documents efficiently.
               </p>
             </div>
