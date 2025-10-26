@@ -11,7 +11,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <>
       {!isAuthPage && <Navbar />}
-      <main className="flex-grow">{children}</main>
+      <main className="grow">{children}</main>
       {!isAuthPage && <Footer />}
     </>
   );
