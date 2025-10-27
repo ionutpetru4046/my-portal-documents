@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiChevronDown, FiFileText, FiUsers, FiClock, FiHelpCircle, FiBook, FiMail, FiSettings, FiLogOut, FiUser, FiGrid } from "react-icons/fi";
+import { FiChevronDown, FiFileText, FiUsers, FiClock, FiBook, FiMail, FiSettings, FiLogOut, FiUser, FiGrid, FiX, FiMenu } from "react-icons/fi";
 import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 
@@ -81,38 +81,38 @@ export default function Navbar() {
   };
 
   const navLinkClass = (href: string) =>
-    `hover:text-yellow-300 transition-colors duration-200 ${
-      pathname === href ? "text-yellow-300 font-semibold" : ""
+    `text-slate-300 hover:text-white transition-colors duration-200 font-medium text-sm ${
+      pathname === href ? "text-white" : ""
     }`;
 
   const isAdmin = user?.role === "admin";
 
   return (
-    <nav className="sticky top-0 bg-linear-to-r from-blue-600 to-teal-400 text-white shadow-lg backdrop-blur-sm z-50">
+    <nav className="sticky top-0 bg-slate-900 border-b border-slate-800 backdrop-blur-xl z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition">
-            <div className="relative w-12 h-12 md:w-14 md:h-14">
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition group">
+            <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               <Image
                 src="/Digital-document-logo.png"
-                alt="DigitalStore logo"
-                fill
-                sizes="56px"
-                className="object-contain rounded-full"
+                alt="DocuVault logo"
+                width={40}
+                height={40}
+                className="rounded-lg"
                 priority
               />
             </div>
-            <span className="hidden sm:block text-xl font-bold tracking-tight">
+            <span className="hidden sm:block text-lg font-bold text-white tracking-tight group-hover:text-blue-400 transition">
               DocuVault
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {/* Features Dropdown */}
+          <div className="hidden lg:flex items-center gap-1">
+            {/* Dashboard Link */}
             {user && (
-              <Link href="/dashboard" className={navLinkClass("/dashboard")}>
+              <Link href="/dashboard" className={`px-3 py-2 rounded-lg transition-all ${navLinkClass("/dashboard")} hover:bg-slate-800`}>
                 Dashboard
               </Link>
             )}
@@ -121,50 +121,56 @@ export default function Navbar() {
             <div className="relative" ref={resourcesRef}>
               <button
                 onClick={() => setResourcesDropdown(!resourcesDropdown)}
-                className="flex items-center gap-1 hover:text-yellow-300 transition-colors duration-200"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-all font-medium text-sm"
               >
-                Resources <FiChevronDown className={`transition-transform ${resourcesDropdown ? 'rotate-180' : ''}`} />
+                Resources <FiChevronDown size={16} className={`transition-transform duration-300 ${resourcesDropdown ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
                 {resourcesDropdown && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-12 left-0 w-56 bg-white text-gray-800 rounded-2xl shadow-2xl ring-1 ring-black/5 overflow-hidden"
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-2 w-56 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
                   >
                     <Link
                       href="/about"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                      className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
                       onClick={() => setResourcesDropdown(false)}
                     >
-                      <FiBook className="text-blue-600 group-hover:scale-110 transition" />
+                      <div className="w-9 h-9 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition">
+                        <FiBook size={18} className="text-blue-400" />
+                      </div>
                       <div>
-                        <div className="font-medium">About Us</div>
-                        <div className="text-xs text-gray-500">Learn our story</div>
+                        <div className="font-medium text-sm">About Us</div>
+                        <div className="text-xs text-slate-400">Learn our story</div>
                       </div>
                     </Link>
                     <Link
                       href="/contact"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                      className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
                       onClick={() => setResourcesDropdown(false)}
                     >
-                      <FiMail className="text-teal-600 group-hover:scale-110 transition" />
+                      <div className="w-9 h-9 rounded-lg bg-purple-500/20 flex items-center justify-center group-hover:bg-purple-500/30 transition">
+                        <FiMail size={18} className="text-purple-400" />
+                      </div>
                       <div>
-                        <div className="font-medium">Contact</div>
-                        <div className="text-xs text-gray-500">Get in touch</div>
+                        <div className="font-medium text-sm">Contact</div>
+                        <div className="text-xs text-slate-400">Get in touch</div>
                       </div>
                     </Link>
                     <Link
                       href="/subscribe"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                      className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
                       onClick={() => setResourcesDropdown(false)}
                     >
-                      <FiHelpCircle className="text-purple-600 group-hover:scale-110 transition" />
+                      <div className="w-9 h-9 rounded-lg bg-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/30 transition">
+                        <FiFileText size={18} className="text-cyan-400" />
+                      </div>
                       <div>
-                        <div className="font-medium">Pricing</div>
-                        <div className="text-xs text-gray-500">View plans</div>
+                        <div className="font-medium text-sm">Pricing</div>
+                        <div className="text-xs text-slate-400">View plans</div>
                       </div>
                     </Link>
                   </motion.div>
@@ -174,43 +180,47 @@ export default function Navbar() {
 
             {/* Admin Dropdown */}
             {isAdmin && (
-              <div className="relative" ref={adminRef}>
+              <div className="relative ml-2" ref={adminRef}>
                 <button
                   onClick={() => setAdminDropdown(!adminDropdown)}
-                  className="flex items-center gap-1 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors duration-200"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-all font-medium text-sm border border-slate-700"
                 >
                   <FiGrid size={16} />
-                  Admin <FiChevronDown className={`transition-transform ${adminDropdown ? 'rotate-180' : ''}`} />
+                  Admin <FiChevronDown size={16} className={`transition-transform duration-300 ${adminDropdown ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
                   {adminDropdown && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-12 right-0 w-56 bg-white text-gray-800 rounded-2xl shadow-2xl ring-1 ring-black/5 overflow-hidden"
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full right-0 mt-2 w-56 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
                     >
                       <Link
                         href="/admin/users"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
                         onClick={() => setAdminDropdown(false)}
                       >
-                        <FiUsers className="text-blue-600 group-hover:scale-110 transition" />
+                        <div className="w-9 h-9 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition">
+                          <FiUsers size={18} className="text-blue-400" />
+                        </div>
                         <div>
-                          <div className="font-medium">Users</div>
-                          <div className="text-xs text-gray-500">Manage users</div>
+                          <div className="font-medium text-sm">Users</div>
+                          <div className="text-xs text-slate-400">Manage users</div>
                         </div>
                       </Link>
                       <Link
                         href="/admin/expirations"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition group"
+                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
                         onClick={() => setAdminDropdown(false)}
                       >
-                        <FiClock className="text-teal-600 group-hover:scale-110 transition" />
+                        <div className="w-9 h-9 rounded-lg bg-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/30 transition">
+                          <FiClock size={18} className="text-cyan-400" />
+                        </div>
                         <div>
-                          <div className="font-medium">Expirations</div>
-                          <div className="text-xs text-gray-500">Monitor docs</div>
+                          <div className="font-medium text-sm">Expirations</div>
+                          <div className="text-xs text-slate-400">Monitor docs</div>
                         </div>
                       </Link>
                     </motion.div>
@@ -221,101 +231,158 @@ export default function Navbar() {
           </div>
 
           {/* Right Side - User Menu / CTA */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             {/* Desktop User Menu */}
             <div className="hidden lg:flex items-center gap-3">
               {user ? (
                 <div className="relative" ref={menuRef}>
                   <button
                     aria-label="User menu"
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/20"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-slate-700 hover:border-slate-600 group"
                     onClick={() => setMenuOpen((v) => !v)}
                   >
-                    {user.avatar ? (
-                      <img
-                        src={user.avatar}
-                        alt="avatar"
-                        className="w-7 h-7 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-                        <span className="text-xs font-bold text-white">
-                          {user.name?.charAt(0).toUpperCase() || "U"}
-                        </span>
-                      </div>
-                    )}
-                    <span className="text-sm font-medium max-w-[100px] truncate">
-                      {user.name}
-                    </span>
-                    <FiChevronDown className={`transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
+                    <div className="flex items-center gap-2 min-w-0">
+                      {user.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt="avatar"
+                          className="w-7 h-7 rounded-lg object-cover border border-slate-600 group-hover:border-slate-500 transition"
+                        />
+                      ) : (
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
+                          <span className="text-xs font-bold text-white">
+                            {user.name?.charAt(0).toUpperCase() || "U"}
+                          </span>
+                        </div>
+                      )}
+                      <span className="text-sm font-medium text-slate-300 group-hover:text-white transition max-w-[120px] truncate">
+                        {user.name}
+                      </span>
+                    </div>
+                    <FiChevronDown size={16} className={`text-slate-400 flex-shrink-0 transition-transform duration-300 ${menuOpen ? 'rotate-180' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {menuOpen && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute right-0 mt-2 w-64 bg-white text-gray-800 rounded-2xl shadow-2xl ring-1 ring-black/5 overflow-hidden"
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 mt-2 w-72 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
                       >
-                        <div className="px-4 py-3 border-b border-gray-100">
-                          <div className="text-xs text-gray-500 mb-1">Signed in as</div>
-                          <div className="text-sm font-medium truncate">{user.email}</div>
+                        <div className="px-4 py-4 border-b border-slate-700 bg-slate-900/50">
+                          <div className="text-xs text-slate-400 font-medium mb-1.5">Signed in as</div>
+                          <div className="text-sm font-medium text-white truncate">{user.email}</div>
                         </div>
                         <Link
                           href="/profile"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition group"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition-colors group"
                         >
-                          <FiUser className="text-gray-600 group-hover:scale-110 transition" />
-                          <span>Profile</span>
+                          <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center group-hover:bg-slate-600 transition">
+                            <FiUser size={16} className="text-slate-300" />
+                          </div>
+                          <span className="text-sm font-medium">Profile</span>
                         </Link>
                         <Link
                           href="/dashboard"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition group"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition-colors group"
                         >
-                          <FiFileText className="text-gray-600 group-hover:scale-110 transition" />
-                          <span>Dashboard</span>
+                          <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center group-hover:bg-slate-600 transition">
+                            <FiFileText size={16} className="text-slate-300" />
+                          </div>
+                          <span className="text-sm font-medium">Dashboard</span>
                         </Link>
-                        <div className="border-t border-gray-100" />
+                        <div className="border-t border-slate-700" />
                         <button
-                          onClick={handleLogout}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition group"
+                          onClick={() => {
+                            setMenuOpen(false);
+                            handleLogout();
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 transition-colors group"
                         >
-                          <FiLogOut className="group-hover:scale-110 transition" />
-                          <span>Logout</span>
+                          <div className="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center group-hover:bg-red-500/30 transition">
+                            <FiLogOut size={16} />
+                          </div>
+                          <span className="text-sm font-medium">Logout</span>
                         </button>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
               ) : (
-                <>
+                <div className="flex items-center gap-2">
                   <Link href="/login">
-                    <Button className="bg-white/10 text-white hover:bg-white/20 font-semibold border border-white/20 rounded-xl px-5">
+                    <Button className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-medium text-sm border border-slate-700 hover:border-slate-600 rounded-lg px-4 py-2 transition-all">
                       Login
                     </Button>
                   </Link>
                   <Link href="/signup">
-                    <Button className="bg-white text-blue-700 hover:bg-gray-100 font-semibold rounded-xl px-5 shadow-lg">
+                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
                       Get Started
                     </Button>
                   </Link>
-                </>
+                </div>
               )}
             </div>
 
-            {/* Mobile Hamburger */}
-            <button
-              className="lg:hidden inline-flex flex-col justify-center items-center w-10 h-10 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
-            >
-              <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
-              <span className="block w-5 h-0.5 bg-white mb-1 rounded" />
-              <span className="block w-5 h-0.5 bg-white rounded" />
-            </button>
+            {/* Mobile - Show user avatar or hamburger */}
+            <div className="flex lg:hidden items-center gap-2">
+              {user && (
+                <div className="relative" ref={menuRef}>
+                  <button
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center justify-center transition-all"
+                  >
+                    {user.avatar ? (
+                      <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-lg object-cover" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                        {user.name?.charAt(0).toUpperCase() || "U"}
+                      </div>
+                    )}
+                  </button>
+                  <AnimatePresence>
+                    {menuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        className="absolute right-0 mt-2 w-64 bg-slate-800 rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
+                      >
+                        <div className="px-4 py-3 border-b border-slate-700 bg-slate-900/50">
+                          <div className="text-xs text-slate-400 mb-1">Signed in as</div>
+                          <div className="text-sm font-medium text-white truncate">{user.email}</div>
+                        </div>
+                        <Link href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
+                          <FiUser size={16} className="text-slate-300" />
+                          <span className="text-sm">Profile</span>
+                        </Link>
+                        <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
+                          <FiFileText size={16} className="text-slate-300" />
+                          <span className="text-sm">Dashboard</span>
+                        </Link>
+                        <div className="border-t border-slate-700" />
+                        <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 transition text-sm">
+                          <FiLogOut size={16} />
+                          <span>Logout</span>
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
+
+              {/* Mobile Hamburger */}
+              <button
+                className="w-10 h-10 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-all"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open menu"
+              >
+                <FiMenu className="w-5 h-5 text-slate-300" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -328,7 +395,7 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-60 flex lg:hidden justify-end"
+            className="fixed inset-0 z-50 flex lg:hidden"
           >
             {/* Overlay */}
             <div
@@ -337,151 +404,126 @@ export default function Navbar() {
             />
 
             {/* Drawer */}
-            <div className="relative bg-white text-gray-900 w-80 h-full flex flex-col overflow-y-auto shadow-2xl ml-auto"
+            <motion.div 
+              className="relative bg-slate-900 text-white w-80 max-w-[90vw] h-screen flex flex-col overflow-y-auto shadow-2xl border-l border-slate-800"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-linear-to-r from-blue-50 to-teal-50">
+              <div className="flex items-center justify-between p-6 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="relative w-10 h-10">
-                    <Image
-                      src="/Digital-document-logo.png"
-                      alt="Logo"
-                      fill
-                      className="object-contain rounded-full"
-                    />
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <Image src="/Digital-document-logo.png" alt="Logo" width={40} height={40} className="rounded-lg" />
                   </div>
-                  <span className="text-lg font-bold text-gray-900">Menu</span>
+                  <span className="text-lg font-bold">Menu</span>
                 </div>
                 <button
-                  className="w-10 h-10 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition"
+                  className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-all"
                   onClick={() => setMobileOpen(false)}
                 >
-                  ✕
+                  <FiX className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* User Info (if logged in) */}
+              {/* User Info */}
               {user && (
-                <div className="p-4 bg-linear-to-r from-blue-600 to-teal-400 text-white">
+                <div className="p-4 border-b border-slate-800 bg-slate-800/50">
                   <div className="flex items-center gap-3">
                     {user.avatar ? (
-                      <img src={user.avatar} alt="avatar" className="w-12 h-12 rounded-full object-cover border-2 border-white" />
+                      <img src={user.avatar} alt="avatar" className="w-12 h-12 rounded-lg object-cover border-2 border-slate-700" />
                     ) : (
-                      <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center border-2 border-white">
-                        <span className="text-lg font-bold">{user.name?.charAt(0).toUpperCase() || "U"}</span>
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
+                        {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold truncate">{user.name}</div>
-                      <div className="text-xs text-white/80 truncate">{user.email}</div>
+                      <div className="text-xs text-slate-400 truncate">{user.email}</div>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Navigation Links */}
-              <nav className="flex-1 p-4">
+              {/* Navigation */}
+              <nav className="flex-1 p-4 space-y-1">
                 {user && (
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-linear-to-r hover:from-blue-50 hover:to-teal-50 transition mb-2"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition"
                     onClick={() => setMobileOpen(false)}
                   >
-                    <FiGrid className="text-blue-600" />
+                    <FiGrid className="w-5 h-5 text-blue-400" />
                     <span className="font-medium">Dashboard</span>
                   </Link>
                 )}
 
-                <div className="my-4">
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 mb-2">
-                    Resources
-                  </div>
-                  <Link
-                    href="/about"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <FiBook className="text-gray-600" />
-                    <span>About Us</span>
+                <div className="my-4 pt-4 border-t border-slate-800">
+                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Resources</div>
+                  <Link href="/about" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
+                    <FiBook className="w-5 h-5 text-blue-400" />
+                    <span className="text-sm">About Us</span>
                   </Link>
-                  <Link
-                    href="/contact"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <FiMail className="text-gray-600" />
-                    <span>Contact</span>
+                  <Link href="/contact" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
+                    <FiMail className="w-5 h-5 text-purple-400" />
+                    <span className="text-sm">Contact</span>
                   </Link>
-                  <Link
-                    href="/subscribe"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <FiHelpCircle className="text-gray-600" />
-                    <span>Pricing</span>
+                  <Link href="/subscribe" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
+                    <FiFileText className="w-5 h-5 text-cyan-400" />
+                    <span className="text-sm">Pricing</span>
                   </Link>
                 </div>
 
                 {isAdmin && (
-                  <div className="my-4">
-                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 mb-2">
-                      Admin
-                    </div>
-                    <Link
-                      href="/admin/users"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      <FiUsers className="text-blue-600" />
-                      <span>Users</span>
+                  <div className="my-4 pt-4 border-t border-slate-800">
+                    <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Admin</div>
+                    <Link href="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
+                      <FiUsers className="w-5 h-5 text-blue-400" />
+                      <span className="text-sm">Users</span>
                     </Link>
-                    <Link
-                      href="/admin/expirations"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      <FiClock className="text-teal-600" />
-                      <span>Expirations</span>
+                    <Link href="/admin/expirations" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
+                      <FiClock className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm">Expirations</span>
                     </Link>
                   </div>
                 )}
               </nav>
 
               {/* Bottom Actions */}
-              <div className="p-4 border-t border-gray-200 space-y-2">
+              <div className="p-4 border-t border-slate-800 space-y-2">
                 {user ? (
                   <>
                     <Link
                       href="/profile"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition w-full"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition text-sm font-medium"
                       onClick={() => setMobileOpen(false)}
                     >
-                      <FiUser className="text-gray-600" />
-                      <span>Profile</span>
+                      <FiUser className="w-5 h-5 text-slate-400" />
+                      Profile
                     </Link>
                     <button
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition w-full"
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition text-sm font-medium"
                       onClick={() => {
                         setMobileOpen(false);
                         handleLogout();
                       }}
                     >
-                      <FiLogOut />
-                      <span>Logout</span>
+                      <FiLogOut className="w-5 h-5" />
+                      Logout
                     </button>
                   </>
                 ) : (
                   <>
                     <Link
                       href="/login"
-                      className="block px-4 py-3 rounded-xl bg-gray-100 text-center hover:bg-gray-200 transition font-medium"
+                      className="block px-4 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-center transition font-medium text-sm"
                       onClick={() => setMobileOpen(false)}
                     >
                       Login
                     </Link>
                     <Link
                       href="/signup"
-                      className="block px-4 py-3 rounded-xl bg-linear-to-r from-blue-600 to-teal-400 text-white text-center hover:from-blue-700 hover:to-teal-500 transition font-medium"
+                      className="block px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
                       onClick={() => setMobileOpen(false)}
                     >
                       Get Started
@@ -489,7 +531,7 @@ export default function Navbar() {
                   </>
                 )}
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
