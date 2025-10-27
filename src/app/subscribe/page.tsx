@@ -200,7 +200,7 @@ export default function SubscribePage() {
         transition={{ duration: 0.6 }}
         className="relative text-center pt-16 md:pt-20 pb-12 md:pb-16 px-4"
       >
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
           Simple, Transparent Pricing
         </h1>
         <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
@@ -264,8 +264,8 @@ export default function SubscribePage() {
                 {/* Background Gradient */}
                 <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
                   plan.highlight
-                    ? "bg-gradient-to-br from-blue-500/10 to-purple-500/10"
-                    : "bg-gradient-to-br from-slate-800/20 to-slate-900/20"
+                    ? "bg-linear-to-br from-blue-500/10 to-purple-500/10"
+                    : "bg-linear-to-br from-slate-800/20 to-slate-900/20"
                 }`}
                 />
 

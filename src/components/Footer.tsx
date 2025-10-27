@@ -59,7 +59,7 @@ export default function Footer() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 Stay Updated
               </h3>
               <p className="text-slate-400 text-sm sm:text-base">
