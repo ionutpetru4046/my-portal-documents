@@ -2,14 +2,14 @@
 import FolderCard from "@/components/FolderCard";
 
 const categories = [
-  { name: "Cars Documents", slug: "cars documents", icon: "🚗" },
-  { name: "Company Documents", slug: "company documents", icon: "🏢" },
-  { name: "User Documents", slug: "user documents", icon: "👤" },
-  { name: "Other Documents", slug: "other documents", icon: "📁" },
-  { name: "Employers Documents", slug: "Employers Documents", icon: "📁" },
-  { name: "Personal Documents", slug: "Personal Documents", icon: "📁" },
-  { name: "Insurance Documents", slug: "insurance documents", icon: "📁" },
-  { name: "Government Documents", slug: "governments documents", icon: "📁" },
+  { name: "Cars Documents", slug: "cars", icon: "🚗" },
+  { name: "Company Documents", slug: "company", icon: "🏢" },
+  { name: "User Documents", slug: "users", icon: "👤" },
+  { name: "Other Documents", slug: "other", icon: "📁" },
+  { name: "Employers Documents", slug: "employers", icon: "📁" },
+  { name: "Personal Documents", slug: "personal", icon: "📁" },
+  { name: "Insurance Documents", slug: "insurance", icon: "📁" },
+  { name: "Government Documents", slug: "government", icon: "📁" },
 ];
 
 export default function DashboardHome() {
