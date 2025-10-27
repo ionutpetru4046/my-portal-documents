@@ -13,6 +13,7 @@ interface DocRow {
   category?: string;
   created_at?: string;
   path?: string;
+  size?: number;
 }
 
 const categories = [
@@ -66,22 +67,25 @@ export default function DashboardHome() {
           return tb - ta;
         })[0];
         setRecentUpload(mostRecent?.created_at ?? null);
-
-        // try to estimate storage used by listing storage objects for this user prefix
-        try {
-          // attempt to list all files in the 'documents' bucket and sum sizes when available
-          const listRes = await supabase.storage.from("documents").list("", { limit: 1000 });
-          if (listRes?.data && Array.isArray(listRes.data)) {
-            // supabase storage file object may include 'metadata' with size in some setups; defensively sum if present
-            let total = 0;
-            for (const f of listRes.data) {
-              const maybeSize = (f as any).size ?? (f as any).metadata?.size ?? null;
-              if (typeof maybeSize === "number") total += maybeSize;
+        // compute storage used from document sizes (preferred if available)
+        const totalFromDocs = (data || []).reduce((acc, d) => acc + (d.size ?? 0), 0);
+        if (totalFromDocs > 0) {
+          setStorageUsedBytes(totalFromDocs);
+        } else {
+          // try to estimate storage used by listing storage objects for this user prefix as a fallback
+          try {
+            const listRes = await supabase.storage.from("documents").list("", { limit: 1000 });
+            if (listRes?.data && Array.isArray(listRes.data)) {
+              let total = 0;
+              for (const f of listRes.data) {
+                const maybeSize = (f as any).size ?? (f as any).metadata?.size ?? null;
+                if (typeof maybeSize === "number") total += maybeSize;
+              }
+              setStorageUsedBytes(total || null);
             }
-            setStorageUsedBytes(total || null);
+          } catch (err) {
+            // ignore storage list issues - optional feature
           }
-        } catch (err) {
-          // ignore storage list issues - optional feature
         }
       } catch (err) {
         console.info("Error fetching user docs", err);

@@ -17,6 +17,7 @@ interface DocumentType {
   created_at?: string;
   expiration_date?: string;
   reminder_at?: string;
+  size?: number;
 }
 
 interface UserType {
@@ -133,6 +134,7 @@ export default function CategoryPage() {
           name: file.name,
           path: filePath,
           url: publicUrl,
+          // size: file.size, // removed to match schema
           userID: user.id,
           category,
           expiration_date: expirationDate || null,
