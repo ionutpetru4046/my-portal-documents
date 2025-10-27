@@ -194,7 +194,7 @@ export default function ProfilePage() {
                     notifList.map(n => (
                       <div key={n.id + n.type} className="p-4 border-b border-slate-800 hover:bg-slate-800/50 transition-colors last:border-b-0">
                         <div className="flex items-start gap-3">
-                          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                          <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
                             n.type === 'expiring' ? 'bg-red-500' : 
                             n.type === 'expired' ? 'bg-slate-500' : 'bg-yellow-500'
                           }`}></div>
@@ -225,7 +225,7 @@ export default function ProfilePage() {
           <Reveal animation="fade-up">
             <div className="lg:col-span-1">
               <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
-                <div className="h-24 bg-gradient-to-r from-blue-600 to-purple-600"></div>
+                <div className="h-24 bg-linear-to-r from-blue-600 to-purple-600"></div>
                 <div className="p-6 relative">
                   <div className="flex flex-col items-center -mt-16 mb-6">
                     <div className="relative group mb-4">
@@ -378,7 +378,7 @@ export default function ProfilePage() {
                       <div key={doc.id} className="p-4 hover:bg-slate-800/50 transition-colors">
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                            <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
                               {doc.name.charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
@@ -387,7 +387,7 @@ export default function ProfilePage() {
                             </div>
                           </div>
                           {doc.expiration_date && (
-                            <div className="text-right flex-shrink-0">
+                            <div className="text-right shrink-0">
                               <p className="text-xs text-slate-400">Expires</p>
                               <p className="text-sm font-medium text-white">{formatDate(doc.expiration_date)}</p>
                             </div>
@@ -421,7 +421,7 @@ export default function ProfilePage() {
                       <p className="text-xs text-slate-400 mt-1">Permanently delete your account and all associated data</p>
                     </div>
                     <Button 
-                      className="bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg px-4 py-2.5 font-medium transition-colors flex-shrink-0"
+                      className="bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg px-4 py-2.5 font-medium transition-colors shrink-0"
                       onClick={() => {
                         if (confirm("Are you sure? This cannot be undone.")) {
                           toast.error("Account deletion will be implemented");
