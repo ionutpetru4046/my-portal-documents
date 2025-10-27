@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
+import { useCallback } from "react";
 
 interface DocumentType {
   id: string;
@@ -37,6 +38,11 @@ export default function CategoryPage() {
   const [expirationDate, setExpirationDate] = useState("");
   const [reminderAt, setReminderAt] = useState("");
   const [uploading, setUploading] = useState(false);
+  // Image viewer state
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [viewerIndex, setViewerIndex] = useState(0);
+
+  const imageDocs = documents.filter((d) => d.url && d.name && /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(d.name));
 
   if (!category) return <p className="p-6">Category not found.</p>;
 
@@ -148,6 +154,34 @@ export default function CategoryPage() {
     setUploading(false);
   };
 
+  // Image viewer controls
+  const openViewer = (index: number) => {
+    setViewerIndex(index);
+    setIsViewerOpen(true);
+  };
+
+  const closeViewer = () => setIsViewerOpen(false);
+
+  const showPrev = () => setViewerIndex((i) => (i - 1 + imageDocs.length) % imageDocs.length);
+  const showNext = () => setViewerIndex((i) => (i + 1) % imageDocs.length);
+
+  // keyboard navigation
+  useEffect(() => {
+    if (!isViewerOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "Escape") closeViewer();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isViewerOpen, imageDocs.length]);
+
+  // prevent scroll when viewer open
+  useEffect(() => {
+    document.body.style.overflow = isViewerOpen ? "hidden" : "";
+  }, [isViewerOpen]);
+
   // Delete document
   const handleDelete = async (doc: DocumentType) => {
     if (!doc.path || !doc.id) return;
@@ -192,54 +226,64 @@ export default function CategoryPage() {
   const displayName = catStr.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto">
-  <Toaster position="top-right" />
+    <main className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto">
+      <Toaster position="top-right" />
 
-  {/* Header */}
-  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-    <div className="flex items-center gap-3">
-      <button
-        onClick={() => {
-          // Prefer history back, fallback to dashboard route
-          if (typeof window !== "undefined" && window.history.length > 1) router.back();
-          else router.push("/dashboard");
-        }}
-        className="inline-flex items-center px-3 py-2 rounded-lg bg-white shadow-sm hover:shadow md:py-2 md:px-3 text-sm text-gray-700"
-      >
-        ← Back
-      </button>
-      <h1 className="text-3xl font-bold text-gray-900 capitalize">{displayName}</h1>
-    </div>
-    <p className="text-gray-500 mt-2 sm:mt-0">
-      Manage and track your documents efficiently
-    </p>
-  </div>
+      {/* Header */}
+      <div className="mb-6">
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined" && window.history.length > 1) router.back();
+                else router.push("/dashboard");
+              }}
+              aria-label="Go back"
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-white border shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-transform duration-150 text-gray-700"
+            >
+              <span className="text-lg">←</span>
+            </button>
+
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{displayName}</h1>
+              <p className="text-sm text-gray-500 mt-1">Manage and track your documents efficiently</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="px-3 py-2 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium">Category</span>
+              <span className="text-sm text-gray-600">{displayName}</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
   {/* Upload Section */}
-  <div className="bg-white rounded-2xl shadow p-6 flex flex-col sm:flex-row gap-4 mb-8">
+  <div className="bg-white rounded-2xl shadow p-6 flex flex-col sm:flex-row gap-4 mb-8 border border-gray-100">
     <input
       type="file"
       onChange={(e) => setFile(e.target.files?.[0] || null)}
-      className="border border-gray-300 rounded-lg p-2 flex-1 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      className="border border-dashed border-gray-200 rounded-lg p-3 flex-1 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-gray-50"
     />
     <Input
       type="date"
       value={expirationDate}
       onChange={(e) => setExpirationDate(e.target.value)}
       placeholder="Expiration date"
-      className="flex-1 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
+      className="flex-1 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-400 bg-white"
     />
     <Input
       type="datetime-local"
       value={reminderAt}
       onChange={(e) => setReminderAt(e.target.value)}
       placeholder="Reminder"
-      className="flex-1 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400"
+      className="flex-1 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-400 bg-white"
     />
     <Button
       onClick={handleUpload}
       disabled={!file || uploading}
-      className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-6 py-2 shadow-md disabled:opacity-50 transition"
+      className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-6 py-2 shadow-md disabled:opacity-50 transition transform hover:-translate-y-0.5"
     >
       {uploading ? "Uploading..." : "Upload"}
     </Button>
@@ -256,21 +300,27 @@ export default function CategoryPage() {
         const expiresIn = daysUntil(doc.expiration_date);
         const reminderIn = daysUntil(doc.reminder_at);
 
-        return (
+          return (
           <div
             key={doc.id}
-            className="bg-white rounded-2xl shadow hover:shadow-xl transition p-4 flex flex-col"
+            className="bg-white rounded-2xl shadow hover:shadow-xl transition p-4 flex flex-col group"
           >
             {/* Preview */}
             {isImage(doc.name) && doc.url ? (
-              <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-3">
+              <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-3 bg-gray-50">
+                <button
+                  onClick={() => openViewer(imageDocs.findIndex((d) => d.id === doc.id))}
+                  className="absolute inset-0 z-20"
+                  aria-label={`Open ${doc.name} viewer`}
+                />
                 <Image
                   src={doc.url}
                   alt={doc.name}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="100vw"
                 />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
               </div>
             ) : (
               <div className="w-full h-44 bg-gray-100 flex items-center justify-center rounded-2xl text-gray-400 text-5xl mb-3">
@@ -331,6 +381,51 @@ export default function CategoryPage() {
           </div>
         );
       })}
+    </div>
+  )}
+
+  {/* Image viewer modal */}
+  {isViewerOpen && imageDocs.length > 0 && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+      <div className="relative max-w-[90vw] max-h-[90vh] w-full">
+        <button
+          onClick={closeViewer}
+          className="absolute top-4 right-4 z-40 bg-white/80 rounded-full p-2 hover:bg-white"
+          aria-label="Close viewer"
+        >
+          ✕
+        </button>
+
+        <button
+          onClick={showPrev}
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-40 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
+          aria-label="Previous image"
+        >
+          ‹
+        </button>
+
+        <div className="w-full h-[80vh] flex items-center justify-center">
+          <Image
+            src={imageDocs[viewerIndex].url!}
+            alt={imageDocs[viewerIndex].name || "image"}
+            width={1200}
+            height={800}
+            className="object-contain max-h-[80vh]"
+          />
+        </div>
+
+        <button
+          onClick={showNext}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-40 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
+          aria-label="Next image"
+        >
+          ›
+        </button>
+
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 text-white text-sm">
+          {viewerIndex + 1} / {imageDocs.length}
+        </div>
+      </div>
     </div>
   )}
 </main>
