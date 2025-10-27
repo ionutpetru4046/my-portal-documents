@@ -1,13 +1,12 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
-import { useCallback } from "react";
 
 interface DocumentType {
   id: string;
@@ -41,6 +40,7 @@ export default function CategoryPage() {
   // Image viewer state
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
 
   const imageDocs = documents.filter((d) => d.url && d.name && /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(d.name));
 
@@ -181,6 +181,17 @@ export default function CategoryPage() {
   useEffect(() => {
     document.body.style.overflow = isViewerOpen ? "hidden" : "";
   }, [isViewerOpen]);
+
+  // touch swipe support
+  const touchStartRef = useRef<number | null>(null);
+
+  // animate fade when switching images
+  useEffect(() => {
+    if (!isViewerOpen) return;
+    setIsFading(true);
+    const t = setTimeout(() => setIsFading(false), 220);
+    return () => clearTimeout(t);
+  }, [viewerIndex, isViewerOpen]);
 
   // Delete document
   const handleDelete = async (doc: DocumentType) => {
@@ -384,13 +395,29 @@ export default function CategoryPage() {
     </div>
   )}
 
-  {/* Image viewer modal */}
+  {/* Image viewer modal with thumbnails + animated transition */}
   {isViewerOpen && imageDocs.length > 0 && (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <div className="relative max-w-[90vw] max-h-[90vh] w-full">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+      onTouchStart={(e) => {
+        touchStartRef.current = e.touches?.[0]?.clientX ?? null;
+      }}
+      onTouchEnd={(e) => {
+        const start = touchStartRef.current ?? 0;
+        const end = e.changedTouches?.[0]?.clientX ?? 0;
+        const dx = end - start;
+        const threshold = 50; // px
+        if (Math.abs(dx) > threshold) {
+          if (dx > 0) showPrev();
+          else showNext();
+        }
+        touchStartRef.current = null;
+      }}
+    >
+      <div className="relative max-w-[90vw] max-h-[90vh] w-full px-4">
         <button
           onClick={closeViewer}
-          className="absolute top-4 right-4 z-40 bg-white/80 rounded-full p-2 hover:bg-white"
+          className="absolute top-4 right-4 z-50 bg-white/90 rounded-full p-2 hover:bg-white"
           aria-label="Close viewer"
         >
           ✕
@@ -398,32 +425,65 @@ export default function CategoryPage() {
 
         <button
           onClick={showPrev}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-40 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-50 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
           aria-label="Previous image"
         >
           ‹
         </button>
 
         <div className="w-full h-[80vh] flex items-center justify-center">
-          <Image
-            src={imageDocs[viewerIndex].url!}
-            alt={imageDocs[viewerIndex].name || "image"}
-            width={1200}
-            height={800}
-            className="object-contain max-h-[80vh]"
-          />
+          {/* main image container with fade animation */}
+          <div
+            className={`w-full flex items-center justify-center transition-opacity duration-300 ${
+              isFading ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <Image
+              key={imageDocs[viewerIndex].id}
+              src={imageDocs[viewerIndex].url!}
+              alt={imageDocs[viewerIndex].name || "image"}
+              width={1200}
+              height={800}
+              className="object-contain max-h-[80vh]"
+            />
+          </div>
         </div>
 
         <button
           onClick={showNext}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-40 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-50 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
           aria-label="Next image"
         >
           ›
         </button>
 
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 text-white text-sm">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 text-white text-sm">
           {viewerIndex + 1} / {imageDocs.length}
+        </div>
+
+        {/* Thumbnails strip */}
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 w-[min(90vw,900px)]">
+          <div className="bg-black/40 backdrop-blur-sm rounded-xl px-3 py-2 flex items-center gap-2 overflow-x-auto max-w-full">
+            {imageDocs.map((img, idx) => (
+              <button
+                key={img.id}
+                onClick={() => setViewerIndex(idx)}
+                className={`relative rounded-md shrink-0 w-24 h-14 overflow-hidden transition-transform duration-200 ${
+                  idx === viewerIndex
+                    ? "ring-2 ring-indigo-400 scale-105"
+                    : "opacity-80 hover:opacity-100"
+                }`}
+                aria-label={`Open thumbnail ${idx + 1}`}
+              >
+                <Image src={img.url!} alt={img.name || `thumb-${idx}`} fill className="object-cover" sizes="96px" />
+                <div
+                  className={`absolute inset-0 ring-0 transition-opacity duration-150 ${
+                    idx === viewerIndex ? "ring-0" : ""
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
