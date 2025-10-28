@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiChevronDown, FiFileText, FiUsers, FiClock, FiBook, FiMail, FiSettings, FiLogOut, FiUser, FiGrid, FiX, FiMenu } from "react-icons/fi";
+import { FiChevronDown, FiFileText, FiUsers, FiClock, FiBook, FiMail, FiSettings, FiLogOut, FiUser, FiGrid, FiX, FiMenu, FiHelpCircle, FiHome, FiDollarSign } from "react-icons/fi";
 import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 
@@ -15,10 +15,12 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [adminDropdown, setAdminDropdown] = useState(false);
-  const [resourcesDropdown, setResourcesDropdown] = useState(false);
+  const [quickLinksDropdown, setQuickLinksDropdown] = useState(false);
+  const [supportDropdown, setSupportDropdown] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const adminRef = useRef<HTMLDivElement | null>(null);
-  const resourcesRef = useRef<HTMLDivElement | null>(null);
+  const quickLinksRef = useRef<HTMLDivElement | null>(null);
+  const supportRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -66,8 +68,11 @@ export default function Navbar() {
       if (adminRef.current && !adminRef.current.contains(e.target as Node)) {
         setAdminDropdown(false);
       }
-      if (resourcesRef.current && !resourcesRef.current.contains(e.target as Node)) {
-        setResourcesDropdown(false);
+      if (quickLinksRef.current && !quickLinksRef.current.contains(e.target as Node)) {
+        setQuickLinksDropdown(false);
+      }
+      if (supportRef.current && !supportRef.current.contains(e.target as Node)) {
+        setSupportDropdown(false);
       }
     }
     document.addEventListener("mousedown", onClickOutside);
@@ -86,6 +91,18 @@ export default function Navbar() {
     }`;
 
   const isAdmin = user?.role === "admin";
+
+  const quickLinksData = [
+    { icon: FiHome, href: "/", label: "Home", description: "Back to homepage", color: "blue" },
+    { icon: FiDollarSign, href: "/subscribe", label: "Pricing", description: "View our plans", color: "purple" },
+    { icon: FiBook, href: "/about", label: "About Us", description: "Learn our story", color: "cyan" },
+  ];
+
+  const supportData = [
+    { icon: FiHelpCircle, href: "/help", label: "Help Center", description: "Find answers", color: "blue" },
+    { icon: FiMail, href: "/contact", label: "Contact Support", description: "Get in touch", color: "purple" },
+    { icon: FiFileText, href: "/terms", label: "Terms & Privacy", description: "Legal docs", color: "cyan" },
+  ];
 
   return (
     <nav className="sticky top-0 bg-slate-900 border-b border-slate-800 backdrop-blur-xl z-50">
@@ -117,16 +134,16 @@ export default function Navbar() {
               </Link>
             )}
 
-            {/* Resources Dropdown */}
-            <div className="relative" ref={resourcesRef}>
+            {/* Quick Links Dropdown */}
+            <div className="relative" ref={quickLinksRef}>
               <button
-                onClick={() => setResourcesDropdown(!resourcesDropdown)}
+                onClick={() => setQuickLinksDropdown(!quickLinksDropdown)}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-all font-medium text-sm"
               >
-                Resources <FiChevronDown size={16} className={`transition-transform duration-300 ${resourcesDropdown ? 'rotate-180' : ''}`} />
+                Quick Links <FiChevronDown size={16} className={`transition-transform duration-300 ${quickLinksDropdown ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
-                {resourcesDropdown && (
+                {quickLinksDropdown && (
                   <motion.div
                     initial={{ opacity: 0, y: 8, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -134,45 +151,60 @@ export default function Navbar() {
                     transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 mt-2 w-56 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
                   >
-                    <Link
-                      href="/about"
-                      className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                      onClick={() => setResourcesDropdown(false)}
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition">
-                        <FiBook size={18} className="text-blue-400" />
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">About Us</div>
-                        <div className="text-xs text-slate-400">Learn our story</div>
-                      </div>
-                    </Link>
-                    <Link
-                      href="/contact"
-                      className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                      onClick={() => setResourcesDropdown(false)}
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-purple-500/20 flex items-center justify-center group-hover:bg-purple-500/30 transition">
-                        <FiMail size={18} className="text-purple-400" />
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">Contact</div>
-                        <div className="text-xs text-slate-400">Get in touch</div>
-                      </div>
-                    </Link>
-                    <Link
-                      href="/subscribe"
-                      className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                      onClick={() => setResourcesDropdown(false)}
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/30 transition">
-                        <FiFileText size={18} className="text-cyan-400" />
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">Pricing</div>
-                        <div className="text-xs text-slate-400">View plans</div>
-                      </div>
-                    </Link>
+                    {quickLinksData.map(({ icon: Icon, href, label, description, color }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
+                        onClick={() => setQuickLinksDropdown(false)}
+                      >
+                        <div className={`w-9 h-9 rounded-lg bg-${color}-500/20 flex items-center justify-center group-hover:bg-${color}-500/30 transition`}>
+                          <Icon size={18} className={`text-${color}-400`} />
+                        </div>
+                        <div>
+                          <div className="font-medium text-sm">{label}</div>
+                          <div className="text-xs text-slate-400">{description}</div>
+                        </div>
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Support Dropdown */}
+            <div className="relative" ref={supportRef}>
+              <button
+                onClick={() => setSupportDropdown(!supportDropdown)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-all font-medium text-sm"
+              >
+                Support <FiChevronDown size={16} className={`transition-transform duration-300 ${supportDropdown ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {supportDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-2 w-56 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
+                  >
+                    {supportData.map(({ icon: Icon, href, label, description, color }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
+                        onClick={() => setSupportDropdown(false)}
+                      >
+                        <div className={`w-9 h-9 rounded-lg bg-${color}-500/20 flex items-center justify-center group-hover:bg-${color}-500/30 transition`}>
+                          <Icon size={18} className={`text-${color}-400`} />
+                        </div>
+                        <div>
+                          <div className="font-medium text-sm">{label}</div>
+                          <div className="text-xs text-slate-400">{description}</div>
+                        </div>
+                      </Link>
+                    ))}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -459,19 +491,33 @@ export default function Navbar() {
                 )}
 
                 <div className="my-4 pt-4 border-t border-slate-800">
-                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Resources</div>
-                  <Link href="/about" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
-                    <FiBook className="w-5 h-5 text-blue-400" />
-                    <span className="text-sm">About Us</span>
-                  </Link>
-                  <Link href="/contact" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
-                    <FiMail className="w-5 h-5 text-purple-400" />
-                    <span className="text-sm">Contact</span>
-                  </Link>
-                  <Link href="/subscribe" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
-                    <FiFileText className="w-5 h-5 text-cyan-400" />
-                    <span className="text-sm">Pricing</span>
-                  </Link>
+                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Quick Links</div>
+                  {quickLinksData.map(({ icon: Icon, href, label }) => (
+                    <Link 
+                      key={href}
+                      href={href} 
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" 
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <Icon className="w-5 h-5 text-blue-400" />
+                      <span className="text-sm">{label}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="my-4 pt-4 border-t border-slate-800">
+                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Support</div>
+                  {supportData.map(({ icon: Icon, href, label }) => (
+                    <Link 
+                      key={href}
+                      href={href} 
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" 
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <Icon className="w-5 h-5 text-purple-400" />
+                      <span className="text-sm">{label}</span>
+                    </Link>
+                  ))}
                 </div>
 
                 {isAdmin && (
