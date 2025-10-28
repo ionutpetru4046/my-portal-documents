@@ -4,23 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiArrowRight, FiMail, FiLock, FiCheckCircle } from "react-icons/fi";
 import { cn } from "@/lib/utils";
@@ -75,7 +61,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
@@ -83,12 +69,12 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             y: [0, -50, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
       {/* Grid Pattern Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.1)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.1)_1px,transparent_1px)] bg-size-[40px_40px] pointer-events-none" />
 
       {/* Content */}
       <motion.div
@@ -102,7 +88,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 mb-6 mx-auto shadow-lg"
+            className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-linear-to-br from-blue-500 to-purple-600 mb-6 mx-auto shadow-lg"
           >
             <span className="text-2xl font-bold text-white">D</span>
           </motion.div>
@@ -117,7 +103,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
         >
           <div className="backdrop-blur-xl bg-slate-900/80 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
             {/* Gradient Header */}
-            <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500" />
+            <div className="h-1 bg-linear-to-r from-blue-500 via-purple-500 to-cyan-500" />
 
             <div className="p-8 md:p-10 space-y-6">
               {/* Form */}
@@ -138,7 +124,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                     className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     required
                   />
-                  <p className="text-xs text-slate-500">We won't share your email with anyone else.</p>
+                  <p className="text-xs text-slate-500">We won&apos;t share your email with anyone else.</p>
                 </div>
 
                 {/* Password Field */}
@@ -185,7 +171,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                   disabled={loading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-slate-700 disabled:to-slate-700 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group mt-6"
+                  className="w-full py-3 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-slate-700 disabled:to-slate-700 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group mt-6"
                 >
                   {loading ? (
                     <motion.div
