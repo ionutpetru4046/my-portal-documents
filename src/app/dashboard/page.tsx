@@ -7,6 +7,8 @@ import FolderCard from "@/components/FolderCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabaseClient";
+import { motion } from "framer-motion";
+import { FiSearch, FiPlus, FiArrowRight } from "react-icons/fi";
 
 interface DocRow {
   id: string;
@@ -102,68 +104,119 @@ export default function DashboardHome() {
   }, [query]);
 
   return (
-    <main className="min-h-screen bg-linear-to-b from-neutral-50 to-white p-6 sm:p-10 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Your Documents</h1>
-          <p className="text-sm text-gray-500 mt-1">Organize and access your files by category.</p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:block">
-            <Link href="/upload">
-              <Button variant="default" size="default" className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                Upload
-              </Button>
-            </Link>
-          </div>
-          <div className="w-full sm:w-auto">
-            <Input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search categories..."
-              className="w-64 sm:w-80"
-            />
-          </div>
-        </div>
+    <main className="min-h-screen bg-slate-950 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <motion.div
+          animate={{ 
+            x: [0, 100, 0],
+            y: [0, 50, 0]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ 
+            x: [0, -100, 0],
+            y: [0, -50, 0]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+        />
       </div>
 
-      {/* Quick stats */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-sm text-gray-500">Total Categories</h3>
-          <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
-        </div>
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-sm text-gray-500">Recent Upload</h3>
-          <p className="text-sm text-gray-700">
-            {recentUpload ? new Date(recentUpload).toLocaleString() : "—"}
-          </p>
-        </div>
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-sm text-gray-500">Storage Used</h3>
-          <p className="text-sm text-gray-700">
-            {storageUsedBytes != null ? `${(storageUsedBytes / 1024 / 1024).toFixed(2)} MB` : "—"}
-          </p>
-        </div>
-      </section>
+      {/* Grid Pattern */}
+      <div className="fixed inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none -z-10" />
 
-      {/* Categories grid */}
-      <section>
-        <h2 className="sr-only">Categories</h2>
-        {filtered.length === 0 ? (
-          <div className="py-20 bg-white rounded-2xl shadow-sm border border-gray-100 text-center">
-            <p className="text-gray-500">No categories match your search.</p>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8"
+        >
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white">Your Documents</h1>
+            <p className="text-slate-400 text-sm mt-1">Organize and access your files by category.</p>
           </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-            {filtered.map((cat, i) => (
-              <FolderCard key={cat.slug} {...cat} index={i} mounted={mounted} docs={docs} />
-            ))}
+
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:block">
+              <Link href="/upload">
+                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold flex items-center gap-2 rounded-lg px-6 py-2.5 transition-all shadow-lg hover:shadow-blue-500/20 group">
+                  <FiPlus className="w-5 h-5" />
+                  Upload
+                  <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+            <div className="w-full sm:w-auto">
+              <div className="relative">
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" />
+                <Input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search categories..."
+                  className="w-full sm:w-64 pl-10 py-2.5 bg-slate-900 border border-slate-800 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+              </div>
+            </div>
           </div>
-        )}
-      </section>
+        </motion.div>
+
+        {/* Quick stats */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8"
+        >
+          <div className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 p-6 rounded-lg transition-all hover:shadow-lg hover:shadow-blue-500/10">
+            <h3 className="text-xs text-slate-400 font-medium uppercase tracking-wide">Total Categories</h3>
+            <p className="text-3xl font-bold text-white mt-3">{categories.length}</p>
+          </div>
+          <div className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 p-6 rounded-lg transition-all hover:shadow-lg hover:shadow-purple-500/10">
+            <h3 className="text-xs text-slate-400 font-medium uppercase tracking-wide">Recent Upload</h3>
+            <p className="text-sm text-slate-300 mt-3">
+              {recentUpload ? new Date(recentUpload).toLocaleString() : "—"}
+            </p>
+          </div>
+          <div className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 p-6 rounded-lg transition-all hover:shadow-lg hover:shadow-cyan-500/10">
+            <h3 className="text-xs text-slate-400 font-medium uppercase tracking-wide">Storage Used</h3>
+            <p className="text-sm text-slate-300 mt-3">
+              {storageUsedBytes != null ? `${(storageUsedBytes / 1024 / 1024).toFixed(2)} MB` : "—"}
+            </p>
+          </div>
+        </motion.section>
+
+        {/* Categories grid */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h2 className="sr-only">Categories</h2>
+          {filtered.length === 0 ? (
+            <div className="py-20 bg-slate-900/50 border border-slate-800 rounded-lg text-center backdrop-blur-xl">
+              <p className="text-slate-400">No categories match your search.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {filtered.map((cat, i) => (
+                <motion.div
+                  key={cat.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <FolderCard {...cat} index={i} mounted={mounted} docs={docs} />
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </motion.section>
+      </div>
     </main>
   );
 }
