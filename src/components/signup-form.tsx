@@ -84,14 +84,6 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
         className="relative w-full max-w-md"
       >
         <div className="mb-8 text-center">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-linear-to-br from-blue-500 to-purple-600 mb-6 mx-auto shadow-lg"
-          >
-            <span className="text-2xl font-bold text-white">D</span>
-          </motion.div>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Get Started</h1>
           <p className="text-slate-400">Create your account and start managing documents</p>
         </div>
