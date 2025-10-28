@@ -51,7 +51,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   };
 
   return (
-    <div className={cn("min-h-screen flex items-center justify-center px-4 py-8 bg-slate-950 relative overflow-hidden", className)} {...props}>
+    <div className={cn("min-h-screen min-w-full flex items-center justify-center px-4 py-8 bg-slate-950 relative overflow-hidden", className)} {...props}>
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div

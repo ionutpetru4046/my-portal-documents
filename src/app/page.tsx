@@ -79,7 +79,7 @@ export default function HomePage() {
               y: [0, 50, 0]
             }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl"
+            className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-linear-to-br from-blue-500/20 to-purple-500/20 blur-3xl"
           />
           <motion.div
             animate={{ 
@@ -87,12 +87,12 @@ export default function HomePage() {
               y: [0, -50, 0]
             }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-gradient-to-br from-purple-500/20 to-cyan-500/20 blur-3xl"
+            className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-linear-to-br from-purple-500/20 to-cyan-500/20 blur-3xl"
           />
         </div>
 
         {/* Grid Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -102,10 +102,10 @@ export default function HomePage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
               >
                 <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                <span className="text-sm font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <span className="text-sm font-semibold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   Welcome to DocuVault
                 </span>
               </motion.div>
@@ -115,7 +115,7 @@ export default function HomePage() {
             <Reveal animation="fade-up" delay={50}>
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white mt-6 mb-6">
                 Secure Document<br />
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
                   Management Made Simple
                 </span>
               </h1>
@@ -137,7 +137,7 @@ export default function HomePage() {
                 >
                   <Link
                     href="/signup"
-                    className="px-8 py-4 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-blue-500/20 transition-all flex items-center gap-2 group"
+                    className="px-8 py-4 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-blue-500/20 transition-all flex items-center gap-2 group"
                   >
                     Get Started Free
                     <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -205,7 +205,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                <div className="text-4xl md:text-5xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
                 <div className="text-slate-400 font-medium">{stat.label}</div>
@@ -242,9 +242,9 @@ export default function HomePage() {
                 <Reveal key={feature.title} animation="fade-up" delay={50 + i * 50}>
                   <motion.div
                     whileHover={{ y: -8 }}
-                    className={`group backdrop-blur-xl bg-gradient-to-br ${colorMap[feature.color as keyof typeof colorMap]} border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10`}
+                    className={`group backdrop-blur-xl bg-linear-to-br ${colorMap[feature.color as keyof typeof colorMap]} border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10`}
                   >
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorMap[feature.color as keyof typeof colorMap].split(' ')[0]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${colorMap[feature.color as keyof typeof colorMap].split(' ')[0]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                       <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
@@ -272,7 +272,7 @@ export default function HomePage() {
                 >
                   <motion.div
                     whileHover={{ x: isFirst ? 8 : -8 }}
-                    className="backdrop-blur-xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-800 hover:border-slate-700 rounded-2xl p-8 md:p-10 transition-all duration-300"
+                    className="backdrop-blur-xl bg-linear-to-br from-slate-800/50 to-slate-900/50 border border-slate-800 hover:border-slate-700 rounded-2xl p-8 md:p-10 transition-all duration-300"
                   >
                     <div className={`w-12 h-12 rounded-xl ${isFirst ? 'bg-blue-500/20' : 'bg-purple-500/20'} flex items-center justify-center mb-6`}>
                       <Icon className={`w-6 h-6 ${isFirst ? 'text-blue-400' : 'text-purple-400'}`} />
@@ -305,7 +305,7 @@ export default function HomePage() {
 
       {/* Final CTA Section */}
       <section className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20 blur-3xl -z-10" />
+        <div className="absolute inset-0 bg-linear-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20 blur-3xl -z-10" />
         
         <div className="max-w-4xl mx-auto text-center">
           <Reveal animation="fade-in">
