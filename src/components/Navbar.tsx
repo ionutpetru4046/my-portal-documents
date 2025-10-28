@@ -110,7 +110,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition group">
-            <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               <Image
                 src="/Digital-document-logo.png"
                 alt="DocuVault logo"
@@ -281,7 +281,7 @@ export default function Navbar() {
                           className="w-7 h-7 rounded-lg object-cover border border-slate-600 group-hover:border-slate-500 transition"
                         />
                       ) : (
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
+                        <div className="w-7 h-7 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
                           <span className="text-xs font-bold text-white">
                             {user.name?.charAt(0).toUpperCase() || "U"}
                           </span>
@@ -291,7 +291,7 @@ export default function Navbar() {
                         {user.name}
                       </span>
                     </div>
-                    <FiChevronDown size={16} className={`text-slate-400 flex-shrink-0 transition-transform duration-300 ${menuOpen ? 'rotate-180' : ''}`} />
+                    <FiChevronDown size={16} className={`text-slate-400 shrink-0 transition-transform duration-300 ${menuOpen ? 'rotate-180' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {menuOpen && (
@@ -351,7 +351,7 @@ export default function Navbar() {
                     </Button>
                   </Link>
                   <Link href="/signup">
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
+                    <Button className="bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
                       Get Started
                     </Button>
                   </Link>
@@ -370,7 +370,7 @@ export default function Navbar() {
                     {user.avatar ? (
                       <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-lg object-cover" />
                     ) : (
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                      <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
                         {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
@@ -445,7 +445,7 @@ export default function Navbar() {
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                     <Image src="/Digital-document-logo.png" alt="Logo" width={40} height={40} className="rounded-lg" />
                   </div>
                   <span className="text-lg font-bold">Menu</span>
@@ -465,7 +465,7 @@ export default function Navbar() {
                     {user.avatar ? (
                       <img src={user.avatar} alt="avatar" className="w-12 h-12 rounded-lg object-cover border-2 border-slate-700" />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
+                      <div className="w-12 h-12 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
                         {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
@@ -569,7 +569,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/signup"
-                      className="block px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
+                      className="block px-4 py-3 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
                       onClick={() => setMobileOpen(false)}
                     >
                       Get Started
