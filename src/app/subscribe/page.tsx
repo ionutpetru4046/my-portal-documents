@@ -57,7 +57,7 @@ export default function SubscribePage() {
     {
       name: "Pro",
       icon: FiZap,
-      price: { monthly: "$9", annual: "$99" },
+      price: { monthly: "$10", annual: "$120" },
       period: billingCycle === "annual" ? "/year" : "/month",
       description: "For growing teams",
       features: [
@@ -79,7 +79,7 @@ export default function SubscribePage() {
     {
       name: "Business",
       icon: FiStar,
-      price: { monthly: "$29", annual: "$319" },
+      price: { monthly: "$45", annual: "$250" },
       period: billingCycle === "annual" ? "/year" : "/month",
       description: "For established companies",
       features: [
@@ -200,7 +200,7 @@ export default function SubscribePage() {
         transition={{ duration: 0.6 }}
         className="relative text-center pt-16 md:pt-20 pb-12 md:pb-16 px-4"
       >
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text">
           Simple, Transparent Pricing
         </h1>
         <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
@@ -272,7 +272,7 @@ export default function SubscribePage() {
                 {/* Badge */}
                 {plan.badge && (
                   <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                    <div className="bg-linear-to-r from-blue-600 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                       {plan.badge}
                     </div>
                   </div>
@@ -306,7 +306,7 @@ export default function SubscribePage() {
                   <ul className="space-y-3 mb-8 flex-1">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3 text-slate-300 text-sm">
-                        <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
+                        <div className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
                           plan.highlight
                             ? "bg-blue-500/20"
                             : "bg-slate-700"
