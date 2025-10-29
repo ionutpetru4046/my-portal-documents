@@ -188,7 +188,7 @@ export default function TermsPage() {
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
@@ -196,12 +196,12 @@ export default function TermsPage() {
             y: [0, -50, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
       {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none -z-10" />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Header */}
@@ -254,13 +254,13 @@ export default function TermsPage() {
             return (
               <motion.div key={index} variants={itemVariants}>
                 <motion.div
-                  className={`backdrop-blur-xl bg-gradient-to-br ${colorClass} border rounded-xl overflow-hidden transition-all group cursor-pointer hover:shadow-lg hover:shadow-slate-800`}
+                  className={`backdrop-blur-xl bg-linear-to-br ${colorClass} border rounded-xl overflow-hidden transition-all group cursor-pointer hover:shadow-lg hover:shadow-slate-800`}
                   onClick={() => toggleSection(index)}
                   whileHover={{ y: -2 }}
                 >
                   <div className="p-6 md:p-7 flex items-start justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1 min-w-0">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass.split(' ')[0]} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                      <div className={`w-10 h-10 rounded-lg bg-linear-to-br ${colorClass.split(' ')[0]} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
                         <Icon className="w-5 h-5" />
                       </div>
                       <h2 className="text-lg md:text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
@@ -271,7 +271,7 @@ export default function TermsPage() {
                     <motion.div
                       animate={{ rotate: openIndex === index ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
-                      className="flex-shrink-0 mt-1"
+                      className="shrink-0 mt-1"
                     >
                       <FiChevronDown className="w-5 h-5 text-slate-400 group-hover:text-slate-300 transition-colors" />
                     </motion.div>
@@ -329,7 +329,7 @@ export default function TermsPage() {
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
           >
             Contact Us
           </a>
