@@ -53,7 +53,7 @@ export default function DashboardHome() {
           .select("id, category, created_at, path")
           .eq("userID", userId);
         const data = res.data as DocRow[] | null;
-        const error = (res as any).error ?? null;
+        const error = (res as { error: { message: string } | null }).error as { message: string } | null;
 
         if (error) {
           console.info("Failed to fetch documents for stats:", error.message);
@@ -113,7 +113,7 @@ export default function DashboardHome() {
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
@@ -121,12 +121,12 @@ export default function DashboardHome() {
             y: [0, -50, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
       {/* Grid Pattern */}
-      <div className="fixed inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none -z-10" />
+      <div className="fixed inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none -z-10" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         <motion.div
@@ -141,15 +141,6 @@ export default function DashboardHome() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:block">
-              <Link href="/upload">
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold flex items-center gap-2 rounded-lg px-6 py-2.5 transition-all shadow-lg hover:shadow-blue-500/20 group">
-                  <FiPlus className="w-5 h-5" />
-                  Upload
-                  <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </div>
             <div className="w-full sm:w-auto">
               <div className="relative">
                 <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" />
