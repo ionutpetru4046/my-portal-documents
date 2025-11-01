@@ -274,7 +274,7 @@ export default function DocumentsDashboard({ category }: DocumentsDashboardProps
       setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
       setFilteredDocs((prev) => prev.filter((d) => d.id !== doc.id));
       toast.success("Document deleted successfully!");
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error(err.message);
     }
   };

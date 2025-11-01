@@ -180,7 +180,7 @@ export default function FAQPage() {
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
@@ -188,12 +188,12 @@ export default function FAQPage() {
             y: [0, -50, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
       {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -204,10 +204,10 @@ export default function FAQPage() {
           className="text-center mb-12 md:mb-16"
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Frequently Asked <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Questions</span>
+            Frequently Asked <span className="bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Questions</span>
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Find answers to common questions about DocuVault. Can't find what you're looking for?{" "}
+            Find answers to common questions about DocuVault. Can&apos;t find what you&apos;re looking for?{" "}
             <a href="/contact" className="text-blue-400 hover:text-blue-300 transition">Contact our support team</a>
           </p>
         </motion.div>
@@ -245,7 +245,7 @@ export default function FAQPage() {
               onClick={() => handleCategoryClick(null)}
               className={`px-6 py-2.5 rounded-lg font-semibold transition-all ${
                 activeCategory === null
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                  ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                   : "bg-slate-800 hover:bg-slate-700 text-slate-300"
               }`}
             >
@@ -269,7 +269,7 @@ export default function FAQPage() {
                   onClick={() => handleCategoryClick(category.id)}
                   className={`px-6 py-2.5 rounded-lg font-semibold transition-all flex items-center gap-2 ${
                     activeCategory === category.id
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                      ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                       : `${colorMap[category.color as keyof typeof colorMap]} border border-slate-700 hover:border-slate-600`
                   }`}
                 >
@@ -327,17 +327,17 @@ export default function FAQPage() {
           viewport={{ once: true }}
           className="mt-16 md:mt-20 text-center"
         >
-          <div className="backdrop-blur-xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 border border-slate-800 rounded-2xl p-8 md:p-12">
+          <div className="backdrop-blur-xl bg-linear-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 border border-slate-800 rounded-2xl p-8 md:p-12">
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Still need help?</h3>
             <p className="text-slate-400 mb-6 max-w-xl mx-auto">
-              Can't find the answer you're looking for? Our support team is here to help 24/7.
+              Can&apos;t find the answer you&apos;re looking for? Our support team is here to help 24/7.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
               >
                 Contact Support
                 <FiShare2 className="w-4 h-4" />

@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiLock, FiCloud, FiCheckCircle, FiArrowRight, FiUsers, FiTrendingUp, FiShield, FiZap, FiGlobeAlt, FiAward } from "react-icons/fi";
+import { FiLock, FiCloud, FiCheckCircle, FiArrowRight, FiUsers, FiTrendingUp, FiShield, FiZap, FiAward } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useUser } from "@/context/UserContext";
 
@@ -105,7 +105,7 @@ export default function AboutPage() {
               y: [0, 50, 0]
             }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+            className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
           />
           <motion.div
             animate={{ 
@@ -113,7 +113,7 @@ export default function AboutPage() {
               y: [0, -50, 0]
             }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+            className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
           />
         </div>
 
@@ -122,10 +122,10 @@ export default function AboutPage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
           >
             <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-            <span className="text-sm font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-sm font-semibold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               About DocuVault
             </span>
           </motion.div>
@@ -137,7 +137,7 @@ export default function AboutPage() {
             className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6"
           >
             Document Management <br />
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Reimagined
             </span>
           </motion.h1>
@@ -160,7 +160,7 @@ export default function AboutPage() {
             <Link
               href="/dashboard"
               onClick={handleDashboardClick}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 group"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 group"
             >
               Go to Dashboard
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -194,7 +194,7 @@ export default function AboutPage() {
           >
             {stats.map((stat, i) => (
               <motion.div key={stat.label} variants={itemVariants} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                <div className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
                 <div className="text-slate-400 font-medium text-sm md:text-base">{stat.label}</div>
@@ -340,7 +340,7 @@ export default function AboutPage() {
               In 2023, our team of security experts, designers, and developers came together with a shared vision: to create the most user-friendly, secure, and modern document management platform available. We spent months researching, designing, and testing to ensure that every feature serves a purpose and every interaction feels natural.
             </p>
             <p className="text-slate-400 text-lg leading-relaxed">
-              Today, DocuVault helps thousands of professionals and teams worldwide manage their documents with confidence. We're committed to continuous improvement, listening to our users, and pushing the boundaries of what's possible in document management.
+              Today, DocuVault helps thousands of professionals and teams worldwide manage their documents with confidence. We&apos;re committed to continuous improvement, listening to our users, and pushing the boundaries of what&apos;s possible in document management.
             </p>
           </motion.div>
         </div>
