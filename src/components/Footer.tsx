@@ -59,7 +59,7 @@ export default function Footer() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 dark:from-blue-400 dark:via-purple-400 dark:to-cyan-400">
                 Stay Updated
               </h3>
               <p className="text-gray-600 dark:text-slate-400 text-sm sm:text-base">
@@ -182,16 +182,16 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white">Quick Links</h3>
+            <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white transition-colors">Quick Links</h3>
             <ul className="space-y-4">
               {footerLinks.map((link) => (
                 <li key={link.href}>
                   <Link 
                     href={link.href} 
-                    className="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors inline-flex items-center gap-2 group text-sm md:text-base"
+                    className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
                   >
                     <motion.span 
-                      className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-2"
+                      className="w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
                       whileHover={{ width: 8 }}
                     />
                     {link.label}
@@ -208,16 +208,16 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-bold mb-6 text-white">Support</h3>
+            <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white transition-colors">Support</h3>
             <ul className="space-y-4">
               {supportLinks.map((link) => (
                 <li key={link.href}>
                   <Link 
                     href={link.href} 
-                    className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-2 group text-sm md:text-base"
+                    className="text-slate-400 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
                   >
                     <motion.span 
-                      className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-2"
+                      className="w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
                       whileHover={{ width: 8 }}
                     />
                     {link.label}
@@ -234,7 +234,7 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-bold mb-6 text-white">Contact</h3>
+            <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white transition-colors">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-slate-400">
                 <div className="mt-1 w-5 h-5 rounded-lg bg-blue-500/20 flex items-center justify-center shrink-0">
@@ -245,7 +245,7 @@ export default function Footer() {
               <li>
                 <a 
                   href="mailto:support@DocuVault.com" 
-                  className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors group"
+                  className="flex items-center gap-3 text-slate-400 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors group font-medium"
                 >
                   <div className="w-5 h-5 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0 group-hover:bg-purple-500/30 transition">
                     <FiMail className="text-purple-400" size={16} />
@@ -256,7 +256,7 @@ export default function Footer() {
               <li>
                 <a 
                   href="tel:+1234567890" 
-                  className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors group"
+                  className="flex items-center gap-3 text-slate-400 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors group font-medium"
                 >
                   <div className="w-5 h-5 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0 group-hover:bg-cyan-500/30 transition">
                     <FiPhone className="text-cyan-400" size={16} />
@@ -283,15 +283,15 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} DocuVault. All rights reserved.
             </p>
             <div className="flex items-center gap-4 sm:gap-6 order-1 sm:order-2 flex-wrap justify-center sm:justify-end">
-              <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              <Link href="/terms" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
                 Terms
               </Link>
               <span className="text-gray-400 dark:text-slate-600">|</span>
-              <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              <Link href="/privacy" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
                 Privacy
               </Link>
               <span className="text-gray-400 dark:text-slate-600">|</span>
-              <Link href="/cookies" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+              <Link href="/cookies" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
                 Cookies
               </Link>
             </div>
