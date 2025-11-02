@@ -51,7 +51,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   };
 
   return (
-    <div className={cn("min-h-screen min-w-full flex items-center justify-center px-4 py-8 bg-slate-950 relative overflow-hidden", className)} {...props}>
+    <div className={cn("min-h-screen min-w-full flex items-center justify-center px-4 py-8 bg-gray-50 dark:bg-slate-950 relative overflow-hidden transition-colors", className)} {...props}>
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -84,8 +84,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       >
         <div className="mb-8 text-center">
           
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-slate-400">Access your documents securely</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">Welcome back</h1>
+              <p className="text-gray-600 dark:text-slate-400 transition-colors">Access your documents securely</p>
         </div>
 
         <motion.div
@@ -93,7 +93,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <div className="backdrop-blur-xl bg-slate-900/80 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden transition-colors">
             {/* Gradient Header */}
             <div className="h-1 bg-linear-to-r from-blue-500 via-purple-500 to-cyan-500" />
 
@@ -102,8 +102,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
               <form onSubmit={handleLogin} className="space-y-5">
                 {/* Email Field */}
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <FiMail className="w-4 h-4 text-blue-400" />
+                  <label htmlFor="email" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                    <FiMail className="w-4 h-4 text-purple-400" />
                     Email Address
                   </label>
                   <div className="relative">
@@ -114,7 +114,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       disabled={loading}
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full"
                       required
                     />
                   </div>
@@ -123,7 +123,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                 {/* Password Field */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label htmlFor="password" className="text-sm font-semibold text-white flex items-center gap-2">
+                    <label htmlFor="password" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                       <FiLock className="w-4 h-4 text-purple-400" />
                       Password
                     </label>
@@ -162,7 +162,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     />
                   ) : (
                     <>
-                      Sign In
+                    Sign In
                       <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}

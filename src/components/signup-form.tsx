@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { FiArrowRight, FiMail, FiLock, FiCheckCircle } from "react-icons/fi";
-import { cn } from "@/lib/utils";
 
 export function SignupForm({ className, ...props }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("");
@@ -52,7 +51,8 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
   };
 
   return (
-    <div className={cn("min-h-screen min-w-full flex items-center justify-center px-4 py-8 bg-slate-950 relative overflow-hidden", className)} {...props}>
+    <div className="min-h-screen min-w-full flex items-center justify-center px-4 py-8 bg-gray-50 dark:bg-slate-950 relative overflow-hidden transition-colors" {...props}>
+      {/* Content */}
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -84,8 +84,8 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
         className="relative w-full max-w-md"
       >
         <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Get Started</h1>
-          <p className="text-slate-400">Create your account and start managing documents</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">Get Started</h1>
+          <p className="text-gray-600 dark:text-slate-400 transition-colors">Create your account and start managing documents</p>
         </div>
 
         <motion.div
@@ -93,7 +93,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <div className="backdrop-blur-xl bg-slate-900/80 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden transition-colors">
             {/* Gradient Header */}
             <div className="h-1 bg-linear-to-r from-blue-500 via-purple-500 to-cyan-500" />
 
@@ -102,8 +102,8 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
               <form onSubmit={handleSignup} className="space-y-5">
                 {/* Email Field */}
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <FiMail className="w-4 h-4 text-blue-400" />
+                  <label htmlFor="email" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 transition-colors">
+                    <FiMail className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                     Email Address
                   </label>
                   <Input
@@ -113,16 +113,16 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full"
                     required
                   />
-                  <p className="text-xs text-slate-500">We won&apos;t share your email with anyone else.</p>
+                  <p className="text-xs text-gray-500 dark:text-slate-500 transition-colors">We won&apos;t share your email with anyone else.</p>
                 </div>
 
                 {/* Password Field */}
                 <div className="space-y-2">
-                  <label htmlFor="password" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <FiLock className="w-4 h-4 text-purple-400" />
+                  <label htmlFor="password" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 transition-colors">
+                    <FiLock className="w-4 h-4 text-purple-500 dark:text-purple-400" />
                     Password
                   </label>
                   <Input
@@ -132,15 +132,15 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full"
                     required
                   />
-                  <p className="text-xs text-slate-500">Must be at least 8 characters long.</p>
+                  <p className="text-xs text-gray-500 dark:text-slate-500 transition-colors">Must be at least 8 characters long.</p>
                 </div>
 
                 {/* Confirm Password Field */}
                 <div className="space-y-2">
-                  <label htmlFor="confirm-password" className="text-sm font-semibold text-white flex items-center gap-2">
+                  <label htmlFor="confirm-password" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <FiCheckCircle className="w-4 h-4 text-cyan-400" />
                     Confirm Password
                   </label>
@@ -154,7 +154,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                     className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                     required
                   />
-                  <p className="text-xs text-slate-500">Please confirm your password.</p>
+                  <p className="text-xs text-gray-500 dark:text-slate-500 transition-colors">Please confirm your password.</p>
                 </div>
 
                 {/* Create Account Button */}

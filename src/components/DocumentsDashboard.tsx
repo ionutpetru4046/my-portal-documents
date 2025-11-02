@@ -275,7 +275,11 @@ export default function DocumentsDashboard({ category }: DocumentsDashboardProps
       setFilteredDocs((prev) => prev.filter((d) => d.id !== doc.id));
       toast.success("Document deleted successfully!");
     } catch (err: unknown) {
-      toast.error(err.message);
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
     }
   };
 
@@ -308,7 +312,7 @@ export default function DocumentsDashboard({ category }: DocumentsDashboardProps
           </Reveal>
 
           <Reveal animation="fade-up" delay={60}>
-            <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col gap-4 bg-white rounded-3xl">
+            <Card className="shadow-lg hover:shadow-2xl transition p-6 mb-8 flex flex-col gap-4 bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800">
               <AnimatePresence>
                 {(file || expirationDate || reminderAt) && (
                   <motion.div

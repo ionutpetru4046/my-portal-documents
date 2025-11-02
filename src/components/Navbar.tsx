@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown, FiFileText, FiUsers, FiClock, FiBook, FiMail, FiSettings, FiLogOut, FiUser, FiGrid, FiX, FiMenu, FiHelpCircle, FiHome, FiDollarSign } from "react-icons/fi";
 import { useUser } from "@/context/UserContext";
 import Image from "next/image";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const { user, setUser } = useUser();
@@ -105,7 +106,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 bg-slate-900 border-b border-slate-800 backdrop-blur-xl z-50">
+        <nav className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 backdrop-blur-xl z-50 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -120,7 +121,7 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className="hidden sm:block text-lg font-bold text-white tracking-tight group-hover:text-blue-400 transition">
+            <span className="hidden sm:block text-lg font-bold text-slate-900 dark:text-white tracking-tight group-hover:text-blue-400 transition-colors">
               DocuVault
             </span>
           </Link>
@@ -264,13 +265,17 @@ export default function Navbar() {
 
           {/* Right Side - User Menu / CTA */}
           <div className="flex items-center gap-2 md:gap-3">
+            {/* Desktop Theme Toggle */}
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             {/* Desktop User Menu */}
             <div className="hidden lg:flex items-center gap-3">
               {user ? (
                 <div className="relative" ref={menuRef}>
                   <button
                     aria-label="User menu"
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-slate-700 hover:border-slate-600 group"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-800 dark:text-white transition-all border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 group"
                     onClick={() => setMenuOpen((v) => !v)}
                   >
                     <div className="flex items-center gap-2 min-w-0">
@@ -534,6 +539,14 @@ export default function Navbar() {
                   </div>
                 )}
               </nav>
+
+              {/* Theme Toggle */}
+              <div className="px-4 py-2 border-t border-slate-800">
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Appearance</div>
+                <div className="px-4 py-2">
+                  <ThemeToggle />
+                </div>
+              </div>
 
               {/* Bottom Actions */}
               <div className="p-4 border-t border-slate-800 space-y-2">
