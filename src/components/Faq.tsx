@@ -171,7 +171,7 @@ export default function FAQPage() {
   };
 
   return (
-    <section className="relative w-full min-h-screen py-16 md:py-24 bg-slate-950 overflow-hidden">
+  <section className="relative w-full min-h-screen py-16 md:py-24 bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <motion.div
@@ -180,7 +180,7 @@ export default function FAQPage() {
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-400/20 to-purple-400/20 dark:from-blue-500/20 dark:to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
@@ -188,12 +188,12 @@ export default function FAQPage() {
             y: [0, -50, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-400/20 to-cyan-400/20 dark:from-purple-500/20 dark:to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
       {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.08)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -203,12 +203,12 @@ export default function FAQPage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Frequently Asked <span className="bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Questions</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4">
+            Frequently Asked <span className="bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">Questions</span>
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
             Find answers to common questions about DocuVault. Can&apos;t find what you&apos;re looking for?{" "}
-            <a href="/contact" className="text-blue-400 hover:text-blue-300 transition">Contact our support team</a>
+            <a href="/contact" className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition">Contact our support team</a>
           </p>
         </motion.div>
 
@@ -220,13 +220,13 @@ export default function FAQPage() {
           className="mb-12"
         >
           <div className="relative">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
               placeholder="Search questions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-4 pl-12 bg-slate-900 border border-slate-800 text-white placeholder:text-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-4 pl-12 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
         </motion.div>
@@ -245,8 +245,8 @@ export default function FAQPage() {
               onClick={() => handleCategoryClick(null)}
               className={`px-6 py-2.5 rounded-lg font-semibold transition-all ${
                 activeCategory === null
-                  ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                  : "bg-slate-800 hover:bg-slate-700 text-slate-300"
+                  ? "bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 text-white shadow-lg"
+                  : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
               }`}
             >
               All
@@ -254,11 +254,11 @@ export default function FAQPage() {
             {faqCategories.map((category) => {
               const Icon = category.icon;
               const colorMap = {
-                blue: "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30",
-                purple: "bg-purple-500/20 text-purple-400 hover:bg-purple-500/30",
-                cyan: "bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30",
-                green: "bg-green-500/20 text-green-400 hover:bg-green-500/30",
-                orange: "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30",
+                blue: "bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-500/30",
+                purple: "bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 hover:bg-purple-200 dark:hover:bg-purple-500/30",
+                cyan: "bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-200 dark:hover:bg-cyan-500/30",
+                green: "bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-500/30",
+                orange: "bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-500/30",
               };
 
               return (
@@ -269,8 +269,8 @@ export default function FAQPage() {
                   onClick={() => handleCategoryClick(category.id)}
                   className={`px-6 py-2.5 rounded-lg font-semibold transition-all flex items-center gap-2 ${
                     activeCategory === category.id
-                      ? "bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                      : `${colorMap[category.color as keyof typeof colorMap]} border border-slate-700 hover:border-slate-600`
+                      ? "bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 text-white shadow-lg"
+                      : `${colorMap[category.color as keyof typeof colorMap]} border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600`
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -294,12 +294,12 @@ export default function FAQPage() {
                 <motion.div key={`${faq.category}-${index}`} variants={itemVariants}>
                   <AccordionItem 
                     value={`item-${faq.category}-${index}`} 
-                    className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 rounded-xl shadow-sm hover:shadow-lg transition-all overflow-hidden group"
+                    className="backdrop-blur-xl bg-slate-100/70 dark:bg-slate-900/50 border border-slate-300 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700 rounded-xl shadow-sm hover:shadow-lg transition-all overflow-hidden group"
                   >
-                    <AccordionTrigger className="px-6 py-4 text-base md:text-lg font-semibold text-white hover:text-blue-400 transition-colors [&[data-state=open]>svg]:rotate-180">
+                    <AccordionTrigger className="px-6 py-4 text-base md:text-lg font-semibold text-slate-900 dark:text-white hover:text-blue-700 dark:hover:text-blue-400 transition-colors [&[data-state=open]>svg]:rotate-180">
                       <span className="text-left">{faq.question}</span>
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-4 text-slate-400 leading-relaxed">
+                    <AccordionContent className="px-6 pb-4 text-slate-700 dark:text-slate-400 leading-relaxed">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>
@@ -312,9 +312,9 @@ export default function FAQPage() {
               animate={{ opacity: 1 }}
               className="text-center py-12"
             >
-              <FiSearch className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-              <p className="text-slate-400 text-lg">No questions match your search.</p>
-              <p className="text-slate-500 text-sm mt-2">Try different keywords or browse all categories.</p>
+              <FiSearch className="w-12 h-12 text-slate-300 dark:text-slate-700 mx-auto mb-4" />
+              <p className="text-slate-600 dark:text-slate-400 text-lg">No questions match your search.</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm mt-2">Try different keywords or browse all categories.</p>
             </motion.div>
           )}
         </motion.div>
@@ -327,9 +327,9 @@ export default function FAQPage() {
           viewport={{ once: true }}
           className="mt-16 md:mt-20 text-center"
         >
-          <div className="backdrop-blur-xl bg-linear-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 border border-slate-800 rounded-2xl p-8 md:p-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Still need help?</h3>
-            <p className="text-slate-400 mb-6 max-w-xl mx-auto">
+          <div className="backdrop-blur-xl bg-linear-to-r from-blue-100/40 via-purple-100/40 to-cyan-100/40 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-cyan-500/20 border border-slate-300 dark:border-slate-800 rounded-2xl p-8 md:p-12">
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-3">Still need help?</h3>
+            <p className="text-slate-700 dark:text-slate-400 mb-6 max-w-xl mx-auto">
               Can&apos;t find the answer you&apos;re looking for? Our support team is here to help 24/7.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -337,7 +337,7 @@ export default function FAQPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 hover:from-blue-700 hover:to-purple-700 dark:hover:from-blue-400 dark:hover:to-purple-400 text-white rounded-lg font-semibold transition-all"
               >
                 Contact Support
                 <FiShare2 className="w-4 h-4" />
@@ -346,7 +346,7 @@ export default function FAQPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="/help"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-semibold transition-all border border-slate-700"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-slate-200 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-lg font-semibold transition-all border border-slate-300 dark:border-slate-700"
               >
                 Visit Help Center
               </motion.a>

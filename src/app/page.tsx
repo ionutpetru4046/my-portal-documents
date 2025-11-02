@@ -68,7 +68,7 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="min-h-screen flex flex-col bg-slate-950">
+    <main className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-white transition-colors">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16 md:pt-24 pb-20 md:pb-32">
         {/* Animated Background Elements */}
@@ -113,7 +113,7 @@ export default function HomePage() {
 
             {/* Main Heading */}
             <Reveal animation="fade-up" delay={50}>
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white mt-6 mb-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mt-6 mb-6 transition-colors">
                 Secure Document<br />
                 <span className="bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
                   Management Made Simple
@@ -123,7 +123,7 @@ export default function HomePage() {
 
             {/* Subheading */}
             <Reveal animation="fade-up" delay={100}>
-              <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-10">
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-slate-400 max-w-3xl mx-auto mb-10 transition-colors">
                 Upload files, set expirations and reminders, and stay organized. A fast, modern platform for managing your important documents with confidence.
               </p>
             </Reveal>
@@ -137,7 +137,7 @@ export default function HomePage() {
                 >
                   <Link
                     href="/signup"
-                    className="px-8 py-4 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-blue-500/20 transition-all flex items-center gap-2 group"
+                    className="px-8 py-4 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 hover:from-blue-700 hover:to-purple-700 dark:hover:from-blue-600 dark:hover:to-purple-600 text-white font-semibold shadow-lg hover:shadow-blue-500/20 transition-all flex items-center gap-2 group"
                   >
                     Get Started Free
                     <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -150,7 +150,7 @@ export default function HomePage() {
                   <Link
                     href="/dashboard"
                     onClick={handleDashboardClick}
-                    className="px-8 py-4 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white font-semibold transition-all"
+                    className="px-8 py-4 rounded-lg bg-slate-800 dark:bg-slate-900 hover:bg-slate-700 dark:hover:bg-slate-800 border border-slate-700 dark:border-slate-800 hover:border-slate-600 dark:hover:border-slate-700 text-white font-semibold transition-all"
                   >
                     {mounted && user ? "Go to Dashboard" : "Go to Dashboard"}
                   </Link>
@@ -208,7 +208,7 @@ export default function HomePage() {
                 <div className="text-4xl md:text-5xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
-                <div className="text-slate-400 font-medium">{stat.label}</div>
+                <div className="text-gray-600 dark:text-slate-400 font-medium transition-colors">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -220,10 +220,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <Reveal animation="fade-up">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
                 Why Choose DocuVault
               </h2>
-              <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
                 Everything you need to manage documents securely and efficiently
               </p>
             </div>
@@ -242,13 +242,13 @@ export default function HomePage() {
                 <Reveal key={feature.title} animation="fade-up" delay={50 + i * 50}>
                   <motion.div
                     whileHover={{ y: -8 }}
-                    className={`group backdrop-blur-xl bg-linear-to-br ${colorMap[feature.color as keyof typeof colorMap]} border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10`}
+                    className={`group backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 ${colorMap[feature.color as keyof typeof colorMap]} border border-gray-200 dark:border-slate-800 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10`}
                   >
                     <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${colorMap[feature.color as keyof typeof colorMap].split(' ')[0]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                       <Icon className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                    <p className="text-slate-400 leading-relaxed">{feature.description}</p>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors">{feature.title}</h3>
+                    <p className="text-gray-600 dark:text-slate-400 leading-relaxed transition-colors">{feature.description}</p>
                   </motion.div>
                 </Reveal>
               );
@@ -272,13 +272,13 @@ export default function HomePage() {
                 >
                   <motion.div
                     whileHover={{ x: isFirst ? 8 : -8 }}
-                    className="backdrop-blur-xl bg-linear-to-br from-slate-800/50 to-slate-900/50 border border-slate-800 hover:border-slate-700 rounded-2xl p-8 md:p-10 transition-all duration-300"
+                    className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 rounded-2xl p-8 md:p-10 transition-all duration-300"
                   >
-                    <div className={`w-12 h-12 rounded-xl ${isFirst ? 'bg-blue-500/20' : 'bg-purple-500/20'} flex items-center justify-center mb-6`}>
+                    <div className={`w-12 h-12 rounded-xl ${isFirst ? 'bg-blue-500/20 dark:bg-blue-400/20' : 'bg-purple-500/20 dark:bg-purple-400/20'} flex items-center justify-center mb-6`}>
                       <Icon className={`w-6 h-6 ${isFirst ? 'text-blue-400' : 'text-purple-400'}`} />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{benefit.title}</h3>
-                    <p className="text-slate-400 mb-6 text-lg leading-relaxed">{benefit.description}</p>
+                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3 transition-colors">{benefit.title}</h3>
+                    <p className="text-gray-600 dark:text-slate-400 mb-6 text-lg leading-relaxed transition-colors">{benefit.description}</p>
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -287,8 +287,8 @@ export default function HomePage() {
                         href={benefit.link}
                         className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
                           isFirst
-                            ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600/30'
-                            : 'bg-purple-600/20 text-purple-400 border border-purple-500/30 hover:bg-purple-600/30'
+                            ? 'bg-blue-600/20 dark:bg-blue-400/20 text-blue-400 dark:text-blue-300 border border-blue-500/30 dark:border-blue-400/30 hover:bg-blue-600/30 dark:hover:bg-blue-400/30'
+                            : 'bg-purple-600/20 dark:bg-purple-400/20 text-purple-400 dark:text-purple-300 border border-purple-500/30 dark:border-purple-400/30 hover:bg-purple-600/30 dark:hover:bg-purple-400/30'
                         }`}
                       >
                         {benefit.linkText}
@@ -309,13 +309,13 @@ export default function HomePage() {
         
         <div className="max-w-4xl mx-auto text-center">
           <Reveal animation="fade-in">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 transition-colors">
               Ready to secure your documents?
             </h2>
           </Reveal>
 
           <Reveal animation="fade-up" delay={50}>
-            <p className="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto transition-colors">
               Join thousands of users who trust DocuVault to manage their important documents. Get started for free today.
             </p>
           </Reveal>
@@ -328,7 +328,7 @@ export default function HomePage() {
               >
                 <Link
                   href="/signup"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-950 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg group"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-slate-900 text-slate-950 dark:text-white rounded-lg font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-all shadow-lg group"
                 >
                   Start Free Trial
                   <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -342,7 +342,7 @@ export default function HomePage() {
                 <Link
                   href="/dashboard"
                   onClick={handleDashboardClick}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg font-semibold transition-all"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800 dark:bg-slate-900 hover:bg-slate-700 dark:hover:bg-slate-800 border border-slate-700 dark:border-slate-800 text-white rounded-lg font-semibold transition-all"
                 >
                   Access Dashboard
                   <FiArrowRight className="w-5 h-5" />
@@ -352,7 +352,7 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal animation="fade-in" delay={150}>
-            <p className="text-slate-500 text-sm mt-8">
+            <p className="text-gray-500 dark:text-slate-400 text-sm mt-8 transition-colors">
               No credit card required • 14-day free trial • Cancel anytime
             </p>
           </Reveal>
