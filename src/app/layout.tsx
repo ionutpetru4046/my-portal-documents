@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className="flex flex-col min-h-screen bg-gray-50 text-gray-900 transition-colors duration-300 dark:bg-gray-900">
         {/* ✅ Wrap the entire app with ThemeProvider */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

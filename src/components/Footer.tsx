@@ -59,7 +59,7 @@ export default function Footer() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 dark:from-blue-400 dark:via-purple-400 dark:to-cyan-400">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-linear-to-r from-blue-500 via-purple-500 to-cyan-500 dark:from-blue-400 dark:via-purple-400 dark:to-cyan-400">
                 Stay Updated
               </h3>
               <p className="text-gray-600 dark:text-slate-400 text-sm sm:text-base">
@@ -191,7 +191,7 @@ export default function Footer() {
                     className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
                   >
                     <motion.span 
-                      className="w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
+                      className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
                       whileHover={{ width: 8 }}
                     />
                     {link.label}
@@ -217,7 +217,7 @@ export default function Footer() {
                     className="text-slate-400 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
                   >
                     <motion.span 
-                      className="w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
+                      className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
                       whileHover={{ width: 8 }}
                     />
                     {link.label}

@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 
 html {
-  scroll-behavior: smooth;
   transition: color 0.3s, background-color 0.3s;
 }
 
