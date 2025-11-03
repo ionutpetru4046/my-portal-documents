@@ -50,7 +50,7 @@ export default function SubscribePage() {
         "Email notifications",
       ],
       cta: "Get Started",
-      button: "border-2 border-slate-700 text-slate-300 hover:border-blue-500 hover:bg-blue-500/10",
+      button: "border-2 border-gray-300 dark:border-slate-700 text-gray-900 dark:text-slate-300 hover:border-blue-500 hover:bg-blue-500/10 dark:hover:border-blue-500 dark:hover:bg-blue-500/10",
       paid: false,
       highlight: false,
     },
@@ -186,9 +186,9 @@ export default function SubscribePage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950">
+    <main className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors">
       {/* Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
       </div>
@@ -200,10 +200,10 @@ export default function SubscribePage() {
         transition={{ duration: 0.6 }}
         className="relative text-center pt-16 md:pt-20 pb-12 md:pb-16 px-4"
       >
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text transition-colors">
           Simple, Transparent Pricing
         </h1>
-        <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
+        <p className="text-gray-600 dark:text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 transition-colors">
           Choose the perfect plan for your needs. Upgrade or downgrade anytime. No hidden fees.
         </p>
 
@@ -219,22 +219,22 @@ export default function SubscribePage() {
             className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
               billingCycle === "monthly"
                 ? "bg-blue-600 text-white"
-                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                : "bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-400 hover:bg-gray-300 dark:hover:bg-slate-700"
             }`}
           >
             Monthly
           </button>
-          <div className="text-slate-400">|</div>
+          <div className="text-gray-600 dark:text-slate-400">|</div>
           <button
             onClick={() => setBillingCycle("annual")}
             className={`px-6 py-2.5 rounded-lg font-medium transition-all flex items-center gap-2 ${
               billingCycle === "annual"
                 ? "bg-blue-600 text-white"
-                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                : "bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-400 hover:bg-gray-300 dark:hover:bg-slate-700"
             }`}
           >
             Annual
-            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">
+            <span className="text-xs bg-green-500/20 text-green-600 dark:text-green-400 px-2 py-1 rounded">
               Save 15%
             </span>
           </button>
@@ -257,22 +257,22 @@ export default function SubscribePage() {
                 variants={itemVariants}
                 className={`relative rounded-2xl backdrop-blur-xl border transition-all duration-300 overflow-hidden group ${
                   plan.highlight
-                    ? "md:scale-105 border-2 border-blue-500 bg-slate-900/80 shadow-2xl shadow-blue-500/20"
-                    : "border-slate-700 bg-slate-900/50 hover:border-slate-600"
+                    ? "md:scale-105 border-2 border-blue-500 bg-white/80 dark:bg-slate-900/80 shadow-2xl shadow-blue-500/20"
+                    : "border-gray-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 hover:border-gray-400 dark:hover:border-slate-600"
                 }`}
               >
                 {/* Background Gradient */}
                 <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
                   plan.highlight
-                    ? "bg-linear-to-br from-blue-500/10 to-purple-500/10"
-                    : "bg-linear-to-br from-slate-800/20 to-slate-900/20"
+                    ? "bg-gradient-to-br from-blue-500/10 to-purple-500/10"
+                    : "bg-gradient-to-br from-gray-100/20 dark:from-slate-800/20 to-gray-200/20 dark:to-slate-900/20"
                 }`}
                 />
 
                 {/* Badge */}
                 {plan.badge && (
                   <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                    <div className="bg-linear-to-r from-blue-600 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold px-3 py-1.5 rounded-full">
                       {plan.badge}
                     </div>
                   </div>
@@ -281,38 +281,38 @@ export default function SubscribePage() {
                 <div className="relative p-6 md:p-8 flex flex-col h-full">
                   {/* Icon & Title */}
                   <div className="mb-6">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors ${
                       plan.highlight
-                        ? "bg-blue-500/20 text-blue-400"
-                        : "bg-slate-800 text-slate-400 group-hover:bg-slate-700"
+                        ? "bg-blue-500/20 text-blue-600 dark:text-blue-400"
+                        : "bg-gray-200 dark:bg-slate-800 text-gray-600 dark:text-slate-400 group-hover:bg-gray-300 dark:group-hover:bg-slate-700"
                     }`}>
                       <Icon className="w-6 h-6" />
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-1">{plan.name}</h2>
-                    <p className="text-sm text-slate-400">{plan.description}</p>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1 transition-colors">{plan.name}</h2>
+                    <p className="text-sm text-gray-600 dark:text-slate-400 transition-colors">{plan.description}</p>
                   </div>
 
                   {/* Price */}
                   <div className="mb-6">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold text-white">
+                      <span className="text-4xl font-bold text-gray-900 dark:text-white transition-colors">
                         {plan.price[billingCycle]}
                       </span>
-                      <span className="text-slate-400 text-sm">{plan.period}</span>
+                      <span className="text-gray-600 dark:text-slate-400 text-sm transition-colors">{plan.period}</span>
                     </div>
                   </div>
 
                   {/* Features List */}
                   <ul className="space-y-3 mb-8 flex-1">
                     {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-3 text-slate-300 text-sm">
-                        <div className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
+                      <li key={feature} className="flex items-start gap-3 text-gray-700 dark:text-slate-300 text-sm transition-colors">
+                        <div className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 transition-colors ${
                           plan.highlight
                             ? "bg-blue-500/20"
-                            : "bg-slate-700"
+                            : "bg-gray-300 dark:bg-slate-700"
                         }`}>
-                          <FiCheck className={`w-3 h-3 ${
-                            plan.highlight ? "text-blue-400" : "text-slate-400"
+                          <FiCheck className={`w-3 h-3 transition-colors ${
+                            plan.highlight ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-slate-400"
                           }`} />
                         </div>
                         <span>{feature}</span>
@@ -343,7 +343,7 @@ export default function SubscribePage() {
                   </motion.button>
 
                   {plan.paid && !plan.key?.includes("enterprise") && (
-                    <p className="text-center text-xs text-slate-500 mt-4">
+                    <p className="text-center text-xs text-gray-500 dark:text-slate-500 mt-4 transition-colors">
                       14-day free trial. No credit card required.
                     </p>
                   )}
@@ -362,26 +362,26 @@ export default function SubscribePage() {
         viewport={{ once: true }}
         className="relative max-w-4xl mx-auto px-4 pb-20 text-center"
       >
-        <div className="bg-slate-900/50 border border-slate-800 rounded-2xl backdrop-blur-xl p-8 md:p-12">
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
+        <div className="bg-white/50 dark:bg-slate-900/50 border border-gray-300 dark:border-slate-800 rounded-2xl backdrop-blur-xl p-8 md:p-12 transition-colors">
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 transition-colors">
             Frequently Asked Questions
           </h3>
           <div className="grid md:grid-cols-2 gap-6 text-left">
             <div>
-              <h4 className="font-semibold text-white mb-2">Can I change plans?</h4>
-              <p className="text-slate-400 text-sm">Yes! You can upgrade or downgrade at any time. Changes take effect on your next billing cycle.</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">Can I change plans?</h4>
+              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">Yes! You can upgrade or downgrade at any time. Changes take effect on your next billing cycle.</p>
             </div>
             <div>
-              <h4 className="font-semibold text-white mb-2">What about refunds?</h4>
-              <p className="text-slate-400 text-sm">We offer a 30-day money-back guarantee if you're not satisfied with your plan.</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">What about refunds?</h4>
+              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">We offer a 30-day money-back guarantee if you're not satisfied with your plan.</p>
             </div>
             <div>
-              <h4 className="font-semibold text-white mb-2">Is there a free trial?</h4>
-              <p className="text-slate-400 text-sm">Yes! All paid plans include a 14-day free trial. No credit card required to start.</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">Is there a free trial?</h4>
+              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">Yes! All paid plans include a 14-day free trial. No credit card required to start.</p>
             </div>
             <div>
-              <h4 className="font-semibold text-white mb-2">What payment methods do you accept?</h4>
-              <p className="text-slate-400 text-sm">We accept all major credit cards, PayPal, and bank transfers for Enterprise plans.</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">What payment methods do you accept?</h4>
+              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">We accept all major credit cards, PayPal, and bank transfers for Enterprise plans.</p>
             </div>
           </div>
         </div>
@@ -395,8 +395,8 @@ export default function SubscribePage() {
         viewport={{ once: true }}
         className="relative text-center pb-20"
       >
-        <p className="text-slate-400 text-lg">
-          Questions? <a href="/contact" className="text-blue-400 hover:text-blue-300 transition">Contact our sales team</a>
+        <p className="text-gray-600 dark:text-slate-400 text-lg transition-colors">
+          Questions? <a href="/contact" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition">Contact our sales team</a>
         </p>
       </motion.div>
     </main>
