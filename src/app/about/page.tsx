@@ -89,7 +89,7 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="bg-slate-950 min-h-screen flex flex-col">
+    <div className="bg-gray-50 dark:bg-slate-950 min-h-screen flex flex-col transition-colors">
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0, y: -40 }}
@@ -105,7 +105,7 @@ export default function AboutPage() {
               y: [0, 50, 0]
             }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+            className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
           />
           <motion.div
             animate={{ 
@@ -113,7 +113,7 @@ export default function AboutPage() {
               y: [0, -50, 0]
             }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+            className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
           />
         </div>
 
@@ -122,10 +122,10 @@ export default function AboutPage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
           >
             <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-            <span className="text-sm font-semibold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-sm font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               About DocuVault
             </span>
           </motion.div>
@@ -134,10 +134,10 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6"
+            className="text-4xl sm:text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 transition-colors"
           >
             Document Management <br />
-            <span className="bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Reimagined
             </span>
           </motion.h1>
@@ -146,7 +146,7 @@ export default function AboutPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-10"
+            className="text-lg sm:text-xl text-gray-600 dark:text-slate-400 max-w-3xl mx-auto mb-10 transition-colors"
           >
             DocuVault is a modern document management platform designed to help professionals and teams store, organize, and access their documents securely. Built with privacy, security, and user experience in mind.
           </motion.p>
@@ -160,14 +160,14 @@ export default function AboutPage() {
             <Link
               href="/dashboard"
               onClick={handleDashboardClick}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 group"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 group"
             >
               Go to Dashboard
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/subscribe"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-lg transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg transition-all"
             >
               View Plans
               <FiArrowRight className="w-5 h-5" />
@@ -182,7 +182,7 @@ export default function AboutPage() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-800"
+        className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 border-b border-gray-200 dark:border-slate-800 transition-colors"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div 
@@ -194,10 +194,10 @@ export default function AboutPage() {
           >
             {stats.map((stat, i) => (
               <motion.div key={stat.label} variants={itemVariants} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
-                <div className="text-slate-400 font-medium text-sm md:text-base">{stat.label}</div>
+                <div className="text-gray-600 dark:text-slate-400 font-medium text-sm md:text-base transition-colors">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -220,10 +220,10 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
               Why Choose DocuVault?
             </h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
               We combine powerful features with an intuitive interface to make document management effortless.
             </p>
           </motion.div>
@@ -238,9 +238,9 @@ export default function AboutPage() {
             {features.map((feature, i) => {
               const Icon = feature.icon;
               const colorMap = {
-                blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30 text-blue-400",
-                purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30 text-purple-400",
-                cyan: "from-cyan-500/20 to-cyan-600/20 border-cyan-500/30 text-cyan-400",
+                blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30 dark:border-blue-500/30 text-blue-600 dark:text-blue-400",
+                purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30 dark:border-purple-500/30 text-purple-600 dark:text-purple-400",
+                cyan: "from-cyan-500/20 to-cyan-600/20 border-cyan-500/30 dark:border-cyan-500/30 text-cyan-600 dark:text-cyan-400",
               };
 
               return (
@@ -248,13 +248,13 @@ export default function AboutPage() {
                   key={i}
                   variants={itemVariants}
                   whileHover={{ y: -8 }}
-                  className={`backdrop-blur-xl bg-gradient-to-br ${colorMap[feature.color as keyof typeof colorMap]} border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 group`}
+                  className={`backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 bg-gradient-to-br ${colorMap[feature.color as keyof typeof colorMap]} border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 group`}
                 >
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorMap[feature.color as keyof typeof colorMap].split(' ')[0]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{feature.desc}</p>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors">{feature.title}</h3>
+                  <p className="text-gray-700 dark:text-slate-400 leading-relaxed transition-colors">{feature.desc}</p>
                 </motion.div>
               );
             })}
@@ -268,7 +268,7 @@ export default function AboutPage() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 border-y border-slate-800"
+        className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 border-y border-gray-200 dark:border-slate-800 transition-colors"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -278,10 +278,10 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
               Our Core Values
             </h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
               Everything we do is guided by our commitment to security, privacy, and user satisfaction.
             </p>
           </motion.div>
@@ -295,20 +295,25 @@ export default function AboutPage() {
           >
             {values.map((value, i) => {
               const Icon = value.icon;
-              const colors = ["from-blue-500/20 to-blue-600/20 border-blue-500/30", "from-purple-500/20 to-purple-600/20 border-purple-500/30", "from-cyan-500/20 to-cyan-600/20 border-cyan-500/30", "from-green-500/20 to-green-600/20 border-green-500/30"];
-              const iconColors = ["text-blue-400", "text-purple-400", "text-cyan-400", "text-green-400"];
+              const colors = [
+                "from-blue-500/20 to-blue-600/20 border-blue-500/30 dark:border-blue-500/30",
+                "from-purple-500/20 to-purple-600/20 border-purple-500/30 dark:border-purple-500/30",
+                "from-cyan-500/20 to-cyan-600/20 border-cyan-500/30 dark:border-cyan-500/30",
+                "from-green-500/20 to-green-600/20 border-green-500/30 dark:border-green-500/30",
+              ];
+              const iconColors = ["text-blue-600 dark:text-blue-400", "text-purple-600 dark:text-purple-400", "text-cyan-600 dark:text-cyan-400", "text-green-600 dark:text-green-400"];
 
               return (
                 <motion.div
                   key={i}
                   variants={itemVariants}
-                  className={`backdrop-blur-xl bg-gradient-to-br ${colors[i % colors.length]} border rounded-xl p-8 hover:border-slate-600 transition-all`}
+                  className={`backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 bg-gradient-to-br ${colors[i % colors.length]} border rounded-xl p-8 hover:border-gray-300 dark:hover:border-slate-600 transition-all`}
                 >
-                  <div className={`w-12 h-12 rounded-lg bg-${colors[i % colors.length].split('-')[1]}-500/20 flex items-center justify-center mb-4`}>
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${colors[i % colors.length].split(' ')[0]} flex items-center justify-center mb-4`}>
                     <Icon className={`w-6 h-6 ${iconColors[i % iconColors.length]}`} />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{value.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{value.description}</p>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">{value.title}</h3>
+                  <p className="text-gray-700 dark:text-slate-400 leading-relaxed transition-colors">{value.description}</p>
                 </motion.div>
               );
             })}
@@ -330,16 +335,16 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="backdrop-blur-xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-800 rounded-2xl p-8 md:p-12"
+            className="backdrop-blur-xl bg-white/50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 rounded-2xl p-8 md:p-12 transition-colors"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Story</h2>
-            <p className="text-slate-400 text-lg leading-relaxed mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 transition-colors">Our Story</h2>
+            <p className="text-gray-700 dark:text-slate-400 text-lg leading-relaxed mb-6 transition-colors">
               DocuVault was born from a simple observation: most document management solutions were either too complicated, not secure enough, or required expensive enterprise deals. We knew there had to be a better way.
             </p>
-            <p className="text-slate-400 text-lg leading-relaxed mb-6">
+            <p className="text-gray-700 dark:text-slate-400 text-lg leading-relaxed mb-6 transition-colors">
               In 2023, our team of security experts, designers, and developers came together with a shared vision: to create the most user-friendly, secure, and modern document management platform available. We spent months researching, designing, and testing to ensure that every feature serves a purpose and every interaction feels natural.
             </p>
-            <p className="text-slate-400 text-lg leading-relaxed">
+            <p className="text-gray-700 dark:text-slate-400 text-lg leading-relaxed transition-colors">
               Today, DocuVault helps thousands of professionals and teams worldwide manage their documents with confidence. We&apos;re committed to continuous improvement, listening to our users, and pushing the boundaries of what&apos;s possible in document management.
             </p>
           </motion.div>
@@ -362,7 +367,7 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-white mb-6"
+            className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 transition-colors"
           >
             Our Mission
           </motion.h2>
@@ -371,7 +376,7 @@ export default function AboutPage() {
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg text-gray-700 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed transition-colors"
           >
             To empower professionals and teams worldwide with a secure, intuitive, and reliable document management platform that eliminates complexity and fosters productivity.
           </motion.p>
@@ -386,14 +391,14 @@ export default function AboutPage() {
             <Link
               href="/dashboard"
               onClick={handleDashboardClick}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-950 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg group"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all shadow-lg group"
             >
               Start Your Journey
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg font-semibold transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg font-semibold transition-all"
             >
               Get in Touch
               <FiArrowRight className="w-5 h-5" />
