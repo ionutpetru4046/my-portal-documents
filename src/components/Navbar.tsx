@@ -80,10 +80,16 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
 
+  // Close mobile menu when clicking a link
+  const closeMobileMenu = () => {
+    setMobileOpen(false);
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
     router.push("/login");
+    closeMobileMenu();
   };
 
   const navLinkClass = (href: string) =>
@@ -105,13 +111,22 @@ export default function Navbar() {
     { icon: FiFileText, href: "/terms", label: "Terms & Privacy", description: "Legal docs", color: "cyan" },
   ];
 
+  const getColorClasses = (color: string) => {
+    const colors: Record<string, { bg: string; text: string }> = {
+      blue: { bg: "bg-blue-500/20", text: "text-blue-400" },
+      purple: { bg: "bg-purple-500/20", text: "text-purple-400" },
+      cyan: { bg: "bg-cyan-500/20", text: "text-cyan-400" },
+    };
+    return colors[color] || colors.blue;
+  };
+
   return (
-        <nav className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 backdrop-blur-xl z-50 transition-colors">
+    <nav className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 backdrop-blur-xl z-50 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition group">
-            <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               <Image
                 src="/Digital-document-logo.png"
                 alt="DocuVault logo"
@@ -152,22 +167,25 @@ export default function Navbar() {
                     transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 mt-2 w-56 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
                   >
-                    {quickLinksData.map(({ icon: Icon, href, label, description, color }) => (
-                      <Link
-                        key={href}
-                        href={href}
-                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                        onClick={() => setQuickLinksDropdown(false)}
-                      >
-                        <div className={`w-9 h-9 rounded-lg bg-${color}-500/20 flex items-center justify-center group-hover:bg-${color}-500/30 transition`}>
-                          <Icon size={18} className={`text-${color}-400`} />
-                        </div>
-                        <div>
-                          <div className="font-medium text-sm">{label}</div>
-                          <div className="text-xs text-slate-400">{description}</div>
-                        </div>
-                      </Link>
-                    ))}
+                    {quickLinksData.map(({ icon: Icon, href, label, description, color }) => {
+                      const colorClass = getColorClasses(color);
+                      return (
+                        <Link
+                          key={href}
+                          href={href}
+                          className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
+                          onClick={() => setQuickLinksDropdown(false)}
+                        >
+                          <div className={`w-9 h-9 rounded-lg ${colorClass.bg} flex items-center justify-center group-hover:opacity-80 transition`}>
+                            <Icon size={18} className={colorClass.text} />
+                          </div>
+                          <div>
+                            <div className="font-medium text-sm">{label}</div>
+                            <div className="text-xs text-slate-400">{description}</div>
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -190,22 +208,25 @@ export default function Navbar() {
                     transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 mt-2 w-56 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
                   >
-                    {supportData.map(({ icon: Icon, href, label, description, color }) => (
-                      <Link
-                        key={href}
-                        href={href}
-                        className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                        onClick={() => setSupportDropdown(false)}
-                      >
-                        <div className={`w-9 h-9 rounded-lg bg-${color}-500/20 flex items-center justify-center group-hover:bg-${color}-500/30 transition`}>
-                          <Icon size={18} className={`text-${color}-400`} />
-                        </div>
-                        <div>
-                          <div className="font-medium text-sm">{label}</div>
-                          <div className="text-xs text-slate-400">{description}</div>
-                        </div>
-                      </Link>
-                    ))}
+                    {supportData.map(({ icon: Icon, href, label, description, color }) => {
+                      const colorClass = getColorClasses(color);
+                      return (
+                        <Link
+                          key={href}
+                          href={href}
+                          className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
+                          onClick={() => setSupportDropdown(false)}
+                        >
+                          <div className={`w-9 h-9 rounded-lg ${colorClass.bg} flex items-center justify-center group-hover:opacity-80 transition`}>
+                            <Icon size={18} className={colorClass.text} />
+                          </div>
+                          <div>
+                            <div className="font-medium text-sm">{label}</div>
+                            <div className="text-xs text-slate-400">{description}</div>
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -286,7 +307,7 @@ export default function Navbar() {
                           className="w-7 h-7 rounded-lg object-cover border border-slate-600 group-hover:border-slate-500 transition"
                         />
                       ) : (
-                        <div className="w-7 h-7 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
                           <span className="text-xs font-bold text-white">
                             {user.name?.charAt(0).toUpperCase() || "U"}
                           </span>
@@ -356,7 +377,7 @@ export default function Navbar() {
                     </Button>
                   </Link>
                   <Link href="/signup">
-                    <Button className="bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 cursor-pointer hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
+                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 cursor-pointer hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
                       Get Started
                     </Button>
                   </Link>
@@ -375,7 +396,7 @@ export default function Navbar() {
                     {user.avatar ? (
                       <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-lg object-cover" />
                     ) : (
-                      <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
                         {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
@@ -425,39 +446,39 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu Drawer */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {mobileOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-50 flex lg:hidden"
-          >
+          <>
             {/* Overlay */}
-            <div
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-              onClick={() => setMobileOpen(false)}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+              onClick={closeMobileMenu}
             />
 
             {/* Drawer */}
             <motion.div 
-              className="relative bg-slate-900 text-white w-80 max-w-[90vw] h-screen flex flex-col overflow-y-auto shadow-2xl border-l border-slate-800"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed right-0 top-0 z-50 bg-slate-900 text-white w-80 max-w-[90vw] h-screen flex flex-col overflow-y-auto shadow-2xl border-l border-slate-800 lg:hidden"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-slate-800">
+              <div className="flex items-center justify-between p-6 border-b border-slate-800 shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                     <Image src="/Digital-document-logo.png" alt="Logo" width={40} height={40} className="rounded-lg" />
                   </div>
                   <span className="text-lg font-bold">Menu</span>
                 </div>
                 <button
                   className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-all"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={closeMobileMenu}
+                  aria-label="Close menu"
                 >
                   <FiX className="w-5 h-5" />
                 </button>
@@ -465,12 +486,12 @@ export default function Navbar() {
 
               {/* User Info */}
               {user && (
-                <div className="p-4 border-b border-slate-800 bg-slate-800/50">
+                <div className="p-4 border-b border-slate-800 bg-slate-800/50 shrink-0">
                   <div className="flex items-center gap-3">
                     {user.avatar ? (
                       <img src={user.avatar} alt="avatar" className="w-12 h-12 rounded-lg object-cover border-2 border-slate-700" />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
                         {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
@@ -483,12 +504,12 @@ export default function Navbar() {
               )}
 
               {/* Navigation */}
-              <nav className="flex-1 p-4 space-y-1">
+              <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
                 {user && (
                   <Link
                     href="/dashboard"
                     className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition"
-                    onClick={() => setMobileOpen(false)}
+                    onClick={closeMobileMenu}
                   >
                     <FiGrid className="w-5 h-5 text-blue-400" />
                     <span className="font-medium">Dashboard</span>
@@ -502,7 +523,7 @@ export default function Navbar() {
                       key={href}
                       href={href} 
                       className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" 
-                      onClick={() => setMobileOpen(false)}
+                      onClick={closeMobileMenu}
                     >
                       <Icon className="w-5 h-5 text-blue-400" />
                       <span className="text-sm">{label}</span>
@@ -517,7 +538,7 @@ export default function Navbar() {
                       key={href}
                       href={href} 
                       className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" 
-                      onClick={() => setMobileOpen(false)}
+                      onClick={closeMobileMenu}
                     >
                       <Icon className="w-5 h-5 text-purple-400" />
                       <span className="text-sm">{label}</span>
@@ -528,11 +549,11 @@ export default function Navbar() {
                 {isAdmin && (
                   <div className="my-4 pt-4 border-t border-slate-800">
                     <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Admin</div>
-                    <Link href="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
+                    <Link href="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={closeMobileMenu}>
                       <FiUsers className="w-5 h-5 text-blue-400" />
                       <span className="text-sm">Users</span>
                     </Link>
-                    <Link href="/admin/expirations" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={() => setMobileOpen(false)}>
+                    <Link href="/admin/expirations" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" onClick={closeMobileMenu}>
                       <FiClock className="w-5 h-5 text-cyan-400" />
                       <span className="text-sm">Expirations</span>
                     </Link>
@@ -541,7 +562,7 @@ export default function Navbar() {
               </nav>
 
               {/* Theme Toggle */}
-              <div className="px-4 py-2 border-t border-slate-800">
+              <div className="px-4 py-2 border-t border-slate-800 shrink-0">
                 <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Appearance</div>
                 <div className="px-4 py-2">
                   <ThemeToggle />
@@ -549,23 +570,20 @@ export default function Navbar() {
               </div>
 
               {/* Bottom Actions */}
-              <div className="p-4 border-t border-slate-800 space-y-2">
+              <div className="p-4 border-t border-slate-800 space-y-2 shrink-0">
                 {user ? (
                   <>
                     <Link
                       href="/profile"
                       className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition text-sm font-medium"
-                      onClick={() => setMobileOpen(false)}
+                      onClick={closeMobileMenu}
                     >
                       <FiUser className="w-5 h-5 text-slate-400" />
                       Profile
                     </Link>
                     <button
                       className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition text-sm font-medium"
-                      onClick={() => {
-                        setMobileOpen(false);
-                        handleLogout();
-                      }}
+                      onClick={handleLogout}
                     >
                       <FiLogOut className="w-5 h-5" />
                       Logout
@@ -576,14 +594,14 @@ export default function Navbar() {
                     <Link
                       href="/login"
                       className="block px-4 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-center transition font-medium text-sm"
-                      onClick={() => setMobileOpen(false)}
+                      onClick={closeMobileMenu}
                     >
                       Login
                     </Link>
                     <Link
                       href="/signup"
-                      className="block px-4 py-3 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
-                      onClick={() => setMobileOpen(false)}
+                      className="block px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
+                      onClick={closeMobileMenu}
                     >
                       Get Started
                     </Link>
@@ -591,7 +609,7 @@ export default function Navbar() {
                 )}
               </div>
             </motion.div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
     </nav>
