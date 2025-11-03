@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiHelpCircle, FiFileText, FiUser, FiSettings, FiSearch, FiChevronDown, FiArrowRight, FiMail, FiMessageCircle, FiBook, FiLock, FiUpload, FiShare2, FiBell, FiTrash2 } from "react-icons/fi";
+import { FiHelpCircle, FiFileText, FiUser, FiSettings, FiSearch, FiChevronDown, FiArrowRight, FiMail, FiMessageCircle, FiBook, FiLock, FiUpload, FiShare2, FiBell, FiTrash2, FiDownload, FiClock, FiShield } from "react-icons/fi";
 
 const categories = [
   {
@@ -21,6 +21,10 @@ const categories = [
       {
         title: "Navigating the dashboard",
         content: "The dashboard is your central hub. You'll see your document categories, recent uploads, and quick access to your most-used features. Use the sidebar to navigate between different sections.",
+      },
+      {
+        title: "Understanding your storage quota",
+        content: "Your storage limit depends on your plan. The Starter plan includes 1 GB, Pro includes 50 GB, and Business includes 500 GB. Monitor your usage in Settings > Storage. Upgrade your plan to get more space.",
       },
     ],
   },
@@ -44,6 +48,10 @@ const categories = [
       {
         title: "Managing active sessions",
         content: "View all your active login sessions in Security Settings. You can log out of specific devices remotely or log out of all sessions at once if you suspect unauthorized access.",
+      },
+      {
+        title: "Data encryption and privacy",
+        content: "All your documents are encrypted with AES-256 military-grade encryption both in transit and at rest. We follow GDPR and CCPA compliance standards. Your data is never sold or shared with third parties.",
       },
     ],
   },
@@ -72,6 +80,10 @@ const categories = [
         title: "Searching for documents",
         content: "Use the search bar to find documents by name, category, or content. Our advanced search algorithm helps you locate files quickly across all your documents.",
       },
+      {
+        title: "Downloading your documents",
+        content: "Click the download icon next to any document to save it to your device. You can also batch download multiple documents at once by selecting them and using the bulk download option.",
+      },
     ],
   },
   {
@@ -90,6 +102,10 @@ const categories = [
       {
         title: "Collaborating with team members",
         content: "Invite team members to collaborate on documents. Assign different roles like Editor, Viewer, or Commenter. Track changes and see who modified what and when.",
+      },
+      {
+        title: "Public vs. Private sharing",
+        content: "Keep documents private by default. Create public links only when needed. Private documents are only accessible to you and invited collaborators with specific permissions.",
       },
     ],
   },
@@ -110,6 +126,10 @@ const categories = [
         title: "Bulk managing expirations",
         content: "For Premium and Business plans, bulk edit multiple documents' expiration dates at once. Select documents, set a new date, and apply to all selected items.",
       },
+      {
+        title: "Auto-renewal and archival",
+        content: "Set documents to auto-renew on expiration dates. Alternatively, archive old documents to keep them organized but easily retrievable. Archived documents don't count toward your storage quota.",
+      },
     ],
   },
   {
@@ -119,7 +139,7 @@ const categories = [
     articles: [
       {
         title: "Understanding our pricing plans",
-        content: "DocuVault offers four plans: Starter (free), Pro ($9/month), Business ($29/month), and Enterprise (custom). Compare features and storage limits on our Pricing page to find the plan that's right for you.",
+        content: "DocuVault offers four plans: Starter (free), Pro ($10/month), Business ($45/month), and Enterprise (custom). Compare features and storage limits on our Pricing page to find the plan that's right for you.",
       },
       {
         title: "Upgrading your plan",
@@ -132,6 +152,33 @@ const categories = [
       {
         title: "Canceling your subscription",
         content: "You can cancel your subscription anytime. Your account will remain active until the end of your billing period. Downgrade to our free Starter plan instead of canceling to keep your documents.",
+      },
+      {
+        title: "Getting the most value from your plan",
+        content: "Make use of all features included in your plan. Check the feature comparison to understand what you have access to. Contact support if you need help maximizing your DocuVault experience.",
+      },
+    ],
+  },
+  {
+    name: "Troubleshooting",
+    icon: FiShield,
+    color: "red",
+    articles: [
+      {
+        title: "Upload issues and solutions",
+        content: "If your upload fails, check your internet connection and file size. Ensure the file format is supported. Try clearing your browser cache or using a different browser. Contact support if issues persist.",
+      },
+      {
+        title: "Can't access my account",
+        content: "Verify you're using the correct email. Use the 'Forgot Password' option to reset your password. Check if your account has been deactivated due to inactivity (accounts are deactivated after 2 years of no login).",
+      },
+      {
+        title: "Sync and backup issues",
+        content: "DocuVault automatically backs up all documents. If you suspect sync issues, refresh your browser or log out and back in. Clear your browser cache and try again.",
+      },
+      {
+        title: "Browser compatibility",
+        content: "DocuVault works best with Chrome, Firefox, Safari, and Edge. For optimal performance, keep your browser updated. Some features may not work in older browser versions.",
       },
     ],
   },
@@ -169,16 +216,30 @@ export default function HelpPage() {
   };
 
   const colorMap = {
-    blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30 text-blue-400",
-    purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30 text-purple-400",
-    cyan: "from-cyan-500/20 to-cyan-600/20 border-cyan-500/30 text-cyan-400",
-    green: "from-green-500/20 to-green-600/20 border-green-500/30 text-green-400",
-    orange: "from-orange-500/20 to-orange-600/20 border-orange-500/30 text-orange-400",
-    pink: "from-pink-500/20 to-pink-600/20 border-pink-500/30 text-pink-400",
+    blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30 dark:from-blue-500/20 dark:to-blue-600/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400",
+    purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30 dark:from-purple-500/20 dark:to-purple-600/20 dark:border-purple-500/30 text-purple-600 dark:text-purple-400",
+    cyan: "from-cyan-500/20 to-cyan-600/20 border-cyan-500/30 dark:from-cyan-500/20 dark:to-cyan-600/20 dark:border-cyan-500/30 text-cyan-600 dark:text-cyan-400",
+    green: "from-green-500/20 to-green-600/20 border-green-500/30 dark:from-green-500/20 dark:to-green-600/20 dark:border-green-500/30 text-green-600 dark:text-green-400",
+    orange: "from-orange-500/20 to-orange-600/20 border-orange-500/30 dark:from-orange-500/20 dark:to-orange-600/20 dark:border-orange-500/30 text-orange-600 dark:text-orange-400",
+    pink: "from-pink-500/20 to-pink-600/20 border-pink-500/30 dark:from-pink-500/20 dark:to-pink-600/20 dark:border-pink-500/30 text-pink-600 dark:text-pink-400",
+    red: "from-red-500/20 to-red-600/20 border-red-500/30 dark:from-red-500/20 dark:to-red-600/20 dark:border-red-500/30 text-red-600 dark:text-red-400",
+  };
+
+  const getColorClasses = (color: string) => {
+    const colors: Record<string, { icon: string; bg: string }> = {
+      blue: { icon: "text-blue-600 dark:text-blue-400", bg: "bg-blue-500/20 dark:bg-blue-500/20" },
+      purple: { icon: "text-purple-600 dark:text-purple-400", bg: "bg-purple-500/20 dark:bg-purple-500/20" },
+      cyan: { icon: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/20 dark:bg-cyan-500/20" },
+      green: { icon: "text-green-600 dark:text-green-400", bg: "bg-green-500/20 dark:bg-green-500/20" },
+      orange: { icon: "text-orange-600 dark:text-orange-400", bg: "bg-orange-500/20 dark:bg-orange-500/20" },
+      pink: { icon: "text-pink-600 dark:text-pink-400", bg: "bg-pink-500/20 dark:bg-pink-500/20" },
+      red: { icon: "text-red-600 dark:text-red-400", bg: "bg-red-500/20 dark:bg-red-500/20" },
+    };
+    return colors[color] || colors.blue;
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors">
       {/* Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <motion.div
@@ -200,7 +261,7 @@ export default function HelpPage() {
       </div>
 
       {/* Grid Pattern */}
-      <div className="fixed inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none -z-10" />
+      <div className="fixed inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[length:60px_60px] pointer-events-none -z-10" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Header */}
@@ -216,12 +277,12 @@ export default function HelpPage() {
             transition={{ delay: 0.1, duration: 0.5 }}
             className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 mb-6 mx-auto"
           >
-            <FiHelpCircle className="w-6 h-6 text-blue-400" />
+            <FiHelpCircle className="w-6 h-6 text-blue-600 dark:text-blue-400 transition-colors" />
           </motion.div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
             Help Center
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
             Find guides, tutorials, and answers to common questions about DocuVault.
           </p>
         </motion.div>
@@ -234,13 +295,13 @@ export default function HelpPage() {
           className="mb-12"
         >
           <div className="relative">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-slate-500 pointer-events-none transition-colors" />
             <input
               type="text"
               placeholder="Search articles..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-4 py-4 pl-12 bg-slate-900 border border-slate-800 text-white placeholder:text-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-4 pl-12 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
         </motion.div>
@@ -250,7 +311,7 @@ export default function HelpPage() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-slate-400 text-sm mb-8"
+            className="text-gray-600 dark:text-slate-400 text-sm mb-8 transition-colors"
           >
             Found {allResults.length} result{allResults.length !== 1 ? 's' : ''} for "{search}"
           </motion.p>
@@ -270,15 +331,15 @@ export default function HelpPage() {
                 <motion.div
                   key={idx}
                   variants={itemVariants}
-                  className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 rounded-xl overflow-hidden transition-all group"
+                  className="backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 border border-gray-300 dark:border-slate-800 hover:border-gray-400 dark:hover:border-slate-700 rounded-xl overflow-hidden transition-all group"
                 >
                   <button
                     onClick={() => setExpandedArticle(expandedArticle === `search-${idx}` ? null : `search-${idx}`)}
-                    className="w-full px-6 py-4 flex items-start justify-between hover:bg-slate-800/30 transition-colors text-left"
+                    className="w-full px-6 py-4 flex items-start justify-between hover:bg-gray-100 dark:hover:bg-slate-800/30 transition-colors text-left"
                   >
                     <div className="flex-1">
-                      <p className="text-xs text-slate-500 font-medium mb-1">{article.category}</p>
-                      <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">
+                      <p className="text-xs text-gray-500 dark:text-slate-500 font-medium mb-1 transition-colors">{article.category}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {article.title}
                       </h3>
                     </div>
@@ -286,7 +347,7 @@ export default function HelpPage() {
                       animate={{ rotate: expandedArticle === `search-${idx}` ? 180 : 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <FiChevronDown className="w-5 h-5 text-slate-400 flex-shrink-0 ml-4" />
+                      <FiChevronDown className="w-5 h-5 text-gray-400 dark:text-slate-400 flex-shrink-0 ml-4 transition-colors" />
                     </motion.div>
                   </button>
                   <AnimatePresence>
@@ -296,9 +357,9 @@ export default function HelpPage() {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="px-6 py-4 border-t border-slate-800 bg-slate-800/20"
+                        className="px-6 py-4 border-t border-gray-300 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/20 transition-colors"
                       >
-                        <p className="text-slate-400 leading-relaxed">{article.content}</p>
+                        <p className="text-gray-700 dark:text-slate-400 leading-relaxed transition-colors">{article.content}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -310,9 +371,9 @@ export default function HelpPage() {
                 animate={{ opacity: 1 }}
                 className="text-center py-12"
               >
-                <FiSearch className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-                <p className="text-slate-400 text-lg">No articles found for "{search}"</p>
-                <p className="text-slate-500 text-sm mt-2">Try different keywords or browse all categories below.</p>
+                <FiSearch className="w-12 h-12 text-gray-300 dark:text-slate-700 mx-auto mb-4 transition-colors" />
+                <p className="text-gray-600 dark:text-slate-400 text-lg transition-colors">No articles found for "{search}"</p>
+                <p className="text-gray-500 dark:text-slate-500 text-sm mt-2 transition-colors">Try different keywords or browse all categories below.</p>
               </motion.div>
             )}
           </motion.div>
@@ -327,6 +388,7 @@ export default function HelpPage() {
             {categories.map((category, catIdx) => {
               const Icon = category.icon;
               const colorClass = colorMap[category.color as keyof typeof colorMap];
+              const colorClasses = getColorClasses(category.color);
 
               return (
                 <motion.div
@@ -337,10 +399,10 @@ export default function HelpPage() {
                   transition={{ delay: catIdx * 0.1 }}
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass} border flex items-center justify-center`}>
-                      <Icon className="w-5 h-5" />
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass} border flex items-center justify-center transition-colors`}>
+                      <Icon className={`w-5 h-5 ${colorClasses.icon}`} />
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white">
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white transition-colors">
                       {category.name}
                     </h2>
                   </div>
@@ -356,20 +418,20 @@ export default function HelpPage() {
                       <motion.div
                         key={idx}
                         variants={itemVariants}
-                        className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 rounded-xl overflow-hidden transition-all group"
+                        className="backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 border border-gray-300 dark:border-slate-800 hover:border-gray-400 dark:hover:border-slate-700 rounded-xl overflow-hidden transition-all group"
                       >
                         <button
                           onClick={() => setExpandedArticle(expandedArticle === `${catIdx}-${idx}` ? null : `${catIdx}-${idx}`)}
-                          className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-800/30 transition-colors text-left"
+                          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-100 dark:hover:bg-slate-800/30 transition-colors text-left"
                         >
-                          <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             {article.title}
                           </h3>
                           <motion.div
                             animate={{ rotate: expandedArticle === `${catIdx}-${idx}` ? 180 : 0 }}
                             transition={{ duration: 0.2 }}
                           >
-                            <FiChevronDown className="w-5 h-5 text-slate-400 flex-shrink-0 ml-4" />
+                            <FiChevronDown className="w-5 h-5 text-gray-400 dark:text-slate-400 flex-shrink-0 ml-4 transition-colors" />
                           </motion.div>
                         </button>
                         <AnimatePresence>
@@ -379,9 +441,9 @@ export default function HelpPage() {
                               animate={{ opacity: 1, height: "auto" }}
                               exit={{ opacity: 0, height: 0 }}
                               transition={{ duration: 0.2 }}
-                              className="px-6 py-4 border-t border-slate-800 bg-slate-800/20"
+                              className="px-6 py-4 border-t border-gray-300 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/20 transition-colors"
                             >
-                              <p className="text-slate-400 leading-relaxed">{article.content}</p>
+                              <p className="text-gray-700 dark:text-slate-400 leading-relaxed transition-colors">{article.content}</p>
                             </motion.div>
                           )}
                         </AnimatePresence>
@@ -402,7 +464,7 @@ export default function HelpPage() {
           viewport={{ once: true }}
           className="mt-16 md:mt-20"
         >
-          <div className="backdrop-blur-xl bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-cyan-500/20 border border-slate-800 rounded-2xl p-8 md:p-12 text-center">
+          <div className="backdrop-blur-xl bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-cyan-500/20 dark:from-blue-500/10 dark:via-purple-500/10 dark:to-cyan-500/10 border border-gray-300 dark:border-slate-800 rounded-2xl p-8 md:p-12 text-center transition-colors">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
@@ -410,13 +472,13 @@ export default function HelpPage() {
               viewport={{ once: true }}
               className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-blue-500/20 border border-blue-500/30 mb-6"
             >
-              <FiMessageCircle className="w-7 h-7 text-blue-400" />
+              <FiMessageCircle className="w-7 h-7 text-blue-600 dark:text-blue-400 transition-colors" />
             </motion.div>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 transition-colors">
               Still need help?
             </h2>
-            <p className="text-slate-400 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-600 dark:text-slate-400 mb-8 max-w-xl mx-auto transition-colors">
               Our support team is available 24/7 to answer your questions and help you get the most out of DocuVault.
             </p>
 
@@ -436,7 +498,7 @@ export default function HelpPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg font-semibold transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg font-semibold transition-all"
               >
                 <FiMessageCircle className="w-5 h-5" />
                 Contact Form
@@ -446,7 +508,7 @@ export default function HelpPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="/faq"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg font-semibold transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg font-semibold transition-all"
               >
                 <FiBook className="w-5 h-5" />
                 FAQ
