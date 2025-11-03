@@ -96,8 +96,29 @@ export default function ContactPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
+  const getColorClasses = (color: string) => {
+    const colors: Record<string, { bg: string; text: string; border: string }> = {
+      blue: { 
+        bg: "from-blue-500/20 to-blue-600/20 dark:from-blue-500/20 dark:to-blue-600/20", 
+        text: "text-blue-600 dark:text-blue-400", 
+        border: "border-blue-500/30 dark:border-blue-500/30" 
+      },
+      purple: { 
+        bg: "from-purple-500/20 to-purple-600/20 dark:from-purple-500/20 dark:to-purple-600/20", 
+        text: "text-purple-600 dark:text-purple-400", 
+        border: "border-purple-500/30 dark:border-purple-500/30" 
+      },
+      cyan: { 
+        bg: "from-cyan-500/20 to-cyan-600/20 dark:from-cyan-500/20 dark:to-cyan-600/20", 
+        text: "text-cyan-600 dark:text-cyan-400", 
+        border: "border-cyan-500/30 dark:border-cyan-500/30" 
+      },
+    };
+    return colors[color] || colors.blue;
+  };
+
   return (
-    <main className="min-h-screen bg-slate-950 relative overflow-hidden">
+    <main className="min-h-screen bg-gray-50 dark:bg-slate-950 relative overflow-hidden transition-colors">
       {/* Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <motion.div
@@ -106,7 +127,7 @@ export default function ContactPage() {
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
@@ -114,12 +135,12 @@ export default function ContactPage() {
             y: [0, -50, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
       {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[length:60px_60px] pointer-events-none -z-10" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Header */}
@@ -135,14 +156,14 @@ export default function ContactPage() {
             transition={{ delay: 0.1, duration: 0.5 }}
             className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 mb-6"
           >
-            <FiMail className="w-6 h-6 text-blue-400" />
+            <FiMail className="w-6 h-6 text-blue-600 dark:text-blue-400 transition-colors" />
           </motion.div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
             Get in Touch
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Have questions or feedback? We'd love to hear from you. Our team is ready to help.
+          <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
+            Have questions or feedback? We&apos;d love to hear from you. Our team is ready to help.
           </p>
         </motion.div>
 
@@ -155,15 +176,15 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-2"
           >
-            <div className="backdrop-blur-xl bg-slate-900/80 border border-slate-800 rounded-2xl p-8 md:p-10 shadow-2xl">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">Send us a Message</h2>
+            <div className="backdrop-blur-xl bg-white/50 dark:bg-slate-900/80 border border-gray-300 dark:border-slate-800 rounded-2xl p-8 md:p-10 shadow-2xl transition-colors">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8 transition-colors">Send us a Message</h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Name Field */}
                   <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-semibold text-white flex items-center gap-2">
-                      <span className="text-blue-400">*</span>
+                    <label htmlFor="name" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 transition-colors">
+                      <span className="text-blue-600 dark:text-blue-400">*</span>
                       Full Name
                     </label>
                     <input
@@ -173,15 +194,15 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="John Doe"
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-gray-100 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       required
                     />
                   </div>
 
                   {/* Email Field */}
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-semibold text-white flex items-center gap-2">
-                      <span className="text-blue-400">*</span>
+                    <label htmlFor="email" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 transition-colors">
+                      <span className="text-blue-600 dark:text-blue-400">*</span>
                       Email Address
                     </label>
                     <input
@@ -191,7 +212,7 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john@example.com"
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-gray-100 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       required
                     />
                   </div>
@@ -199,7 +220,7 @@ export default function ContactPage() {
 
                 {/* Phone Field */}
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-semibold text-white">
+                  <label htmlFor="phone" className="text-sm font-semibold text-gray-900 dark:text-white transition-colors">
                     Phone Number (Optional)
                   </label>
                   <input
@@ -209,14 +230,14 @@ export default function ContactPage() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+1 (555) 000-0000"
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-gray-100 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   />
                 </div>
 
                 {/* Subject Field */}
                 <div className="space-y-2">
-                  <label htmlFor="subject" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <span className="text-blue-400">*</span>
+                  <label htmlFor="subject" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 transition-colors">
+                    <span className="text-blue-600 dark:text-blue-400">*</span>
                     Subject
                   </label>
                   <select
@@ -224,7 +245,7 @@ export default function ContactPage() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all appearance-none bg-no-repeat bg-right"
+                    className="w-full px-4 py-3 bg-gray-100 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all appearance-none bg-no-repeat bg-right"
                     style={{
                       backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b5cf6' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
                       backgroundPosition: "right 1rem center",
@@ -232,20 +253,20 @@ export default function ContactPage() {
                     }}
                     required
                   >
-                    <option value="">Select a subject</option>
-                    <option value="general">General Inquiry</option>
-                    <option value="support">Technical Support</option>
-                    <option value="billing">Billing Question</option>
-                    <option value="feature">Feature Request</option>
-                    <option value="partnership">Partnership</option>
-                    <option value="other">Other</option>
+                    <option value="" className="bg-gray-900 dark:bg-slate-900 text-gray-900 dark:text-white">Select a subject</option>
+                    <option value="general" className="bg-gray-900 dark:bg-slate-900 text-gray-900 dark:text-white">General Inquiry</option>
+                    <option value="support" className="bg-gray-900 dark:bg-slate-900 text-gray-900 dark:text-white">Technical Support</option>
+                    <option value="billing" className="bg-gray-900 dark:bg-slate-900 text-gray-900 dark:text-white">Billing Question</option>
+                    <option value="feature" className="bg-gray-900 dark:bg-slate-900 text-gray-900 dark:text-white">Feature Request</option>
+                    <option value="partnership" className="bg-gray-900 dark:bg-slate-900 text-gray-900 dark:text-white">Partnership</option>
+                    <option value="other" className="bg-gray-900 dark:bg-slate-900 text-gray-900 dark:text-white">Other</option>
                   </select>
                 </div>
 
                 {/* Message Field */}
                 <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <span className="text-blue-400">*</span>
+                  <label htmlFor="message" className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 transition-colors">
+                    <span className="text-blue-600 dark:text-blue-400">*</span>
                     Message
                   </label>
                   <textarea
@@ -255,7 +276,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     placeholder="Tell us more about your inquiry..."
                     rows={6}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"
+                    className="w-full px-4 py-3 bg-gray-100 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"
                     required
                   />
                 </div>
@@ -292,7 +313,7 @@ export default function ContactPage() {
                 </motion.button>
               </form>
 
-              <p className="text-xs text-slate-500 mt-4 text-center">
+              <p className="text-xs text-gray-500 dark:text-slate-500 mt-4 text-center transition-colors">
                 We respect your privacy. Your information will only be used to respond to your inquiry.
               </p>
             </div>
@@ -313,27 +334,23 @@ export default function ContactPage() {
             >
               {contactMethods.map((method, i) => {
                 const Icon = method.icon;
-                const colorMap = {
-                  blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30 text-blue-400",
-                  purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30 text-purple-400",
-                  cyan: "from-cyan-500/20 to-cyan-600/20 border-cyan-500/30 text-cyan-400",
-                };
+                const colorClass = getColorClasses(method.color);
 
                 return (
                   <motion.a
                     key={i}
                     variants={itemVariants}
                     href={method.link}
-                    className={`backdrop-blur-xl bg-gradient-to-br ${colorMap[method.color as keyof typeof colorMap]} border rounded-xl p-6 hover:shadow-lg hover:shadow-${method.color}-500/20 transition-all group block`}
+                    className={`backdrop-blur-xl bg-gradient-to-br ${colorClass.bg} border ${colorClass.border} rounded-xl p-6 hover:shadow-lg transition-all group block bg-white/50 dark:bg-slate-900/50`}
                   >
                     <div className="flex items-start gap-4">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorMap[method.color as keyof typeof colorMap].split(' ')[0]} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                        <Icon className="w-5 h-5" />
+                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass.bg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                        <Icon className={`w-5 h-5 ${colorClass.text}`} />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-white mb-1">{method.title}</h3>
-                        <p className="text-sm text-slate-400 mb-2">{method.description}</p>
-                        <p className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
+                        <h3 className="font-semibold text-gray-900 dark:text-white mb-1 transition-colors">{method.title}</h3>
+                        <p className="text-sm text-gray-600 dark:text-slate-400 mb-2 transition-colors">{method.description}</p>
+                        <p className="text-sm font-medium text-gray-700 dark:text-slate-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
                           {method.contact}
                         </p>
                       </div>
@@ -348,7 +365,7 @@ export default function ContactPage() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="space-y-3 mt-8 pt-8 border-t border-slate-800"
+              className="space-y-3 mt-8 pt-8 border-t border-gray-300 dark:border-slate-800 transition-colors"
             >
               {supportInfo.map((info, i) => {
                 const Icon = info.icon;
@@ -358,12 +375,12 @@ export default function ContactPage() {
                     variants={itemVariants}
                     className="flex items-start gap-3"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center flex-shrink-0 mt-1">
-                      <Icon className="w-4 h-4 text-slate-400" />
+                    <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 mt-1 transition-colors">
+                      <Icon className="w-4 h-4 text-gray-600 dark:text-slate-400 transition-colors" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-white text-sm">{info.title}</p>
-                      <p className="text-xs text-slate-400">{info.description}</p>
+                      <p className="font-semibold text-gray-900 dark:text-white text-sm transition-colors">{info.title}</p>
+                      <p className="text-xs text-gray-600 dark:text-slate-400 transition-colors">{info.description}</p>
                     </div>
                   </motion.div>
                 );
@@ -378,12 +395,12 @@ export default function ContactPage() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 rounded-2xl p-8 md:p-12 text-center"
+          className="backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 border border-gray-300 dark:border-slate-800 rounded-2xl p-8 md:p-12 text-center transition-colors"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
             Have a Quick Question?
           </h2>
-          <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto transition-colors">
             Check out our Help Center and FAQ for quick answers to common questions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -400,7 +417,7 @@ export default function ContactPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href="/faq"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg font-semibold transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg font-semibold transition-all"
             >
               View FAQ
             </motion.a>
