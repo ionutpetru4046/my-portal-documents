@@ -7,6 +7,7 @@ import Reveal from "@/components/Reveal";
 import { motion } from "framer-motion";
 import { FiArrowRight, FiShield, FiUpload, FiBell, FiCheck, FiUsers, FiLock, FiZap } from "react-icons/fi";
 import { useUser } from "@/context/UserContext";
+import Testimonials from "@/components/Testimonials";
 
 export default function HomePage() {
   const { user } = useUser();
@@ -358,6 +359,7 @@ export default function HomePage() {
           </Reveal>
         </div>
       </section>
+      <Testimonials />
     </main>
   );
 }
