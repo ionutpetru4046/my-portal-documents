@@ -68,6 +68,15 @@ export default function HomePage() {
     { number: "24/7", label: "Support Available" },
   ];
 
+  const companies = [
+    { name: "TechCorp", logo: "💼" },
+    { name: "FinanceHub", logo: "💰" },
+    { name: "LegalEase", logo: "⚖️" },
+    { name: "CloudSync", logo: "☁️" },
+    { name: "SecureVault", logo: "🔐" },
+    { name: "DataFlow", logo: "📊" },
+  ];
+
   return (
     <main className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-white transition-colors">
       {/* Hero Section */}
@@ -183,6 +192,76 @@ export default function HomePage() {
                 </div>
               </motion.div>
             </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative py-20 md:py-24 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Title */}
+          <Reveal animation="fade-up">
+            <div className="text-center mb-12">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">
+                Trusted by Leading Companies
+              </h3>
+              <p className="text-gray-600 dark:text-slate-400 transition-colors">
+                Join organizations that secure their documents with DocuVault
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Logo Carousel */}
+          <div className="relative overflow-hidden">
+            {/* Gradient Overlays */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+
+            {/* Scrolling Container */}
+            <motion.div
+              className="flex gap-8 md:gap-12"
+              animate={{ x: ["0%", "-100%"] }}
+              transition={{
+                duration: 30,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            >
+              {/* First Set */}
+              {companies.map((company, i) => (
+                <motion.div
+                  key={`first-${i}`}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                >
+                  <div className="text-center">
+                    <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
+                      {company.logo}
+                    </div>
+                    <p className="text-xs md:text-sm font-semibold text-gray-700 dark:text-slate-300 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors">
+                      {company.name}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Duplicate Set for Infinite Loop */}
+              {companies.map((company, i) => (
+                <motion.div
+                  key={`second-${i}`}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                >
+                  <div className="text-center">
+                    <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
+                      {company.logo}
+                    </div>
+                    <p className="text-xs md:text-sm font-semibold text-gray-700 dark:text-slate-300 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors">
+                      {company.name}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
@@ -359,7 +438,80 @@ export default function HomePage() {
           </Reveal>
         </div>
       </section>
+
+      {/* Testimonials Section */}
       <Testimonials />
+
+      {/* Infinite Scrolling Logo Carousel */}
+      <section className="relative py-20 md:py-24 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Title */}
+          <Reveal animation="fade-up">
+            <div className="text-center mb-12">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">
+                Trusted by Leading Companies
+              </h3>
+              <p className="text-gray-600 dark:text-slate-400 transition-colors">
+                Join organizations that secure their documents with DocuVault
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Logo Carousel */}
+          <div className="relative overflow-hidden">
+            {/* Gradient Overlays */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+
+            {/* Scrolling Container */}
+            <motion.div
+              className="flex gap-8 md:gap-12"
+              animate={{ x: ["0%", "-100%"] }}
+              transition={{
+                duration: 30,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            >
+              {/* First Set */}
+              {companies.map((company, i) => (
+                <motion.div
+                  key={`first-${i}`}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                >
+                  <div className="text-center">
+                    <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
+                      {company.logo}
+                    </div>
+                    <p className="text-xs md:text-sm font-semibold text-gray-700 dark:text-slate-300 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors">
+                      {company.name}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Duplicate Set for Infinite Loop */}
+              {companies.map((company, i) => (
+                <motion.div
+                  key={`second-${i}`}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                >
+                  <div className="text-center">
+                    <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
+                      {company.logo}
+                    </div>
+                    <p className="text-xs md:text-sm font-semibold text-gray-700 dark:text-slate-300 group-hover:text-blue-400 dark:group-hover:text-blue-400 transition-colors">
+                      {company.name}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
