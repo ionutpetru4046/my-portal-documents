@@ -127,7 +127,7 @@ export default function ContactPage() {
             y: [0, 50, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
@@ -135,12 +135,12 @@ export default function ContactPage() {
             y: [0, -50, 0]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
       {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-[length:60px_60px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none -z-10" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Header */}
@@ -290,7 +290,7 @@ export default function ContactPage() {
                   className={`w-full py-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
                     submitted
                       ? "bg-green-600 text-white"
-                      : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                      : "bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                   } disabled:opacity-50`}
                 >
                   {loading ? (
@@ -341,10 +341,10 @@ export default function ContactPage() {
                     key={i}
                     variants={itemVariants}
                     href={method.link}
-                    className={`backdrop-blur-xl bg-gradient-to-br ${colorClass.bg} border ${colorClass.border} rounded-xl p-6 hover:shadow-lg transition-all group block bg-white/50 dark:bg-slate-900/50`}
+                    className={`backdrop-blur-xl bg-linear-to-br ${colorClass.bg} border ${colorClass.border} rounded-xl p-6 hover:shadow-lg transition-all group block bg-white/50 dark:bg-slate-900/50`}
                   >
                     <div className="flex items-start gap-4">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass.bg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                      <div className={`w-10 h-10 rounded-lg bg-linear-to-br ${colorClass.bg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
                         <Icon className={`w-5 h-5 ${colorClass.text}`} />
                       </div>
                       <div className="flex-1">
@@ -375,7 +375,7 @@ export default function ContactPage() {
                     variants={itemVariants}
                     className="flex items-start gap-3"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 mt-1 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-slate-800 flex items-center justify-center shrink-0 mt-1 transition-colors">
                       <Icon className="w-4 h-4 text-gray-600 dark:text-slate-400 transition-colors" />
                     </div>
                     <div className="flex-1">
@@ -408,7 +408,7 @@ export default function ContactPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href="/help"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
             >
               View Help Center
               <FiArrowRight className="w-4 h-4" />
