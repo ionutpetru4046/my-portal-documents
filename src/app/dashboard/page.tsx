@@ -2,9 +2,7 @@
 
 // src/app/dashboard/page.tsx
 import { useMemo, useState, useEffect } from "react";
-import Link from "next/link";
 import FolderCard from "@/components/FolderCard";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabaseClient";
 import { motion } from "framer-motion";

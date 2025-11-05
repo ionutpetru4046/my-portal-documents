@@ -213,8 +213,8 @@ export default function HomePage() {
           {/* Logo Carousel */}
           <div className="relative overflow-hidden">
             {/* Gradient Overlays */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
 
             {/* Scrolling Container */}
             <motion.div
@@ -231,7 +231,7 @@ export default function HomePage() {
                 <motion.div
                   key={`first-${i}`}
                   whileHover={{ scale: 1.05 }}
-                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                  className="shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
                 >
                   <div className="text-center">
                     <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
@@ -249,7 +249,7 @@ export default function HomePage() {
                 <motion.div
                   key={`second-${i}`}
                   whileHover={{ scale: 1.05 }}
-                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                  className="shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
                 >
                   <div className="text-center">
                     <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
@@ -460,8 +460,8 @@ export default function HomePage() {
           {/* Logo Carousel */}
           <div className="relative overflow-hidden">
             {/* Gradient Overlays */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-gray-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
 
             {/* Scrolling Container */}
             <motion.div
@@ -478,7 +478,7 @@ export default function HomePage() {
                 <motion.div
                   key={`first-${i}`}
                   whileHover={{ scale: 1.05 }}
-                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                  className="shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
                 >
                   <div className="text-center">
                     <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
@@ -496,7 +496,7 @@ export default function HomePage() {
                 <motion.div
                   key={`second-${i}`}
                   whileHover={{ scale: 1.05 }}
-                  className="flex-shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
+                  className="shrink-0 w-40 md:w-48 h-20 md:h-24 rounded-xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-gray-300/50 dark:border-slate-700/50 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex items-center justify-center transition-all cursor-pointer group"
                 >
                   <div className="text-center">
                     <div className="text-4xl md:text-5xl mb-2 group-hover:scale-110 transition-transform">
