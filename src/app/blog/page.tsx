@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
-import { FiSearch, FiPlus, FiEdit, FiTrash2, FiClock, FiUser, FiTag, FiArrowRight, FiFilter, FiChevronDown } from "react-icons/fi";
+import { FiSearch, FiPlus, FiEdit, FiTrash2, FiClock, FiUser, FiFilter, } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import toast, { Toaster } from "react-hot-toast";
 import { supabase } from "@/lib/supabaseClient";
@@ -434,7 +438,7 @@ export default function BlogPage() {
                       <img
                         src={blog.featured_image}
                         alt={blog.title}
-                        className="w-24 h-24 rounded-lg object-cover flex-shrink-0"
+                        className="w-24 h-24 rounded-lg object-cover shrink-0"
                       />
                     )}
                     <div className="flex-1">
@@ -442,7 +446,7 @@ export default function BlogPage() {
                         <h3 className="text-lg font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                           {blog.title}
                         </h3>
-                        <div className="flex gap-2 flex-shrink-0">
+                        <div className="flex gap-2 shrink-0">
                           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
                             {blog.category}
                           </span>
@@ -499,7 +503,7 @@ export default function BlogPage() {
       {/* Blog Detail Modal */}
       {showDetailModal && selectedBlogDetail && (
         <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 pointer-events-auto"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-9999 p-4 pointer-events-auto"
           onClick={() => {
             setShowDetailModal(false);
             setSelectedBlogDetail(null);
@@ -519,7 +523,7 @@ export default function BlogPage() {
                   setShowDetailModal(false);
                   setSelectedBlogDetail(null);
                 }}
-                className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 text-2xl leading-none pointer-events-auto flex-shrink-0"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 text-2xl leading-none pointer-events-auto shrink-0"
               >
                 ✕
               </button>
@@ -635,7 +639,7 @@ export default function BlogPage() {
       {/* Create/Edit Modal */}
       {showCreateModal && (
         <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 pointer-events-auto"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-9999 p-4 pointer-events-auto"
           onClick={() => {
             setShowCreateModal(false);
             resetForm();

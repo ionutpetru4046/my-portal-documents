@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -6,7 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiChevronDown, FiFileText, FiUsers, FiClock, FiBook, FiMail, FiSettings, FiLogOut, FiUser, FiGrid, FiX, FiMenu, FiHelpCircle, FiHome, FiDollarSign } from "react-icons/fi";
+import { FiChevronDown, FiFileText, FiUsers, FiClock, FiBook, FiMail, FiLogOut, FiUser, FiGrid, FiX, FiMenu, FiHelpCircle, FiHome, FiDollarSign } from "react-icons/fi";
 import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
@@ -308,7 +309,7 @@ export default function Navbar() {
                           className="w-7 h-7 rounded-lg object-cover border border-slate-600 group-hover:border-slate-500 transition"
                         />
                       ) : (
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
+                        <div className="w-7 h-7 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
                           <span className="text-xs font-bold text-white">
                             {user.name?.charAt(0).toUpperCase() || "U"}
                           </span>
@@ -378,7 +379,7 @@ export default function Navbar() {
                     </Button>
                   </Link>
                   <Link href="/signup">
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 cursor-pointer hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
+                    <Button className="bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 cursor-pointer hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
                       Get Started
                     </Button>
                   </Link>
@@ -397,7 +398,7 @@ export default function Navbar() {
                     {user.avatar ? (
                       <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-lg object-cover" />
                     ) : (
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                      <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
                         {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
@@ -471,7 +472,7 @@ export default function Navbar() {
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-800 shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                     <Image src="/Digital-document-logo.png" alt="Logo" width={40} height={40} className="rounded-lg" />
                   </div>
                   <span className="text-lg font-bold">Menu</span>
@@ -492,7 +493,7 @@ export default function Navbar() {
                     {user.avatar ? (
                       <img src={user.avatar} alt="avatar" className="w-12 h-12 rounded-lg object-cover border-2 border-slate-700" />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
+                      <div className="w-12 h-12 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
                         {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
@@ -601,7 +602,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/signup"
-                      className="block px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
+                      className="block px-4 py-3 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
                       onClick={closeMobileMenu}
                     >
                       Get Started

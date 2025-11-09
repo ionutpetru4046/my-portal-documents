@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useState } from "react";
@@ -52,7 +53,7 @@ const privacySections = [
     ),
   },
   {
-    title: "6. Children’s Privacy",
+    title: "6. Children's Privacy",
     content: (
       <p>
         Our services are not directed to individuals under 13. We do not knowingly collect personal information from children.
@@ -77,33 +78,33 @@ export default function PrivacyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex flex-col items-center">
-      <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-center">Privacy Policy</h1>
+    <div className="min-h-screen bg-white dark:bg-slate-950 p-6 flex flex-col items-center transition-colors duration-300">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-slate-900 dark:text-white">Privacy Policy</h1>
 
       <div className="w-full max-w-3xl space-y-4">
-        <p className="text-gray-700 text-center mb-6">
+        <p className="text-slate-700 dark:text-slate-300 text-center mb-6">
           Your privacy is important to us. This Privacy Policy explains how <strong>DocuVault</strong> ("we", "us", "our") collects, uses, and protects your information.
         </p>
 
         {privacySections.map((section, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl shadow-md p-5 cursor-pointer transition-all hover:shadow-lg"
+            className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-lg/20 p-5 cursor-pointer transition-all hover:shadow-md dark:hover:shadow-lg/30"
             onClick={() => toggleSection(index)}
           >
             <div className="flex justify-between items-center">
-              <h2 className="text-lg sm:text-xl font-semibold">{section.title}</h2>
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">{section.title}</h2>
               {openIndex === index ? (
-                <FiChevronUp className="w-5 h-5 text-gray-500" />
+                <FiChevronUp className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               ) : (
-                <FiChevronDown className="w-5 h-5 text-gray-500" />
+                <FiChevronDown className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               )}
             </div>
-            {openIndex === index && <div className="mt-3 text-gray-700">{section.content}</div>}
+            {openIndex === index && <div className="mt-3 text-slate-700 dark:text-slate-300">{section.content}</div>}
           </div>
         ))}
 
-        <p className="mt-6 text-gray-500 text-sm text-center">
+        <p className="mt-6 text-slate-500 dark:text-slate-400 text-sm text-center">
           Last updated: October 24, 2025
         </p>
       </div>
