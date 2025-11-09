@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/app/about/page.tsx
 "use client";
 
@@ -105,7 +106,7 @@ export default function AboutPage() {
               y: [0, 50, 0]
             }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+            className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
           />
           <motion.div
             animate={{ 
@@ -194,7 +195,7 @@ export default function AboutPage() {
           >
             {stats.map((stat, i) => (
               <motion.div key={stat.label} variants={itemVariants} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                <div className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
                 <div className="text-gray-600 dark:text-slate-400 font-medium text-sm md:text-base transition-colors">{stat.label}</div>
