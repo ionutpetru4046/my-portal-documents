@@ -33,6 +33,8 @@ export default function BlogPage() {
   const [categories, setCategories] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedBlogDetail, setSelectedBlogDetail] = useState<BlogPost | null>(null);
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
   const [formData, setFormData] = useState<Partial<BlogPost>>({
     title: "",
@@ -162,6 +164,11 @@ export default function BlogPage() {
     setEditingBlog(blog);
     setFormData(blog);
     setShowCreateModal(true);
+  };
+
+  const handleViewDetail = (blog: BlogPost) => {
+    setSelectedBlogDetail(blog);
+    setShowDetailModal(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -327,7 +334,10 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredBlogs.map((blog, idx) => (
               <Reveal key={blog.id} animation="fade-up" delay={idx * 40}>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg dark:hover:shadow-lg/20 transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                <div 
+                  onClick={() => handleViewDetail(blog)}
+                  className="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg dark:hover:shadow-lg/20 transition-all duration-300 hover:-translate-y-1 flex flex-col cursor-pointer"
+                >
                   {/* Featured Image */}
                   {blog.featured_image && (
                     <img
@@ -415,7 +425,10 @@ export default function BlogPage() {
           <div className="space-y-4">
             {filteredBlogs.map((blog, idx) => (
               <Reveal key={blog.id} animation="fade-up" delay={idx * 40}>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg dark:hover:shadow-lg/20 transition-all duration-300 hover:-translate-y-0.5">
+                <div 
+                  onClick={() => handleViewDetail(blog)}
+                  className="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg dark:hover:shadow-lg/20 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
+                >
                   <div className="flex gap-6">
                     {blog.featured_image && (
                       <img
@@ -482,6 +495,142 @@ export default function BlogPage() {
           </div>
         )}
       </div>
+
+      {/* Blog Detail Modal */}
+      {showDetailModal && selectedBlogDetail && (
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4 pointer-events-auto"
+          onClick={() => {
+            setShowDetailModal(false);
+            setSelectedBlogDetail(null);
+          }}
+        >
+          <div 
+            className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Detail Modal Header */}
+            <div className="sticky top-0 flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 z-10 pointer-events-auto">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex-1 pr-4">
+                {selectedBlogDetail.title}
+              </h2>
+              <button
+                onClick={() => {
+                  setShowDetailModal(false);
+                  setSelectedBlogDetail(null);
+                }}
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 text-2xl leading-none pointer-events-auto flex-shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Detail Modal Content */}
+            <div className="overflow-y-auto flex-1 pointer-events-auto">
+              {/* Featured Image */}
+              {selectedBlogDetail.featured_image && (
+                <img
+                  src={selectedBlogDetail.featured_image}
+                  alt={selectedBlogDetail.title}
+                  className="w-full h-64 object-cover"
+                />
+              )}
+
+              <div className="p-6 space-y-6">
+                {/* Meta Information */}
+                <div className="flex flex-wrap items-center gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                      {selectedBlogDetail.category}
+                    </span>
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+                      selectedBlogDetail.published
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                        : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
+                    }`}>
+                      {selectedBlogDetail.published ? "Published" : "Draft"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400 ml-auto">
+                    <span className="flex items-center gap-1">
+                      <FiClock className="w-4 h-4" /> {formatDate(selectedBlogDetail.created_at)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <FiUser className="w-4 h-4" /> {selectedBlogDetail.author}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Excerpt */}
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Summary</h3>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    {selectedBlogDetail.excerpt}
+                  </p>
+                </div>
+
+                {/* Content */}
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Content</h3>
+                  <div className="prose dark:prose-invert max-w-none">
+                    <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
+                      {selectedBlogDetail.content}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Tags */}
+                {selectedBlogDetail.tags.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">Tags</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedBlogDetail.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-sm px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Detail Modal Footer */}
+            <div className="flex gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 pointer-events-auto">
+              <button
+                onClick={() => {
+                  setShowDetailModal(false);
+                  setSelectedBlogDetail(null);
+                }}
+                className="px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors pointer-events-auto"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  handleEdit(selectedBlogDetail);
+                  setShowDetailModal(false);
+                }}
+                className="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors flex items-center gap-2 pointer-events-auto"
+              >
+                <FiEdit className="w-4 h-4" /> Edit
+              </button>
+              <button
+                onClick={() => {
+                  handleDelete(selectedBlogDetail.id);
+                  setShowDetailModal(false);
+                }}
+                className="px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition-colors flex items-center gap-2 pointer-events-auto"
+              >
+                <FiTrash2 className="w-4 h-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Create/Edit Modal */}
       {showCreateModal && (
