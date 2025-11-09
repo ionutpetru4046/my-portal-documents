@@ -103,6 +103,7 @@ export default function Navbar() {
     { icon: FiHome, href: "/", label: "Home", description: "Back to homepage", color: "blue" },
     { icon: FiDollarSign, href: "/subscribe", label: "Pricing", description: "View our plans", color: "purple" },
     { icon: FiBook, href: "/about", label: "About Us", description: "Learn our story", color: "cyan" },
+    { icon: FiFileText, href: "/blog", label: "Blog", description: "About Our Blog", color: "cyan" },
   ];
 
   const supportData = [
@@ -126,7 +127,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition group">
-            <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               <Image
                 src="/Digital-document-logo.png"
                 alt="DocuVault logo"
