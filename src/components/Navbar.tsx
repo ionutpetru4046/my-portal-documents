@@ -111,6 +111,7 @@ export default function Navbar() {
     { icon: FiHelpCircle, href: "/help", label: "Help Center", description: "Find answers", color: "blue" },
     { icon: FiMail, href: "/contact", label: "Contact Support", description: "Get in touch", color: "purple" },
     { icon: FiFileText, href: "/terms", label: "Terms & Privacy", description: "Legal docs", color: "cyan" },
+    { icon: FiFileText, href: "/reminderManager", label: "Smart Reminder", description: "Smart Reminder", color: "cyan" },
   ];
 
   const getColorClasses = (color: string) => {

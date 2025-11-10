@@ -1,12 +1,62 @@
 "use client";
 
-// src/app/dashboard/page.tsx
 import { useMemo, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiMenu, FiX, FiSearch } from "react-icons/fi";
 import FolderCard from "@/components/FolderCard";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabaseClient";
-import { motion } from "framer-motion";
-import { FiSearch, FiPlus, FiArrowRight } from "react-icons/fi";
+
+const categories = [
+  {
+    name: "Cars Documents",
+    slug: "cars",
+    icon: "🚗",
+    sub: ["Insurance", "Registration", "Maintenance"],
+  },
+  {
+    name: "Company Documents",
+    slug: "company",
+    icon: "🏢",
+    sub: ["Reports", "Invoices", "Contracts"],
+  },
+  {
+    name: "User Documents",
+    slug: "users",
+    icon: "👤",
+    sub: ["Profiles", "IDs", "Applications"],
+  },
+  {
+    name: "Other Documents",
+    slug: "other",
+    icon: "📁",
+    sub: ["Miscellaneous", "Receipts"],
+  },
+  {
+    name: "Employers Documents",
+    slug: "employers",
+    icon: "💼",
+    sub: ["HR", "Payroll", "Attendance"],
+  },
+  {
+    name: "Personal Documents",
+    slug: "personal",
+    icon: "🏠",
+    sub: ["Health", "Education", "Finance"],
+  },
+  {
+    name: "Insurance Documents",
+    slug: "insurance",
+    icon: "🛡️",
+    sub: ["Policies", "Claims", "Payments"],
+  },
+  {
+    name: "Government Documents",
+    slug: "government",
+    icon: "🏛️",
+    sub: ["ID", "Tax", "Permits"],
+  },
+];
 
 interface DocRow {
   id: string;
@@ -16,22 +66,10 @@ interface DocRow {
   size?: number;
 }
 
-const categories = [
-  { name: "Cars Documents", slug: "cars", icon: "🚗" },
-  { name: "Company Documents", slug: "company", icon: "🏢" },
-  { name: "User Documents", slug: "users", icon: "👤" },
-  { name: "Other Documents", slug: "other", icon: "📁" },
-  { name: "Employers Documents", slug: "employers", icon: "📁" },
-  { name: "Personal Documents", slug: "personal", icon: "📁" },
-  { name: "Insurance Documents", slug: "insurance", icon: "📁" },
-  { name: "Government Documents", slug: "government", icon: "📁" },
-];
-
 export default function DashboardHome() {
   const [query, setQuery] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-
-  // live stats
   const [docs, setDocs] = useState<DocRow[]>([]);
   const [recentUpload, setRecentUpload] = useState<string | null>(null);
   const [storageUsedBytes, setStorageUsedBytes] = useState<number | null>(null);
@@ -40,93 +78,88 @@ export default function DashboardHome() {
     setMounted(true);
 
     const fetchUserDocs = async () => {
-      try {
-        const { data: userData } = await supabase.auth.getUser();
-        const userId = userData?.user?.id;
-        if (!userId) return;
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData?.user?.id;
+      if (!userId) return;
 
-        // fetch documents for this user (only necessary fields)
-        const res = await supabase
-          .from("documents")
-          .select("id, category, created_at, path")
-          .eq("userID", userId);
-        const data = res.data as DocRow[] | null;
-        const error = (res as { error: { message: string } | null }).error as { message: string } | null;
+      const res = await supabase
+        .from("documents")
+        .select("id, category, created_at, path, size")
+        .eq("userID", userId);
 
-        if (error) {
-          console.info("Failed to fetch documents for stats:", error.message);
-          return;
-        }
+      const data = res.data as DocRow[] | null;
+      setDocs(data || []);
 
-        setDocs(data || []);
+      const mostRecent = (data || [])
+        .slice()
+        .sort((a, b) => new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime())[0];
+      setRecentUpload(mostRecent?.created_at ?? null);
 
-        // recent upload
-        const mostRecent = (data || []).slice().sort((a, b) => {
-          const ta = a.created_at ? new Date(a.created_at).getTime() : 0;
-          const tb = b.created_at ? new Date(b.created_at).getTime() : 0;
-          return tb - ta;
-        })[0];
-        setRecentUpload(mostRecent?.created_at ?? null);
-        // compute storage used from document sizes (preferred if available)
-        const totalFromDocs = (data || []).reduce((acc, d) => acc + (d.size ?? 0), 0);
-        if (totalFromDocs > 0) {
-          setStorageUsedBytes(totalFromDocs);
-        } else {
-          // try to estimate storage used by listing storage objects for this user prefix as a fallback
-          try {
-            const listRes = await supabase.storage.from("documents").list("", { limit: 1000 });
-            if (listRes?.data && Array.isArray(listRes.data)) {
-              let total = 0;
-              for (const f of listRes.data) {
-                const maybeSize = (f as any).size ?? (f as any).metadata?.size ?? null;
-                if (typeof maybeSize === "number") total += maybeSize;
-              }
-              setStorageUsedBytes(total || null);
-            }
-          } catch (err) {
-            // ignore storage list issues - optional feature
-          }
-        }
-      } catch (err) {
-        console.info("Error fetching user docs", err);
-      }
+      const totalSize = (data || []).reduce((acc, d) => acc + (d.size ?? 0), 0);
+      setStorageUsedBytes(totalSize || null);
     };
 
-    void fetchUserDocs();
+    fetchUserDocs();
   }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return categories;
-    return categories.filter((c) => c.name.toLowerCase().includes(q) || c.slug.includes(q));
+    return categories.filter((c) => c.name.toLowerCase().includes(q));
   }, [query]);
 
   return (
-    <main className="min-h-screen bg-slate-950 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+    <main className="min-h-screen bg-slate-950 flex relative overflow-hidden">
+      {/* Background gradients */}
+      <div className="fixed inset-0 -z-10">
         <motion.div
-          animate={{ 
-            x: [0, 100, 0],
-            y: [0, 50, 0]
-          }}
+          animate={{ x: [0, 100, 0], y: [0, 50, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-[25rem] h-[25rem] bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
-          animate={{ 
-            x: [0, -100, 0],
-            y: [0, -50, 0]
-          }}
+          animate={{ x: [0, -100, 0], y: [0, -50, 0] }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-[25rem] h-[25rem] bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
-      {/* Grid Pattern */}
-      <div className="fixed inset-0 bg-[linear-gradient(rgba(148,163,184,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.05)_1px,transparent_1px)] bg-size-[60px_60px] pointer-events-none -z-10" />
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.aside
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+            className="fixed sm:hidden inset-y-0 left-0 z-40 w-64 bg-slate-900/90 border-r border-slate-800 backdrop-blur-xl flex flex-col"
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
+              <h2 className="text-white font-semibold text-lg">Menu</h2>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="text-slate-400 hover:text-white transition"
+              >
+                <FiX size={20} />
+              </button>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      {/* Mobile Toggle Button */}
+      {!sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="sm:hidden fixed top-4 left-4 bg-slate-900/90 p-2 rounded-md border border-slate-800 text-white z-50 shadow-md"
+        >
+          <FiMenu size={20} />
+        </button>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 relative z-10 px-4 sm:px-8 py-6 sm:py-10 max-w-7xl mx-auto w-full">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,57 +168,45 @@ export default function DashboardHome() {
         >
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white">Your Documents</h1>
-            <p className="text-slate-400 text-sm mt-1">Organize and access your files by category.</p>
+            <p className="text-slate-400 text-sm mt-1">
+              Organize and access your files by category.
+            </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-full sm:w-auto">
-              <div className="relative">
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" />
-                <Input
-                  type="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search categories..."
-                  className="w-full sm:w-64 pl-10 py-2.5 bg-slate-900 border border-slate-800 text-white placeholder:text-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                />
-              </div>
-            </div>
+          <div className="relative w-full sm:w-64">
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+            <Input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search categories..."
+              className="pl-10 py-2.5 bg-slate-900 border border-slate-800 text-white placeholder:text-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 transition-all w-full"
+            />
           </div>
         </motion.div>
 
-        {/* Quick stats */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8"
-        >
-          <div className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 p-6 rounded-lg transition-all hover:shadow-lg hover:shadow-blue-500/10">
-            <h3 className="text-xs text-slate-400 font-medium uppercase tracking-wide">Total Categories</h3>
-            <p className="text-3xl font-bold text-white mt-3">{categories.length}</p>
+        {/* Stats */}
+        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-lg text-white">
+            <h3 className="text-xs text-slate-400 uppercase tracking-wide">Total Categories</h3>
+            <p className="text-3xl font-bold mt-3">{categories.length}</p>
           </div>
-          <div className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 p-6 rounded-lg transition-all hover:shadow-lg hover:shadow-purple-500/10">
-            <h3 className="text-xs text-slate-400 font-medium uppercase tracking-wide">Recent Upload</h3>
+          <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-lg text-white">
+            <h3 className="text-xs text-slate-400 uppercase tracking-wide">Recent Upload</h3>
             <p className="text-sm text-slate-300 mt-3">
               {recentUpload ? new Date(recentUpload).toLocaleString() : "—"}
             </p>
           </div>
-          <div className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 p-6 rounded-lg transition-all hover:shadow-lg hover:shadow-cyan-500/10">
-            <h3 className="text-xs text-slate-400 font-medium uppercase tracking-wide">Storage Used</h3>
+          <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-lg text-white">
+            <h3 className="text-xs text-slate-400 uppercase tracking-wide">Storage Used</h3>
             <p className="text-sm text-slate-300 mt-3">
-              {storageUsedBytes != null ? `${(storageUsedBytes / 1024 / 1024).toFixed(2)} MB` : "—"}
+              {storageUsedBytes ? `${(storageUsedBytes / 1024 / 1024).toFixed(2)} MB` : "—"}
             </p>
           </div>
-        </motion.section>
+        </section>
 
-        {/* Categories grid */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h2 className="sr-only">Categories</h2>
+        {/* Category Grid */}
+        <section>
           {filtered.length === 0 ? (
             <div className="py-20 bg-slate-900/50 border border-slate-800 rounded-lg text-center backdrop-blur-xl">
               <p className="text-slate-400">No categories match your search.</p>
@@ -204,7 +225,7 @@ export default function DashboardHome() {
               ))}
             </div>
           )}
-        </motion.section>
+        </section>
       </div>
     </main>
   );

@@ -1,12 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
+import { FiUpload, FiCalendar, FiBell, FiTrash2, FiShare2, FiArrowLeft, FiX, FiChevronLeft, FiChevronRight, FiFile, FiClock, FiEye } from "react-icons/fi";
 
 interface DocumentType {
   id: string;
@@ -29,7 +33,6 @@ interface UserType {
 export default function CategoryPage() {
   const params = useParams();
   const category = params?.category;
-
   const router = useRouter();
 
   const [user, setUser] = useState<UserType | null>(null);
@@ -38,16 +41,35 @@ export default function CategoryPage() {
   const [expirationDate, setExpirationDate] = useState("");
   const [reminderAt, setReminderAt] = useState("");
   const [uploading, setUploading] = useState(false);
-  // Image viewer state
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   const imageDocs = documents.filter((d) => d.url && d.name && /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(d.name));
 
+  const handleImageClick = (doc: DocumentType) => {
+    console.log("Clicked document:", doc);
+    console.log("All imageDocs:", imageDocs);
+    const index = imageDocs.findIndex((d) => d.id === doc.id);
+    console.log("Found index:", index);
+    if (index !== -1) {
+      setViewerIndex(index);
+      setIsViewerOpen(true);
+    } else {
+      toast.error("Could not open image preview");
+    }
+  };
+
   if (!category) return <p className="p-6">Category not found.</p>;
 
-  // Fetch logged-in user
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const shouldBeDark = savedTheme ? savedTheme === "dark" : prefersDark;
+    setIsDark(shouldBeDark);
+  }, []);
+
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
@@ -61,7 +83,6 @@ export default function CategoryPage() {
     fetchUser();
   }, []);
 
-  // Fetch documents for this user & category
   const fetchDocuments = async () => {
     if (!user?.id) return;
     const { data, error } = await supabase
@@ -79,10 +100,8 @@ export default function CategoryPage() {
     if (user && category) fetchDocuments();
   }, [user, category]);
 
-  // Real-time updates
   useEffect(() => {
     if (!user?.id || !category) return;
-
     const channel = supabase
       .channel(`documents-${user.id}-${category}`)
       .on(
@@ -113,7 +132,6 @@ export default function CategoryPage() {
     };
   }, [user, category]);
 
-  // Upload file
   const handleUpload = async () => {
     if (!file || !user) return;
     setUploading(true);
@@ -134,7 +152,6 @@ export default function CategoryPage() {
           name: file.name,
           path: filePath,
           url: publicUrl,
-          // size: file.size, // removed to match schema
           userID: user.id,
           category,
           expiration_date: expirationDate || null,
@@ -156,18 +173,15 @@ export default function CategoryPage() {
     setUploading(false);
   };
 
-  // Image viewer controls
   const openViewer = (index: number) => {
     setViewerIndex(index);
     setIsViewerOpen(true);
   };
 
   const closeViewer = () => setIsViewerOpen(false);
-
   const showPrev = () => setViewerIndex((i) => (i - 1 + imageDocs.length) % imageDocs.length);
   const showNext = () => setViewerIndex((i) => (i + 1) % imageDocs.length);
 
-  // keyboard navigation
   useEffect(() => {
     if (!isViewerOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -179,15 +193,12 @@ export default function CategoryPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [isViewerOpen, imageDocs.length]);
 
-  // prevent scroll when viewer open
   useEffect(() => {
     document.body.style.overflow = isViewerOpen ? "hidden" : "";
   }, [isViewerOpen]);
 
-  // touch swipe support
   const touchStartRef = useRef<number | null>(null);
 
-  // animate fade when switching images
   useEffect(() => {
     if (!isViewerOpen) return;
     setIsFading(true);
@@ -195,7 +206,6 @@ export default function CategoryPage() {
     return () => clearTimeout(t);
   }, [viewerIndex, isViewerOpen]);
 
-  // Delete document
   const handleDelete = async (doc: DocumentType) => {
     if (!doc.path || !doc.id) return;
     if (!window.confirm(`Delete "${doc.name}"?`)) return;
@@ -219,7 +229,6 @@ export default function CategoryPage() {
     }
   };
 
-  // Share document
   const handleShare = async (doc: DocumentType) => {
     if (!doc.url) return;
     await navigator.clipboard.writeText(doc.url);
@@ -239,258 +248,306 @@ export default function CategoryPage() {
   const displayName = catStr.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
   return (
-    <main className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto">
+    <main className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
       <Toaster position="top-right" />
 
       {/* Header */}
-      <div className="mb-6">
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
                 if (typeof window !== "undefined" && window.history.length > 1) router.back();
                 else router.push("/dashboard");
               }}
-              aria-label="Go back"
-              className="flex items-center justify-center w-10 h-10 rounded-lg bg-white border shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-transform duration-150 text-gray-700"
+              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >
-              <span className="text-lg">←</span>
+              <FiArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
             </button>
-
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">{displayName}</h1>
-              <p className="text-sm text-gray-500 mt-1">Manage and track your documents efficiently</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2">
-              <span className="px-3 py-2 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium">Category</span>
-              <span className="text-sm text-gray-600">{displayName}</span>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{displayName}</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{documents.length} documents</p>
             </div>
           </div>
         </div>
       </div>
 
-  {/* Upload Section */}
-  <div className="bg-white rounded-2xl shadow p-6 flex flex-col sm:flex-row gap-4 mb-8 border border-gray-100">
-    <input
-      type="file"
-      onChange={(e) => setFile(e.target.files?.[0] || null)}
-      className="border border-dashed border-gray-200 rounded-lg p-3 flex-1 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-gray-50"
-    />
-    <Input
-      type="date"
-      value={expirationDate}
-      onChange={(e) => setExpirationDate(e.target.value)}
-      placeholder="Expiration date"
-      className="flex-1 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-400 bg-white"
-    />
-    <Input
-      type="datetime-local"
-      value={reminderAt}
-      onChange={(e) => setReminderAt(e.target.value)}
-      placeholder="Reminder"
-      className="flex-1 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-400 bg-white"
-    />
-    <Button
-      onClick={handleUpload}
-      disabled={!file || uploading}
-      className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-6 py-2 shadow-md disabled:opacity-50 transition transform hover:-translate-y-0.5"
-    >
-      {uploading ? "Uploading..." : "Upload"}
-    </Button>
-  </div>
-
-  {/* Documents Grid */}
-  {documents.length === 0 ? (
-    <p className="text-gray-400 text-center mt-16 text-lg">
-      No documents yet. Start uploading to see them here!
-    </p>
-  ) : (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {documents.map((doc) => {
-        const expiresIn = daysUntil(doc.expiration_date);
-        const reminderIn = daysUntil(doc.reminder_at);
-
-          return (
-          <div
-            key={doc.id}
-            className="bg-white rounded-2xl shadow hover:shadow-xl transition p-4 flex flex-col group"
-          >
-            {/* Preview */}
-            {isImage(doc.name) && doc.url ? (
-              <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-3 bg-gray-50">
-                <button
-                  onClick={() => openViewer(imageDocs.findIndex((d) => d.id === doc.id))}
-                  className="absolute inset-0 z-20"
-                  aria-label={`Open ${doc.name} viewer`}
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Upload Card */}
+        <div className="mb-8 bg-linear-to-br from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
+          <h2 className="text-2xl font-bold mb-6">Upload New Document</h2>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="relative">
+                <label className="block text-sm font-medium mb-2 opacity-90">Select File</label>
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-blue-600 hover:file:bg-white/90"
                 />
-                <Image
-                  src={doc.url}
-                  alt={doc.name}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="100vw"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                {file && <p className="text-sm mt-2 opacity-90">✓ {file.name}</p>}
               </div>
-            ) : (
-              <div className="w-full h-44 bg-gray-100 flex items-center justify-center rounded-2xl text-gray-400 text-5xl mb-3">
-                📄
+
+              <div>
+                <label className="block text-sm font-medium mb-2 opacity-90">Expiration Date</label>
+                <input
+                  type="date"
+                  value={expirationDate}
+                  onChange={(e) => setExpirationDate(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2 opacity-90">Reminder</label>
+                <input
+                  type="datetime-local"
+                  value={reminderAt}
+                  onChange={(e) => setReminderAt(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={handleUpload}
+              disabled={!file || uploading}
+              className="w-full md:w-auto px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            >
+              <FiUpload className="w-5 h-5" />
+              {uploading ? "Uploading..." : "Upload Document"}
+            </button>
+          </div>
+        </div>
+
+        {/* Documents Grid */}
+        {documents.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
+              <FiFile className="w-10 h-10 text-slate-400 dark:text-slate-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">No documents yet</h3>
+            <p className="text-slate-500 dark:text-slate-400 mt-2">Start uploading to see them here</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {documents.map((doc) => {
+              const expiresIn = daysUntil(doc.expiration_date);
+              const reminderIn = daysUntil(doc.reminder_at);
+
+              return (
+                <div
+                  key={doc.id}
+                  className="group bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg dark:hover:shadow-lg/20 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                >
+                  {/* Preview */}
+                  {isImage(doc.name) && doc.url ? (
+                    <div className="relative w-full h-48 bg-slate-200 dark:bg-slate-800 overflow-hidden cursor-pointer">
+                      <button
+                        onClick={() => handleImageClick(doc)}
+                        className="absolute inset-0 z-20 cursor-pointer"
+                        aria-label={`Open ${doc.name} viewer`}
+                        type="button"
+                      />
+                      <Image
+                        src={doc.url}
+                        alt={doc.name}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        sizes="100vw"
+                        onError={() => console.error(`Failed to load image: ${doc.url}`)}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <FiEye className="w-8 h-8 text-white drop-shadow-lg" />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-full h-48 bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-5xl">
+                      📄
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-4 flex flex-col flex-1">
+                    <p className="truncate font-semibold text-slate-900 dark:text-white mb-3">{doc.name}</p>
+
+                    {/* Status Badges */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {doc.expiration_date && expiresIn !== null && expiresIn <= 7 && expiresIn >= 0 && (
+                        <span className="inline-flex items-center gap-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded-full text-xs font-medium">
+                          <FiCalendar className="w-3 h-3" /> Expires in {expiresIn}d
+                        </span>
+                      )}
+                      {doc.reminder_at && reminderIn !== null && reminderIn <= 1 && reminderIn >= 0 && (
+                        <span className="inline-flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full text-xs font-medium">
+                          <FiBell className="w-3 h-3" /> Reminder soon
+                        </span>
+                      )}
+                      {doc.expiration_date && expiresIn !== null && expiresIn < 0 && (
+                        <span className="inline-flex items-center gap-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-1 rounded-full text-xs font-medium">
+                          <FiClock className="w-3 h-3" /> Expired
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Dates Info */}
+                    {(doc.expiration_date || doc.reminder_at) && (
+                      <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1 mb-4">
+                        {doc.expiration_date && (
+                          <p>Expires: {new Date(doc.expiration_date).toLocaleDateString()}</p>
+                        )}
+                        {doc.reminder_at && (
+                          <p>Reminder: {new Date(doc.reminder_at).toLocaleString()}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex gap-2 mt-auto pt-4 border-t border-slate-200 dark:border-slate-800">
+                      <button
+                        onClick={() => handleShare(doc)}
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+                      >
+                        <FiShare2 className="w-4 h-4" /> Share
+                      </button>
+                      <button
+                        onClick={() => handleDelete(doc)}
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+                      >
+                        <FiTrash2 className="w-4 h-4" /> Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Image Viewer Modal */}
+      {isViewerOpen && imageDocs.length > 0 && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+          onClick={closeViewer}
+          onTouchStart={(e) => {
+            touchStartRef.current = e.touches?.[0]?.clientX ?? null;
+          }}
+          onTouchEnd={(e) => {
+            const start = touchStartRef.current ?? 0;
+            const end = e.changedTouches?.[0]?.clientX ?? 0;
+            const dx = end - start;
+            const threshold = 50;
+            if (Math.abs(dx) > threshold) {
+              if (dx > 0) showPrev();
+              else showNext();
+            }
+            touchStartRef.current = null;
+          }}
+        >
+          <div 
+            className="relative max-w-[95vw] max-h-[95vh] w-full px-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={closeViewer}
+              className="absolute top-4 right-4 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full p-2 transition-colors"
+              aria-label="Close viewer"
+            >
+              <FiX className="w-6 h-6 text-white" />
+            </button>
+
+            {/* Previous Button */}
+            {imageDocs.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showPrev();
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full p-3 transition-colors"
+                aria-label="Previous image"
+              >
+                <FiChevronLeft className="w-6 h-6 text-white" />
+              </button>
+            )}
+
+            {/* Image Container */}
+            <div className="w-full h-[90vh] flex items-center justify-center">
+              {imageDocs[viewerIndex] && imageDocs[viewerIndex].url && (
+                <div
+                  className={`transition-opacity duration-300 ${
+                    isFading ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  <img
+                    key={imageDocs[viewerIndex].id}
+                    src={imageDocs[viewerIndex].url}
+                    alt={imageDocs[viewerIndex].name || "image"}
+                    className="object-contain max-h-[90vh] max-w-[90vw]"
+                    onError={(e) => {
+                      console.error("Image failed to load:", imageDocs[viewerIndex].url);
+                      toast.error("Failed to load image");
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Next Button */}
+            {imageDocs.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showNext();
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full p-3 transition-colors"
+                aria-label="Next image"
+              >
+                <FiChevronRight className="w-6 h-6 text-white" />
+              </button>
+            )}
+
+            {/* Counter */}
+            {imageDocs.length > 1 && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 bg-white/10 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full">
+                {viewerIndex + 1} / {imageDocs.length}
               </div>
             )}
 
-            {/* Document Name */}
-            <p className="truncate font-semibold text-gray-900 text-lg mb-1">{doc.name}</p>
-
-            {/* Dates */}
-            <div className="text-xs text-gray-500 flex flex-col gap-1">
-              {doc.expiration_date && (
-                <span>Expires: {new Date(doc.expiration_date).toLocaleDateString()}</span>
-              )}
-              {doc.reminder_at && (
-                <span>Reminder: {new Date(doc.reminder_at).toLocaleString()}</span>
-              )}
-            </div>
-
-            {/* Badges */}
-            <div className="flex gap-2 mt-2 flex-wrap text-xs">
-              {doc.expiration_date && expiresIn !== null && expiresIn <= 7 && expiresIn >= 0 && (
-                <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full font-medium">
-                  Expiring in {expiresIn}d
-                </span>
-              )}
-              {doc.reminder_at && reminderIn !== null && reminderIn <= 1 && reminderIn >= 0 && (
-                <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium">
-                  Reminder Due Soon
-                </span>
-              )}
-              {doc.expiration_date && expiresIn !== null && expiresIn < 0 && (
-                <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full font-medium">
-                  Expired
-                </span>
-              )}
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-2 mt-4">
-              <Button
-                size="sm"
-                className="flex-1 bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
-                onClick={() => handleShare(doc)}
-              >
-                Share
-              </Button>
-              <Button
-                size="sm"
-                variant="destructive"
-                className="flex-1"
-                onClick={() => handleDelete(doc)}
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  )}
-
-  {/* Image viewer modal with thumbnails + animated transition */}
-  {isViewerOpen && imageDocs.length > 0 && (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
-      onTouchStart={(e) => {
-        touchStartRef.current = e.touches?.[0]?.clientX ?? null;
-      }}
-      onTouchEnd={(e) => {
-        const start = touchStartRef.current ?? 0;
-        const end = e.changedTouches?.[0]?.clientX ?? 0;
-        const dx = end - start;
-        const threshold = 50; // px
-        if (Math.abs(dx) > threshold) {
-          if (dx > 0) showPrev();
-          else showNext();
-        }
-        touchStartRef.current = null;
-      }}
-    >
-      <div className="relative max-w-[90vw] max-h-[90vh] w-full px-4">
-        <button
-          onClick={closeViewer}
-          className="absolute top-4 right-4 z-50 bg-white/90 rounded-full p-2 hover:bg-white"
-          aria-label="Close viewer"
-        >
-          ✕
-        </button>
-
-        <button
-          onClick={showPrev}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-50 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
-          aria-label="Previous image"
-        >
-          ‹
-        </button>
-
-        <div className="w-full h-[80vh] flex items-center justify-center">
-          {/* main image container with fade animation */}
-          <div
-            className={`w-full flex items-center justify-center transition-opacity duration-300 ${
-              isFading ? "opacity-0" : "opacity-100"
-            }`}
-          >
-            <Image
-              key={imageDocs[viewerIndex].id}
-              src={imageDocs[viewerIndex].url!}
-              alt={imageDocs[viewerIndex].name || "image"}
-              width={1200}
-              height={800}
-              className="object-contain max-h-[80vh]"
-            />
+            {/* Thumbnails */}
+            {imageDocs.length > 1 && (
+              <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 flex gap-2 overflow-x-auto max-w-[90vw] pb-2">
+                {imageDocs.map((img, idx) => (
+                  <button
+                    key={img.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setViewerIndex(idx);
+                    }}
+                    className={`relative shrink-0 rounded-lg overflow-hidden transition-all duration-200 ${
+                      idx === viewerIndex
+                        ? "ring-2 ring-white scale-105 w-20 h-20"
+                        : "w-16 h-16 opacity-60 hover:opacity-100"
+                    }`}
+                    aria-label={`Thumbnail ${idx + 1}`}
+                  >
+                    {img.url && (
+                      <img
+                        src={img.url}
+                        alt={img.name || `thumb-${idx}`}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-
-        <button
-          onClick={showNext}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-50 text-white bg-black/30 rounded-full p-2 hover:bg-black/50"
-          aria-label="Next image"
-        >
-          ›
-        </button>
-
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 text-white text-sm">
-          {viewerIndex + 1} / {imageDocs.length}
-        </div>
-
-        {/* Thumbnails strip */}
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 w-[min(90vw,900px)]">
-          <div className="bg-black/40 backdrop-blur-sm rounded-xl px-3 py-2 flex items-center gap-2 overflow-x-auto max-w-full">
-            {imageDocs.map((img, idx) => (
-              <button
-                key={img.id}
-                onClick={() => setViewerIndex(idx)}
-                className={`relative rounded-md shrink-0 w-24 h-14 overflow-hidden transition-transform duration-200 ${
-                  idx === viewerIndex
-                    ? "ring-2 ring-indigo-400 scale-105"
-                    : "opacity-80 hover:opacity-100"
-                }`}
-                aria-label={`Open thumbnail ${idx + 1}`}
-              >
-                <Image src={img.url!} alt={img.name || `thumb-${idx}`} fill className="object-cover" sizes="96px" />
-                <div
-                  className={`absolute inset-0 ring-0 transition-opacity duration-150 ${
-                    idx === viewerIndex ? "ring-0" : ""
-                  }`}
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
-</main>
-
+      )}
+    </main>
   );
 }
