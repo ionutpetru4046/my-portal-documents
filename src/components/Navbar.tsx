@@ -122,8 +122,8 @@ export default function Navbar() {
   const resourcesData = [
     { icon: FiBook, href: "/documentation", label: "Documentation", description: "Comprehensive guides", color: "blue" },
     { icon: FiFileText, href: "/tutorials", label: "Tutorials", description: "Video tutorials", color: "purple" },
-    { icon: FiGrid, href: "/resources/templates", label: "Templates", description: "Ready-to-use templates", color: "cyan" },
-    { icon: FiHelpCircle, href: "/resources/faq", label: "FAQ", description: "Frequently asked", color: "blue" },
+    { icon: FiGrid, href: "/templates", label: "Templates", description: "Ready-to-use templates", color: "cyan" },
+    { icon: FiHelpCircle, href: "/faq", label: "FAQ", description: "Frequently asked", color: "blue" },
   ];
 
   const getColorClasses = (color: string) => {
