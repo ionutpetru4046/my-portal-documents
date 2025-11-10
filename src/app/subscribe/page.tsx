@@ -5,7 +5,8 @@ import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import { FiCheck, FiArrowRight, FiZap, FiStar, FiFrown, FiGift } from "react-icons/fi";
+import { FiCheck, FiArrowRight, FiZap, FiStar, FiFrown, FiGift, FiTrendingUp, FiShield, FiHeadphones, FiLock, FiUsers, FiDatabase } from "react-icons/fi";
+import { FaCcVisa, FaCcMastercard, FaCcAmex, FaCcPaypal } from "react-icons/fa";
 
 export default function SubscribePage() {
   const [loading, setLoading] = useState(false);
@@ -48,6 +49,7 @@ export default function SubscribePage() {
         "Community support",
         "1 GB storage",
         "Email notifications",
+        "Basic sharing",
       ],
       cta: "Get Started",
       button: "border-2 border-gray-300 dark:border-slate-700 text-gray-900 dark:text-slate-300 hover:border-blue-500 hover:bg-blue-500/10 dark:hover:border-blue-500 dark:hover:bg-blue-500/10",
@@ -66,8 +68,9 @@ export default function SubscribePage() {
         "Email support (24h response)",
         "50 GB storage",
         "Advanced sharing options",
-        "Version history",
+        "Version history (30 days)",
         "Document collaboration",
+        "Priority email support",
       ],
       cta: "Start Free Trial",
       button: "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-blue-500/20",
@@ -79,7 +82,7 @@ export default function SubscribePage() {
     {
       name: "Business",
       icon: FiStar,
-      price: { monthly: "$45", annual: "$250" },
+      price: { monthly: "$45", annual: "$540" },
       period: billingCycle === "annual" ? "/year" : "/month",
       description: "For established companies",
       features: [
@@ -87,10 +90,12 @@ export default function SubscribePage() {
         "Priority support (2h response)",
         "500 GB storage",
         "Advanced analytics",
-        "Team management",
+        "Team management (up to 10)",
         "API access",
         "SSO integration",
         "Custom branding",
+        "Unlimited version history",
+        "Phone support",
       ],
       cta: "Start Free Trial",
       button: "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white",
@@ -111,8 +116,10 @@ export default function SubscribePage() {
         "Custom integrations",
         "Advanced security features",
         "On-premise deployment option",
-        "SLA guarantee",
+        "SLA guarantee (99.9%)",
         "Custom workflows",
+        "Advanced audit logs",
+        "Team management (unlimited)",
       ],
       cta: "Contact Sales",
       button: "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 text-white border border-slate-600",
@@ -122,6 +129,20 @@ export default function SubscribePage() {
     },
   ];
 
+  const comparisonFeatures = [
+    { name: "Storage", icon: FiDatabase },
+    { name: "Users", icon: FiUsers },
+    { name: "Security", icon: FiLock },
+    { name: "Support", icon: FiHeadphones },
+  ];
+
+  const paymentMethods = [
+    { icon: FaCcVisa, label: "Visa", color: "text-blue-600 dark:text-blue-400" },
+    { icon: FaCcMastercard, label: "Mastercard", color: "text-red-600 dark:text-red-400" },
+    { icon: FaCcAmex, label: "Amex", color: "text-blue-500 dark:text-blue-400" },
+    { icon: FaCcPaypal, label: "PayPal", color: "text-blue-700 dark:text-blue-500" },
+  ];
+
   const handlePlanClick = async (plan: typeof plans[0]) => {
     if (!isLoggedIn) {
       router.push("/signup");
@@ -129,7 +150,6 @@ export default function SubscribePage() {
     }
 
     if (plan.key === "enterprise") {
-      // Open contact form or redirect to sales page
       window.location.href = "/contact";
       return;
     }
@@ -139,7 +159,6 @@ export default function SubscribePage() {
     if (plan.paid) {
       await handleCheckout(plan.key!);
     } else {
-      // Free plan: update user plan safely
       try {
         if (!user.id) throw new Error("User ID not found");
 
@@ -198,51 +217,75 @@ export default function SubscribePage() {
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative text-center pt-16 md:pt-20 pb-12 md:pb-16 px-4"
+        className="relative text-center pt-16 md:pt-20 pb-8 md:pb-12 px-4"
       >
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text transition-colors">
           Simple, Transparent Pricing
         </h1>
-        <p className="text-gray-600 dark:text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 transition-colors">
+        <p className="text-gray-600 dark:text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-2 transition-colors">
           Choose the perfect plan for your needs. Upgrade or downgrade anytime. No hidden fees.
         </p>
+        <p className="text-sm text-gray-500 dark:text-slate-500">Join 1000+ organizations trusting DocuVault for secure document management</p>
+      </motion.div>
 
-        {/* Billing Toggle */}
-        <motion.div 
-          className="flex items-center justify-center gap-4 mb-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+      {/* Billing Toggle */}
+      <motion.div 
+        className="flex items-center justify-center gap-4 mb-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <button
+          onClick={() => setBillingCycle("monthly")}
+          className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
+            billingCycle === "monthly"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-400 hover:bg-gray-300 dark:hover:bg-slate-700"
+          }`}
         >
-          <button
-            onClick={() => setBillingCycle("monthly")}
-            className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
-              billingCycle === "monthly"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-400 hover:bg-gray-300 dark:hover:bg-slate-700"
-            }`}
-          >
-            Monthly
-          </button>
-          <div className="text-gray-600 dark:text-slate-400">|</div>
-          <button
-            onClick={() => setBillingCycle("annual")}
-            className={`px-6 py-2.5 rounded-lg font-medium transition-all flex items-center gap-2 ${
-              billingCycle === "annual"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-400 hover:bg-gray-300 dark:hover:bg-slate-700"
-            }`}
-          >
-            Annual
-            <span className="text-xs bg-green-500/20 text-green-600 dark:text-green-400 px-2 py-1 rounded">
-              Save 15%
-            </span>
-          </button>
-        </motion.div>
+          Monthly
+        </button>
+        <div className="text-gray-600 dark:text-slate-400">|</div>
+        <button
+          onClick={() => setBillingCycle("annual")}
+          className={`px-6 py-2.5 rounded-lg font-medium transition-all flex items-center gap-2 ${
+            billingCycle === "annual"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-400 hover:bg-gray-300 dark:hover:bg-slate-700"
+          }`}
+        >
+          Annual
+          <span className="text-xs bg-green-500/20 text-green-600 dark:text-green-400 px-2 py-1 rounded">
+            Save 15%
+          </span>
+        </button>
+      </motion.div>
+
+      {/* Trust Badges */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mb-16 px-4"
+      >
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
+          <FiShield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          <span>SSL Encrypted</span>
+        </div>
+        <div className="hidden sm:block w-px h-5 bg-gray-300 dark:bg-slate-700"></div>
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
+          <FiTrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+          <span>99.9% Uptime</span>
+        </div>
+        <div className="hidden sm:block w-px h-5 bg-gray-300 dark:bg-slate-700"></div>
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
+          <FiCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
+          <span>30-Day Money Back</span>
+        </div>
       </motion.div>
 
       {/* Pricing Cards */}
-      <div className="relative max-w-7xl mx-auto px-4 pb-20 md:pb-24">
+      <div className="relative max-w-7xl mx-auto px-4 pb-16 md:pb-20">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
           variants={containerVariants}
@@ -354,6 +397,37 @@ export default function SubscribePage() {
         </motion.div>
       </div>
 
+      {/* Payment Methods Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="relative max-w-4xl mx-auto px-4 pb-16 md:pb-20"
+      >
+        <div className="bg-white/50 dark:bg-slate-900/50 border border-gray-300 dark:border-slate-800 rounded-2xl backdrop-blur-xl p-8 md:p-12 transition-colors text-center">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-6 transition-colors">
+            Secure Payment Methods
+          </h3>
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 mb-4">
+            {paymentMethods.map((method) => {
+              const Icon = method.icon;
+              return (
+                <div key={method.label} className="flex flex-col items-center gap-2">
+                  <div className="p-3 rounded-lg bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
+                    <Icon className={`h-6 w-6 ${method.color}`} />
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-slate-400">{method.label}</p>
+                </div>
+              );
+            })}
+          </div>
+          <p className="text-sm text-gray-600 dark:text-slate-400">
+            All transactions are encrypted and processed securely
+          </p>
+        </div>
+      </motion.div>
+
       {/* FAQ / Trust Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -383,6 +457,14 @@ export default function SubscribePage() {
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">What payment methods do you accept?</h4>
               <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">We accept all major credit cards, PayPal, and bank transfers for Enterprise plans.</p>
             </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">Is there a student discount?</h4>
+              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">Yes! Students get 50% off any paid plan. Just verify your .edu email address.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">Can I get a custom plan?</h4>
+              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">Absolutely! Contact our sales team for custom pricing tailored to your needs.</p>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -396,7 +478,7 @@ export default function SubscribePage() {
         className="relative text-center pb-20"
       >
         <p className="text-gray-600 dark:text-slate-400 text-lg transition-colors">
-          Questions? <a href="/contact" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition">Contact our sales team</a>
+          Still have questions? <a href="/contact" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition font-semibold">Contact our sales team</a>
         </p>
       </motion.div>
     </main>
