@@ -351,7 +351,7 @@ export default function DocumentationPage() {
               Create Free Account
             </Link>
             <Link
-              href="/resources/tutorials"
+              href="/tutorials"
               className="px-8 py-3 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               View Tutorials

@@ -476,7 +476,7 @@ export default function TutorialsPage() {
               Get Started Free
             </Link>
             <Link
-              href="/resources/documentation"
+              href="/documentation"
               className="px-8 py-3 border-2 border-white text-white hover:bg-white/10 rounded-lg font-semibold transition-colors"
             >
               View Documentation

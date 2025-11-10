@@ -151,7 +151,7 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className="hidden sm:block text-lg font-bold text-slate-900 dark:text-white tracking-tight group-hover:text-blue-400 transition-colors">
+            <span className="text-2xl font-bold bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               DocuVault
             </span>
           </Link>
