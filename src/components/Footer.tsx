@@ -6,7 +6,7 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import { FiMail, FiPhone, FiMapPin, FiArrowRight, FiCheck, FiBook, FiFileText, FiGrid, FiHelpCircle, FiHome, FiDollarSign, FiUsers, FiMessageCircle, FiShield } from "react-icons/fi";
+import { FiMail, FiPhone, FiMapPin, FiArrowRight, FiCheck, FiBook, FiFileText, FiGrid, FiHelpCircle, FiHome, FiDollarSign, FiUsers, FiMessageCircle, FiLock, FiShield, FiCheckCircle } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -53,6 +53,37 @@ export default function Footer() {
     { icon: FiShield, label: "Privacy Policy", href: "/privacy", color: "blue" },
   ];
 
+  const securityBadges = [
+    {
+      name: "GDPR",
+      icon: "🔒",
+      title: "GDPR Compliant",
+      description: "Full GDPR compliance for data protection",
+      href: "/privacy",
+    },
+    {
+      name: "SOC 2",
+      icon: "✓",
+      title: "SOC 2 Type II",
+      description: "Enterprise-grade security audit",
+      href: "/security",
+    },
+    {
+      name: "SSL",
+      icon: "🔐",
+      title: "SSL Encrypted",
+      description: "256-bit encryption for all data",
+      href: "/security",
+    },
+    {
+      name: "ISO",
+      icon: "⭐",
+      title: "ISO 27001",
+      description: "Information security certified",
+      href: "/security",
+    },
+  ];
+
   const getColorClasses = (color: string) => {
     const colors: Record<string, { text: string }> = {
       blue: { text: "text-blue-400" },
@@ -64,6 +95,104 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-white border-t border-gray-200 dark:border-slate-800 transition-colors">
+      {/* Trust & Security Badges Section */}
+      <div className="border-b border-gray-200 dark:border-slate-800 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+              Enterprise-Grade Security
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+              Your data is protected by industry-leading security standards and certifications
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {securityBadges.map((badge, idx) => (
+              <motion.a
+                key={badge.name}
+                href={badge.href}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className="group"
+              >
+                <div className="bg-white dark:bg-slate-800 rounded-lg p-4 sm:p-5 border border-gray-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer h-full flex flex-col items-center text-center">
+                  <div className="text-3xl sm:text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {badge.icon}
+                  </div>
+                  <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mb-1">
+                    {badge.name}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">
+                    {badge.title}
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
+                    {badge.description}
+                  </p>
+                  <div className="mt-3 flex items-center gap-1 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-xs font-semibold">Learn more</span>
+                    <FiArrowRight className="w-3 h-3" />
+                  </div>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+
+          {/* Security Features Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="mt-8 pt-8 border-t border-gray-200 dark:border-slate-700"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-green-100 dark:bg-green-900/30">
+                    <FiLock className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">End-to-End Encryption</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">AES-256 encryption standard</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                    <FiCheckCircle className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">99.9% Uptime SLA</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">Enterprise reliability</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                    <FiShield className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">Regular Audits</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">Third-party security audits</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
       {/* Newsletter Section */}
       <div className="border-b border-gray-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
