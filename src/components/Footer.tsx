@@ -6,7 +6,7 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import { FiMail, FiPhone, FiMapPin, FiArrowRight, FiCheck } from "react-icons/fi";
+import { FiMail, FiPhone, FiMapPin, FiArrowRight, FiCheck, FiBook, FiFileText, FiGrid, FiHelpCircle, FiHome, FiDollarSign, FiUsers, FiMessageCircle, FiShield } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -33,18 +33,34 @@ export default function Footer() {
   };
 
   const footerLinks = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Pricing", href: "/subscribe" },
-    { label: "Contact", href: "/contact" },
+    { icon: FiHome, label: "Home", href: "/", color: "blue" },
+    { icon: FiUsers, label: "About", href: "/about", color: "purple" },
+    { icon: FiDollarSign, label: "Pricing", href: "/subscribe", color: "cyan" },
+    { icon: FiMessageCircle, label: "Contact", href: "/contact", color: "blue" },
+  ];
+
+  const resourcesData = [
+    { icon: FiBook, href: "/documentation", label: "Documentation", color: "blue" },
+    { icon: FiFileText, href: "/tutorials", label: "Tutorials", color: "purple" },
+    { icon: FiGrid, href: "/templates", label: "Templates", color: "cyan" },
+    { icon: FiHelpCircle, href: "/faq", label: "FAQ", color: "blue" },
   ];
 
   const supportLinks = [
-    { label: "Help Center", href: "/help" },
-    { label: "Contact Us", href: "/contact" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Privacy Policy", href: "/privacy" },
+    { icon: FiHelpCircle, label: "Help Center", href: "/help", color: "blue" },
+    { icon: FiMessageCircle, label: "Contact Us", href: "/contact", color: "purple" },
+    { icon: FiFileText, label: "Terms of Service", href: "/terms", color: "cyan" },
+    { icon: FiShield, label: "Privacy Policy", href: "/privacy", color: "blue" },
   ];
+
+  const getColorClasses = (color: string) => {
+    const colors: Record<string, { text: string }> = {
+      blue: { text: "text-blue-400" },
+      purple: { text: "text-purple-400" },
+      cyan: { text: "text-cyan-400" },
+    };
+    return colors[color] || colors.blue;
+  };
 
   return (
     <footer className="bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-white border-t border-gray-200 dark:border-slate-800 transition-colors">
@@ -183,21 +199,58 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white transition-colors">Quick Links</h3>
-            <ul className="space-y-4">
-              {footerLinks.map((link) => (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href} 
-                    className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
-                  >
-                    <motion.span 
-                      className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
-                      whileHover={{ width: 8 }}
-                    />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-3">
+              {footerLinks.map((link) => {
+                const Icon = link.icon;
+                const colorClass = getColorClasses(link.color);
+                return (
+                  <li key={link.href}>
+                    <Link 
+                      href={link.href} 
+                      className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
+                    >
+                      <motion.span 
+                        className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
+                        whileHover={{ width: 8 }}
+                      />
+                      <Icon className={`w-4 h-4 ${colorClass.text} flex-shrink-0`} />
+                      <span>{link.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.div>
+
+          {/* Resources Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="lg:col-span-1"
+          >
+            <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white transition-colors">Resources</h3>
+            <ul className="space-y-3">
+              {resourcesData.map((resource) => {
+                const Icon = resource.icon;
+                const colorClass = getColorClasses(resource.color);
+                return (
+                  <li key={resource.href}>
+                    <Link 
+                      href={resource.href} 
+                      className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
+                    >
+                      <motion.span 
+                        className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
+                        whileHover={{ width: 8 }}
+                      />
+                      <Icon className={`w-4 h-4 ${colorClass.text} flex-shrink-0`} />
+                      <span>{resource.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </motion.div>
 
@@ -205,25 +258,30 @@ export default function Footer() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
             <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white transition-colors">Support</h3>
-            <ul className="space-y-4">
-              {supportLinks.map((link) => (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href} 
-                    className="text-slate-400 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
-                  >
-                    <motion.span 
-                      className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
-                      whileHover={{ width: 8 }}
-                    />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-3">
+              {supportLinks.map((link) => {
+                const Icon = link.icon;
+                const colorClass = getColorClasses(link.color);
+                return (
+                  <li key={link.href}>
+                    <Link 
+                      href={link.href} 
+                      className="text-slate-400 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors inline-flex items-center gap-2 group text-sm md:text-base font-medium"
+                    >
+                      <motion.span 
+                        className="w-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 transition-all duration-300 group-hover:w-2"
+                        whileHover={{ width: 8 }}
+                      />
+                      <Icon className={`w-4 h-4 ${colorClass.text} flex-shrink-0`} />
+                      <span>{link.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </motion.div>
 
@@ -231,7 +289,7 @@ export default function Footer() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
           >
             <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white transition-colors">Contact</h3>
