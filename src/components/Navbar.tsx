@@ -19,10 +19,12 @@ export default function Navbar() {
   const [adminDropdown, setAdminDropdown] = useState(false);
   const [quickLinksDropdown, setQuickLinksDropdown] = useState(false);
   const [supportDropdown, setSupportDropdown] = useState(false);
+  const [resourcesDropdown, setResourcesDropdown] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const adminRef = useRef<HTMLDivElement | null>(null);
   const quickLinksRef = useRef<HTMLDivElement | null>(null);
   const supportRef = useRef<HTMLDivElement | null>(null);
+  const resourcesRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -76,6 +78,9 @@ export default function Navbar() {
       if (supportRef.current && !supportRef.current.contains(e.target as Node)) {
         setSupportDropdown(false);
       }
+      if (resourcesRef.current && !resourcesRef.current.contains(e.target as Node)) {
+        setResourcesDropdown(false);
+      }
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
@@ -112,6 +117,13 @@ export default function Navbar() {
     { icon: FiMail, href: "/contact", label: "Contact Support", description: "Get in touch", color: "purple" },
     { icon: FiFileText, href: "/terms", label: "Terms & Privacy", description: "Legal docs", color: "cyan" },
     { icon: FiFileText, href: "/reminderManager", label: "Smart Reminder", description: "Smart Reminder", color: "cyan" },
+  ];
+
+  const resourcesData = [
+    { icon: FiBook, href: "/documentation", label: "Documentation", description: "Comprehensive guides", color: "blue" },
+    { icon: FiFileText, href: "/resources/tutorials", label: "Tutorials", description: "Video tutorials", color: "purple" },
+    { icon: FiGrid, href: "/resources/templates", label: "Templates", description: "Ready-to-use templates", color: "cyan" },
+    { icon: FiHelpCircle, href: "/resources/faq", label: "FAQ", description: "Frequently asked", color: "blue" },
   ];
 
   const getColorClasses = (color: string) => {
@@ -178,6 +190,47 @@ export default function Navbar() {
                           href={href}
                           className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
                           onClick={() => setQuickLinksDropdown(false)}
+                        >
+                          <div className={`w-9 h-9 rounded-lg ${colorClass.bg} flex items-center justify-center group-hover:opacity-80 transition`}>
+                            <Icon size={18} className={colorClass.text} />
+                          </div>
+                          <div>
+                            <div className="font-medium text-sm">{label}</div>
+                            <div className="text-xs text-slate-400">{description}</div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Resources Dropdown */}
+            <div className="relative" ref={resourcesRef}>
+              <button
+                onClick={() => setResourcesDropdown(!resourcesDropdown)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-all font-medium text-sm"
+              >
+                Resources <FiChevronDown size={16} className={`transition-transform duration-300 ${resourcesDropdown ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {resourcesDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-2 w-56 bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
+                  >
+                    {resourcesData.map(({ icon: Icon, href, label, description, color }) => {
+                      const colorClass = getColorClasses(color);
+                      return (
+                        <Link
+                          key={href}
+                          href={href}
+                          className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
+                          onClick={() => setResourcesDropdown(false)}
                         >
                           <div className={`w-9 h-9 rounded-lg ${colorClass.bg} flex items-center justify-center group-hover:opacity-80 transition`}>
                             <Icon size={18} className={colorClass.text} />
@@ -529,6 +582,21 @@ export default function Navbar() {
                       onClick={closeMobileMenu}
                     >
                       <Icon className="w-5 h-5 text-blue-400" />
+                      <span className="text-sm">{label}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="my-4 pt-4 border-t border-slate-800">
+                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 mb-3">Resources</div>
+                  {resourcesData.map(({ icon: Icon, href, label }) => (
+                    <Link 
+                      key={href}
+                      href={href} 
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition" 
+                      onClick={closeMobileMenu}
+                    >
+                      <Icon className="w-5 h-5 text-cyan-400" />
                       <span className="text-sm">{label}</span>
                     </Link>
                   ))}
