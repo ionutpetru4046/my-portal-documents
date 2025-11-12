@@ -114,7 +114,7 @@ export default function AboutPage() {
               y: [0, -50, 0]
             }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+            className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
           />
         </div>
 
@@ -123,7 +123,7 @@ export default function AboutPage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6"
           >
             <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
             <span className="text-sm font-semibold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -138,7 +138,7 @@ export default function AboutPage() {
             className="text-4xl sm:text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 transition-colors"
           >
             Document Management <br />
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Reimagined
             </span>
           </motion.h1>
@@ -161,7 +161,7 @@ export default function AboutPage() {
             <Link
               href="/dashboard"
               onClick={handleDashboardClick}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 group"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 group"
             >
               Go to Dashboard
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -249,9 +249,9 @@ export default function AboutPage() {
                   key={i}
                   variants={itemVariants}
                   whileHover={{ y: -8 }}
-                  className={`backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 bg-gradient-to-br ${colorMap[feature.color as keyof typeof colorMap]} border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 group`}
+                  className={`backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 bg-linear-to-br ${colorMap[feature.color as keyof typeof colorMap]} border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 group`}
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorMap[feature.color as keyof typeof colorMap].split(' ')[0]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                  <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${colorMap[feature.color as keyof typeof colorMap].split(' ')[0]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                     <Icon className="w-6 h-6" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors">{feature.title}</h3>
@@ -308,9 +308,9 @@ export default function AboutPage() {
                 <motion.div
                   key={i}
                   variants={itemVariants}
-                  className={`backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 bg-gradient-to-br ${colors[i % colors.length]} border rounded-xl p-8 hover:border-gray-300 dark:hover:border-slate-600 transition-all`}
+                  className={`backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 bg-linear-to-br ${colors[i % colors.length]} border rounded-xl p-8 hover:border-gray-300 dark:hover:border-slate-600 transition-all`}
                 >
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${colors[i % colors.length].split(' ')[0]} flex items-center justify-center mb-4`}>
+                  <div className={`w-12 h-12 rounded-lg bg-linear-to-br ${colors[i % colors.length].split(' ')[0]} flex items-center justify-center mb-4`}>
                     <Icon className={`w-6 h-6 ${iconColors[i % iconColors.length]}`} />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">{value.title}</h3>
@@ -360,7 +360,7 @@ export default function AboutPage() {
         transition={{ duration: 0.8 }}
         className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20 blur-3xl -z-10" />
+        <div className="absolute inset-0 bg-linear-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20 blur-3xl -z-10" />
 
         <div className="relative max-w-4xl mx-auto text-center">
           <motion.h2
