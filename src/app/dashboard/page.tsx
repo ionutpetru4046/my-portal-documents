@@ -115,12 +115,12 @@ export default function DashboardHome() {
         <motion.div
           animate={{ x: [0, 100, 0], y: [0, 50, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 w-[25rem] h-[25rem] bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-100 h-100 bg-linear-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ x: [0, -100, 0], y: [0, -50, 0] }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-[25rem] h-[25rem] bg-gradient-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-100 h-100 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-full blur-3xl"
         />
       </div>
 
