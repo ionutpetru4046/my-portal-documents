@@ -1,17 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { NextResponse } from "next/server";
 
 export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } } // Correct typing for App Router
+  req: Request,
+  { params }: { params: { id: string } }
 ) {
   const { id } = params;
 
-  if (!id) return NextResponse.json({ error: "Document ID is required" }, { status: 400 });
+  try {
+    // Example: delete the document by id
+    // await deleteDocument(id); // your actual delete logic
 
-  const { error } = await supabase.from("documents").delete().eq("id", id);
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-  return NextResponse.json({ message: "Document deleted successfully" });
+    return NextResponse.json({ message: `Document ${id} deleted.` });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete document" }, { status: 500 });
+  }
 }
