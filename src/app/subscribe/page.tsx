@@ -160,7 +160,7 @@ export default function SubscribePage() {
       await handleCheckout(plan.key!);
     } else {
       try {
-        if (!user.id) throw new Error("User ID not found");
+        if (!user || !user.id) throw new Error("User ID not found");
 
         const { error } = await supabase
           .from("users")
@@ -447,7 +447,7 @@ export default function SubscribePage() {
             </div>
             <div>
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">What about refunds?</h4>
-              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">We offer a 30-day money-back guarantee if you're not satisfied with your plan.</p>
+              <p className="text-gray-700 dark:text-slate-400 text-sm transition-colors">We offer a 30-day money-back guarantee if you are not satisfied with your plan.</p>
             </div>
             <div>
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors">Is there a free trial?</h4>
