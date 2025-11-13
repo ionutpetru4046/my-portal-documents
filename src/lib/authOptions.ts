@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "./supabaseClient";
 
-// Export authOptions for use in other API routes
-export const authOptions: AuthOptions = {
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Supabase",
@@ -22,30 +19,22 @@ export const authOptions: AuthOptions = {
 
         if (error || !data.user) return null;
 
-        // Include id in the user object for session
         return { id: data.user.id, email: data.user.email, name: data.user.email };
       },
     }),
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt" as const },
   pages: { signIn: "/login" },
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token }: { session: { user?: { id?: string; email?: string; name?: string } }; token: { id?: string } }) {
       if (session.user && token.id) {
-        // @ts-expect-error
         session.user.id = token.id;
       }
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
+    async jwt({ token, user }: { token: Record<string, unknown>; user?: { id?: string } }) {
+      if (user?.id) (token as Record<string, unknown>).id = user.id;
       return token;
     },
   },
 };
-
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
