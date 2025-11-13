@@ -1,8 +1,21 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions, DefaultSession, JWT } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { supabase } from "@/lib/supabaseClient";
 
-export const authOptions = {
+// Extend the DefaultSession to include user id
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+
+  interface JWT {
+    id?: string;
+  }
+}
+
+const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Supabase",
@@ -19,22 +32,21 @@ export const authOptions = {
         });
 
         if (error || !data.user) return null;
-        // Add id to user object for session
+
         return { id: data.user.id, email: data.user.email, name: data.user.email };
       },
     }),
   ],
-  session: { strategy: "jwt" as const },
+  session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   callbacks: {
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       if (session.user && token.id) {
-        // @ts-ignore
-        session.user.id = token.id;
+        session.user.id = token.id; // token.id is typed as string | undefined
       }
       return session;
     },
-    async jwt({ token, user }: { token: any; user?: any }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
       }
