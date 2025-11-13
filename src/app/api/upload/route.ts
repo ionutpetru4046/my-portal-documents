@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
-import { getServerSession } from "next-auth";
+import { getServerSession, NextAuthOptions } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions as unknown as NextAuthOptions);
 
   // Attempt to get githubId from session for user identification
   // Fallback to email if githubId is not available
