@@ -1,57 +1,27 @@
-// src/app/api/documents/route.ts
-
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabaseClient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
-import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  const userId = session?.user && typeof session.user === "object" && "id" in session.user
+    ? (session.user as { id: string }).id
+    : undefined;
+
+  if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Get Supabase UID from session
-  const userID = session.user?.id;
-
   const { data, error } = await supabase
     .from("documents")
-    .select("*")
-    .eq("userID", userID);
+    .select("id, category, created_at, path, size")
+    .eq("userID", userId);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ documents: data });
-}
-
-export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const userID = session.user?.id;
-  const body = await req.json();
-
-  // Add userID to payload
-  const payload = { ...body, userID };
-
-  const { data, error } = await supabase
-    .from("documents")
-    .insert([payload]);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
-  }
-
-  return NextResponse.json({ document: data?.[0] });
+  return NextResponse.json(data || []);
 }

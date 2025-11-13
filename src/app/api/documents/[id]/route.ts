@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { supabase } from "@/lib/supabaseClient";
 
-const prisma = new PrismaClient();
-
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } } // Correct typing for App Router
+) {
   const { id } = params;
 
-  try {
-    await prisma.documents.delete({ where: { id } });
-    return NextResponse.json({ message: "Document deleted" }, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Failed to delete document" }, { status: 500 });
-  }
+  if (!id) return NextResponse.json({ error: "Document ID is required" }, { status: 400 });
+
+  const { error } = await supabase.from("documents").delete().eq("id", id);
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  return NextResponse.json({ message: "Document deleted successfully" });
 }

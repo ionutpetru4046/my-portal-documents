@@ -1,44 +1,56 @@
-// src/app/api/upload/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabaseClient";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route"; // adjust path if needed
+import { authOptions } from "../auth/[...nextauth]/route";
 
-interface DocumentType {
-  id: number;
-  name: string;
-  createdAt: string;
-  ownerEmail: string;
-}
-
-// Use the same mock database from /documents
-let mockDocuments: DocumentType[] = [
-  { id: 1, name: "Document 1", createdAt: new Date().toISOString(), ownerEmail: "user1@gmail.com" },
-  { id: 2, name: "Document 2", createdAt: new Date().toISOString(), ownerEmail: "user2@gmail.com" },
-];
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  // Attempt to get githubId from session for user identification
+  // Fallback to email if githubId is not available
+  const userId =
+    (session?.user as { githubId?: string })?.githubId ||
+    session?.user?.email;
+
+  if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const formData = await req.formData();
-  const file = formData.get("file") as File | null;
+  const file = formData.get("file") as File;
 
   if (!file) {
     return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
   }
 
-  // Save file to mock DB
-  const newDoc: DocumentType = {
-    id: mockDocuments.length + 1,
-    name: file.name,
-    createdAt: new Date().toISOString(),
-    ownerEmail: session.user?.email || "",
-  };
+  // Upload to Supabase Storage
+  const { data, error } = await supabase.storage
+    .from("documents")
+    .upload(`${userId}/${file.name}`, file.stream());
 
-  mockDocuments.push(newDoc);
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 
-  return NextResponse.json({ success: true, document: newDoc });
+  // Add record in documents table
+  const { data: docData, error: dbError } = await supabase
+    .from("documents")
+    .insert([
+      {
+        userID: userId,
+        path: data.path,
+        size: file.size,
+        category: (formData.get("category") as string) || "other",
+      }
+    ]);
+
+  if (dbError) {
+    return NextResponse.json({ error: dbError.message }, { status: 500 });
+  }
+
+  if (!docData || !docData[0]) {
+    return NextResponse.json({ error: "Unable to retrieve inserted document." }, { status: 500 });
+  }
+
+  return NextResponse.json(docData[0]);
 }

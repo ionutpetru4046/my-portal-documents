@@ -1,21 +1,10 @@
-import NextAuth, { AuthOptions, DefaultSession, JWT } from "next-auth";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { supabase } from "@/lib/supabaseClient";
 
-// Extend the DefaultSession to include user id
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-    } & DefaultSession["user"];
-  }
-
-  interface JWT {
-    id?: string;
-  }
-}
-
-const authOptions: AuthOptions = {
+// Export authOptions for use in other API routes
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Supabase",
@@ -33,6 +22,7 @@ const authOptions: AuthOptions = {
 
         if (error || !data.user) return null;
 
+        // Include id in the user object for session
         return { id: data.user.id, email: data.user.email, name: data.user.email };
       },
     }),
@@ -42,7 +32,8 @@ const authOptions: AuthOptions = {
   callbacks: {
     async session({ session, token }) {
       if (session.user && token.id) {
-        session.user.id = token.id; // token.id is typed as string | undefined
+        // @ts-expect-error
+        session.user.id = token.id;
       }
       return session;
     },
@@ -56,4 +47,5 @@ const authOptions: AuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
