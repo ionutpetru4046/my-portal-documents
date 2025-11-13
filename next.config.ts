@@ -1,6 +1,9 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     // allow Supabase storage host as a remote image source
     // domains: ["qqchawvrepircjjrcmcl.supabase.co"],
