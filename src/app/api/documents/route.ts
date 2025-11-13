@@ -1,14 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
-import { getServerSession, NextAuthOptions } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions";
 
-export async function GET(req: NextRequest) {
-  const session = await getServerSession(authOptions as unknown as NextAuthOptions);
+export async function GET() {
+  const session = await getServerSession(authOptions);
 
-  const userId = session?.user && typeof session.user === "object" && "id" in session.user
-    ? (session.user as { id: string }).id
-    : undefined;
+  const userId = session?.user?.id;
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

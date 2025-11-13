@@ -1,7 +1,8 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { supabase } from "./supabaseClient";
+import type { NextAuthOptions, DefaultSession } from "next-auth";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Supabase",
@@ -23,17 +24,26 @@ export const authOptions = {
       },
     }),
   ],
-  session: { strategy: "jwt" as const },
-  pages: { signIn: "/login" },
+  session: {
+    strategy: "jwt",
+    // Optional: add type-safe session
+    maxAge: 60 * 60 * 24, // 1 day
+  },
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
-    async session({ session, token }: { session: { user?: { id?: string; email?: string; name?: string } }; token: { id?: string } }) {
+    async session({ session, token }) {
       if (session.user && token.id) {
-        session.user.id = token.id;
+        // Add the user id to session
+        (session.user as { id: string }).id = token.id as string;
       }
       return session;
     },
-    async jwt({ token, user }: { token: Record<string, unknown>; user?: { id?: string } }) {
-      if (user?.id) (token as Record<string, unknown>).id = user.id;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = (user as { id: string }).id;
+      }
       return token;
     },
   },

@@ -1,16 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
-import { getServerSession, NextAuthOptions } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions";
 
-export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions as unknown as NextAuthOptions);
-
-  // Attempt to get githubId from session for user identification
-  // Fallback to email if githubId is not available
-  const userId =
-    (session?.user as { githubId?: string })?.githubId ||
-    session?.user?.email;
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -20,37 +15,17 @@ export async function POST(req: NextRequest) {
   const file = formData.get("file") as File;
 
   if (!file) {
-    return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+    return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  // Upload to Supabase Storage
+  // Example: Upload file to Supabase Storage
   const { data, error } = await supabase.storage
     .from("documents")
-    .upload(`${userId}/${file.name}`, file.stream());
+    .upload(`${userId}/${file.name}`, file);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  // Add record in documents table
-  const { data: docData, error: dbError } = await supabase
-    .from("documents")
-    .insert([
-      {
-        userID: userId,
-        path: data.path,
-        size: file.size,
-        category: (formData.get("category") as string) || "other",
-      }
-    ]);
-
-  if (dbError) {
-    return NextResponse.json({ error: dbError.message }, { status: 500 });
-  }
-
-  if (!docData || !docData[0]) {
-    return NextResponse.json({ error: "Unable to retrieve inserted document." }, { status: 500 });
-  }
-
-  return NextResponse.json(docData[0]);
+  return NextResponse.json({ message: "File uploaded", data });
 }
