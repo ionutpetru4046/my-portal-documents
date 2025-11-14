@@ -21,7 +21,7 @@ export default function HomePage() {
   const handleDashboardClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!user) {
       e.preventDefault();
-      router.push("/login");
+      router.push("auth/login");
     }
   };
   const features = [
@@ -146,7 +146,7 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Link
-                    href="/signup"
+                    href="auth/signup"
                     className="px-8 py-4 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 hover:from-blue-700 hover:to-purple-700 dark:hover:from-blue-600 dark:hover:to-purple-600 text-white font-semibold shadow-lg hover:shadow-blue-500/20 transition-all flex items-center gap-2 group"
                   >
                     Get Started Free
@@ -407,7 +407,7 @@ export default function HomePage() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link
-                  href="/signup"
+                  href="auth/signup"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-slate-900 text-slate-950 dark:text-white rounded-lg font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-all shadow-lg group"
                 >
                   Start Free Trial

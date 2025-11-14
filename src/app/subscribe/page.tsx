@@ -145,7 +145,7 @@ export default function SubscribePage() {
 
   const handlePlanClick = async (plan: typeof plans[0]) => {
     if (!isLoggedIn) {
-      router.push("/signup");
+      router.push("auth/signup");
       return;
     }
 

@@ -21,7 +21,7 @@ export default function AboutPage() {
   const handleDashboardClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!user) {
       e.preventDefault();
-      router.push("/login");
+      router.push("auth/login");
     }
   };
 

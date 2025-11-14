@@ -94,7 +94,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
-    router.push("/login");
+    router.push("auth/login");
     closeMobileMenu();
   };
 
@@ -427,12 +427,12 @@ export default function Navbar() {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Link href="/login">
+                  <Link href="/auth/login">
                     <Button className="bg-slate-800 cursor-pointer hover:bg-slate-700 text-slate-300 hover:text-white font-medium text-sm border border-slate-700 hover:border-slate-600 rounded-lg px-4 py-2 transition-all">
                       Login
                     </Button>
                   </Link>
-                  <Link href="/signup">
+                  <Link href="/auth/signup">
                     <Button className="bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 cursor-pointer hover:to-purple-700 text-white font-medium text-sm rounded-lg px-4 py-2 shadow-lg hover:shadow-blue-500/20 transition-all">
                       Get Started
                     </Button>

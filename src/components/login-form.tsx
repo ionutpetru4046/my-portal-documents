@@ -202,7 +202,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                 <p className="text-slate-400 text-sm">
                   Don&apos;t have an account?{" "}
                   <Link 
-                    href="/signup" 
+                    href="/auth/signup" 
                     className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"
                   >
                     Create one
