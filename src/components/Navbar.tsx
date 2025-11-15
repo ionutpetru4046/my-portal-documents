@@ -166,9 +166,13 @@ export default function Navbar() {
             )}
 
             {/* Quick Links Dropdown */}
-            <div className="relative" ref={quickLinksRef}>
+            <div 
+              className="relative" 
+              ref={quickLinksRef}
+              onMouseEnter={() => setQuickLinksDropdown(true)}
+              onMouseLeave={() => setQuickLinksDropdown(false)}
+            >
               <button
-                onClick={() => setQuickLinksDropdown(!quickLinksDropdown)}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-all font-medium text-sm"
               >
                 Quick Links <FiChevronDown size={16} className={`transition-transform duration-300 ${quickLinksDropdown ? 'rotate-180' : ''}`} />
@@ -189,7 +193,6 @@ export default function Navbar() {
                           key={href}
                           href={href}
                           className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                          onClick={() => setQuickLinksDropdown(false)}
                         >
                           <div className={`w-9 h-9 rounded-lg ${colorClass.bg} flex items-center justify-center group-hover:opacity-80 transition`}>
                             <Icon size={18} className={colorClass.text} />
@@ -207,9 +210,13 @@ export default function Navbar() {
             </div>
 
             {/* Resources Dropdown */}
-            <div className="relative" ref={resourcesRef}>
+            <div 
+              className="relative" 
+              ref={resourcesRef}
+              onMouseEnter={() => setResourcesDropdown(true)}
+              onMouseLeave={() => setResourcesDropdown(false)}
+            >
               <button
-                onClick={() => setResourcesDropdown(!resourcesDropdown)}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-all font-medium text-sm"
               >
                 Resources <FiChevronDown size={16} className={`transition-transform duration-300 ${resourcesDropdown ? 'rotate-180' : ''}`} />
@@ -230,7 +237,6 @@ export default function Navbar() {
                           key={href}
                           href={href}
                           className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                          onClick={() => setResourcesDropdown(false)}
                         >
                           <div className={`w-9 h-9 rounded-lg ${colorClass.bg} flex items-center justify-center group-hover:opacity-80 transition`}>
                             <Icon size={18} className={colorClass.text} />
@@ -248,9 +254,13 @@ export default function Navbar() {
             </div>
 
             {/* Support Dropdown */}
-            <div className="relative" ref={supportRef}>
+            <div 
+              className="relative" 
+              ref={supportRef}
+              onMouseEnter={() => setSupportDropdown(true)}
+              onMouseLeave={() => setSupportDropdown(false)}
+            >
               <button
-                onClick={() => setSupportDropdown(!supportDropdown)}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-all font-medium text-sm"
               >
                 Support <FiChevronDown size={16} className={`transition-transform duration-300 ${supportDropdown ? 'rotate-180' : ''}`} />
@@ -271,7 +281,6 @@ export default function Navbar() {
                           key={href}
                           href={href}
                           className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                          onClick={() => setSupportDropdown(false)}
                         >
                           <div className={`w-9 h-9 rounded-lg ${colorClass.bg} flex items-center justify-center group-hover:opacity-80 transition`}>
                             <Icon size={18} className={colorClass.text} />
@@ -290,9 +299,13 @@ export default function Navbar() {
 
             {/* Admin Dropdown */}
             {isAdmin && (
-              <div className="relative ml-2" ref={adminRef}>
+              <div 
+                className="relative ml-2" 
+                ref={adminRef}
+                onMouseEnter={() => setAdminDropdown(true)}
+                onMouseLeave={() => setAdminDropdown(false)}
+              >
                 <button
-                  onClick={() => setAdminDropdown(!adminDropdown)}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-all font-medium text-sm border border-slate-700"
                 >
                   <FiGrid size={16} />
@@ -310,7 +323,6 @@ export default function Navbar() {
                       <Link
                         href="/admin/users"
                         className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                        onClick={() => setAdminDropdown(false)}
                       >
                         <div className="w-9 h-9 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/30 transition">
                           <FiUsers size={18} className="text-blue-400" />
@@ -323,7 +335,6 @@ export default function Navbar() {
                       <Link
                         href="/admin/expirations"
                         className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-700/50 transition-colors group"
-                        onClick={() => setAdminDropdown(false)}
                       >
                         <div className="w-9 h-9 rounded-lg bg-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/30 transition">
                           <FiClock size={18} className="text-cyan-400" />
