@@ -444,7 +444,7 @@ export default function TutorialsPage() {
                 <div className="space-y-2 mb-6">
                   {path.videos.map((video, i) => (
                     <div key={i} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                      <FiCheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                      <FiCheckCircle className="w-4 h-4 text-green-500 shrink-0" />
                       {video}
                     </div>
                   ))}
