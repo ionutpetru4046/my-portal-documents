@@ -116,7 +116,7 @@ export default function HomePage() {
               >
                 <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
                 <span className="text-sm font-semibold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Welcome to DocuStore
+                  Welcome to iDocReminder
                 </span>
               </motion.div>
             </Reveal>
