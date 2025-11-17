@@ -21,11 +21,11 @@ const documentation: DocSection[] = [
     title: "Getting Started",
     icon: <FiBook className="w-6 h-6" />,
     description: "Learn the basics of DocuVault",
-    content: "DocuVault is a secure document management platform designed to help you organize, store, and manage your important files with ease.",
+    content: "iDocReminder is a secure document management platform designed to help you organize, store, and manage your important files with ease.",
     subsections: [
       {
         title: "Creating Your Account",
-        content: "Sign up for a free DocuVault account in seconds. Visit our signup page and enter your email and password. You'll receive a confirmation email to verify your account.",
+        content: "Sign up for a free iDocReminder account in seconds. Visit our signup page and enter your email and password. You'll receive a confirmation email to verify your account.",
       },
       {
         title: "First Login",
@@ -182,7 +182,7 @@ export default function DocumentationPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-6">
             <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">Documentation</h1>
-            <p className="text-slate-600 dark:text-slate-400">Everything you need to know about DocuVault</p>
+            <p className="text-slate-600 dark:text-slate-400">Everything you need to know about iDocReminder</p>
           </div>
 
           {/* Search Bar */}
@@ -341,7 +341,7 @@ export default function DocumentationPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Ready to get started?</h3>
           <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
-            Join thousands of users who trust DocuVault with their important documents.
+            Join thousands of users who trust iDocReminder with their important documents.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

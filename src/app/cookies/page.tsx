@@ -19,7 +19,7 @@ const CookiesPage = () => {
 
         <article className="bg-slate-50 dark:bg-slate-900 backdrop-blur-md rounded-2xl shadow-lg dark:shadow-lg/20 p-8 space-y-6 border border-slate-200 dark:border-slate-800 transition-colors duration-300">
           <p className="text-slate-700 dark:text-slate-300">
-            At <span className="font-semibold text-slate-900 dark:text-white">DocuVault</span>, we use cookies
+            At <span className="font-semibold text-slate-900 dark:text-white">iDocReminder</span>, we use cookies
             to improve your browsing experience, analyze site traffic, and
             provide personalized content.
           </p>
@@ -94,7 +94,7 @@ const CookiesPage = () => {
                 href="mailto:support@yourcompany.com"
                 className="text-blue-600 dark:text-blue-400 hover:underline transition-colors"
               >
-                support@DocuVault.com
+                support@iDocReminder.com
               </a>
               .
             </p>

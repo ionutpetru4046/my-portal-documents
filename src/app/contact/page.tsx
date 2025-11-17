@@ -48,8 +48,8 @@ export default function ContactPage() {
       icon: FiMail,
       title: "Email",
       description: "Send us an email anytime",
-      contact: "support@DocuStore.com",
-      link: "mailto:support@DocuStore.com",
+      contact: "support@iDocReminder.com",
+      link: "mailto:support@iDocReminder.com",
       color: "blue",
     },
     {

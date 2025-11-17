@@ -26,14 +26,14 @@ export default function FAQPage() {
       color: "blue",
       faqs: [
         {
-          question: "What is DocuVault?",
+          question: "What is iDocReminder?",
           answer:
-            "DocuVault is a modern document management platform designed to help you securely store, organize, and manage your important files. With our intuitive interface, you can upload documents, set expiration dates, create reminders, and share files safely with others.",
+            "iDocReminder is a modern document management platform designed to help you securely store, organize, and manage your important files. With our intuitive interface, you can upload documents, set expiration dates, create reminders, and share files safely with others.",
         },
         {
-          question: "Who can use DocuVault?",
+          question: "Who can use iDocReminder?",
           answer:
-            "DocuVault is perfect for individuals, small teams, and large enterprises. Whether you need to manage personal documents or organize company-wide document workflows, we have a plan that fits your needs.",
+            "iDocReminder is perfect for individuals, small teams, and large enterprises. Whether you need to manage personal documents or organize company-wide document workflows, we have a plan that fits your needs.",
         },
         {
           question: "Is there a free trial?",
@@ -120,7 +120,7 @@ export default function FAQPage() {
         {
           question: "How can I contact support?",
           answer:
-            "You can reach us through the contact form on our website, email support@DocuVault.com, or use the live chat feature available 24/7 for Premium users.",
+            "You can reach us through the contact form on our website, email support@iDocReminder.com, or use the live chat feature available 24/7 for Premium users.",
         },
         {
           question: "What's your response time?",
@@ -207,7 +207,7 @@ export default function FAQPage() {
             Frequently Asked <span className="bg-linear-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">Questions</span>
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
-            Find answers to common questions about DocuVault. Can&apos;t find what you&apos;re looking for?{" "}
+            Find answers to common questions about iDocReminder. Can&apos;t find what you&apos;re looking for?{" "}
             <a href="/contact" className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition">Contact our support team</a>
           </p>
         </motion.div>
