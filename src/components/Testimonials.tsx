@@ -21,7 +21,7 @@ const testimonials: Testimonial[] = [
     role: 'Legal Director',
     company: 'TechLaw Associates',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=500&fit=crop',
-    content: 'DocuVault transformed our entire contract management workflow. We\'ve cut review time by 73% and eliminated compliance errors completely.',
+    content: 'iDocReminder transformed our entire contract management workflow. We\'ve cut review time by 73% and eliminated compliance errors completely.',
     rating: 5,
     metrics: { label: 'Time Saved', value: '73%' },
   },
@@ -150,7 +150,7 @@ export default function TestimonialsSection() {
           </h2>
           
           <p className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-            Join thousands of companies that have transformed their document management with DocuVault
+            Join thousands of companies that have transformed their document management with iDocReminder
           </p>
         </motion.div>
 
