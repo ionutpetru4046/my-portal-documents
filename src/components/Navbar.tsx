@@ -107,23 +107,23 @@ export default function Navbar() {
 
   const quickLinksData = [
     { icon: FiHome, href: "/", label: "Home", description: "Back to homepage", color: "blue" },
-    { icon: FiDollarSign, href: "/subscribe", label: "Pricing", description: "View our plans", color: "purple" },
-    { icon: FiBook, href: "/about", label: "About Us", description: "Learn our story", color: "cyan" },
-    { icon: FiFileText, href: "/blog", label: "Blog", description: "About Our Blog", color: "cyan" },
+    { icon: FiDollarSign, href: "/pages/subscribe", label: "Pricing", description: "View our plans", color: "purple" },
+    { icon: FiBook, href: "/pages/about", label: "About Us", description: "Learn our story", color: "cyan" },
+    { icon: FiFileText, href: "/pages/blog", label: "Blog", description: "About Our Blog", color: "cyan" },
   ];
 
   const supportData = [
-    { icon: FiHelpCircle, href: "/help", label: "Help Center", description: "Find answers", color: "blue" },
-    { icon: FiMail, href: "/contact", label: "Contact Support", description: "Get in touch", color: "purple" },
-    { icon: FiFileText, href: "/terms", label: "Terms & Privacy", description: "Legal docs", color: "cyan" },
-    { icon: FiFileText, href: "/reminderManager", label: "Smart Reminder", description: "Smart Reminder", color: "cyan" },
+    { icon: FiHelpCircle, href: "/pages/help", label: "Help Center", description: "Find answers", color: "blue" },
+    { icon: FiMail, href: "/pages/contact", label: "Contact Support", description: "Get in touch", color: "purple" },
+    { icon: FiFileText, href: "/pages/terms", label: "Terms & Privacy", description: "Legal docs", color: "cyan" },
+    { icon: FiFileText, href: "/pages/reminderManager", label: "Smart Reminder", description: "Smart Reminder", color: "cyan" },
   ];
 
   const resourcesData = [
-    { icon: FiBook, href: "/documentation", label: "Documentation", description: "Comprehensive guides", color: "blue" },
-    { icon: FiFileText, href: "/tutorials", label: "Tutorials", description: "Video tutorials", color: "purple" },
-    { icon: FiGrid, href: "/templates", label: "Templates", description: "Ready-to-use templates", color: "cyan" },
-    { icon: FiHelpCircle, href: "/faq", label: "FAQ", description: "Frequently asked", color: "blue" },
+    { icon: FiBook, href: "/pages/documentation", label: "Documentation", description: "Comprehensive guides", color: "blue" },
+    { icon: FiFileText, href: "/pages/tutorials", label: "Tutorials", description: "Video tutorials", color: "purple" },
+    { icon: FiGrid, href: "/pages/templates", label: "Templates", description: "Ready-to-use templates", color: "cyan" },
+    { icon: FiHelpCircle, href: "/pages/faq", label: "FAQ", description: "Frequently asked", color: "blue" },
   ];
 
   const getColorClasses = (color: string) => {

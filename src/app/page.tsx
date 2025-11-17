@@ -116,7 +116,7 @@ export default function HomePage() {
               >
                 <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
                 <span className="text-sm font-semibold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Welcome to iDocReminder
+                  Welcome to DocuStore
                 </span>
               </motion.div>
             </Reveal>
@@ -205,7 +205,7 @@ export default function HomePage() {
                 Trusted by Leading Companies
               </h3>
               <p className="text-gray-600 dark:text-slate-400 transition-colors">
-                Join organizations that secure their documents with iDocReminder
+                Join organizations that secure their documents with DocuStore
               </p>
             </div>
           </Reveal>
@@ -301,7 +301,7 @@ export default function HomePage() {
           <Reveal animation="fade-up">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
-                Why Choose iDocReminder
+                Why Choose DocuStore
               </h2>
               <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
                 Everything you need to manage documents securely and efficiently
@@ -396,7 +396,7 @@ export default function HomePage() {
 
           <Reveal animation="fade-up" delay={50}>
             <p className="text-lg text-gray-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto transition-colors">
-              Join thousands of users who trust iDocReminder to manage their important documents. Get started for free today.
+              Join thousands of users who trust DocuStore to manage their important documents. Get started for free today.
             </p>
           </Reveal>
 
@@ -452,7 +452,7 @@ export default function HomePage() {
                 Trusted by Leading Companies
               </h3>
               <p className="text-gray-600 dark:text-slate-400 transition-colors">
-                Join organizations that secure their documents with iDocReminder
+                Join organizations that secure their documents with DocuStore
               </p>
             </div>
           </Reveal>

@@ -34,23 +34,23 @@ export default function Footer() {
 
   const footerLinks = [
     { icon: FiHome, label: "Home", href: "/", color: "blue" },
-    { icon: FiUsers, label: "About", href: "/about", color: "purple" },
-    { icon: FiDollarSign, label: "Pricing", href: "/subscribe", color: "cyan" },
-    { icon: FiMessageCircle, label: "Contact", href: "/contact", color: "blue" },
+    { icon: FiUsers, label: "About", href: "/pages/about", color: "purple" },
+    { icon: FiDollarSign, label: "Pricing", href: "/pages/subscribe", color: "cyan" },
+    { icon: FiMessageCircle, label: "Contact", href: "/pages/contact", color: "blue" },
   ];
 
   const resourcesData = [
-    { icon: FiBook, href: "/documentation", label: "Documentation", color: "blue" },
-    { icon: FiFileText, href: "/tutorials", label: "Tutorials", color: "purple" },
-    { icon: FiGrid, href: "/templates", label: "Templates", color: "cyan" },
-    { icon: FiHelpCircle, href: "/faq", label: "FAQ", color: "blue" },
+    { icon: FiBook, href: "/pages/documentation", label: "Documentation", color: "blue" },
+    { icon: FiFileText, href: "/pages/tutorials", label: "Tutorials", color: "purple" },
+    { icon: FiGrid, href: "/pages/templates", label: "Templates", color: "cyan" },
+    { icon: FiHelpCircle, href: "/pages/faq", label: "FAQ", color: "blue" },
   ];
 
   const supportLinks = [
-    { icon: FiHelpCircle, label: "Help Center", href: "/help", color: "blue" },
-    { icon: FiMessageCircle, label: "Contact Us", href: "/contact", color: "purple" },
-    { icon: FiFileText, label: "Terms of Service", href: "/terms", color: "cyan" },
-    { icon: FiShield, label: "Privacy Policy", href: "/privacy", color: "blue" },
+    { icon: FiHelpCircle, label: "Help Center", href: "/pages/help", color: "blue" },
+    { icon: FiMessageCircle, label: "Contact Us", href: "/pages/contact", color: "purple" },
+    { icon: FiFileText, label: "Terms of Service", href: "/pages/terms", color: "cyan" },
+    { icon: FiShield, label: "Privacy Policy", href: "/pages/privacy", color: "blue" },
   ];
 
   const securityBadges = [
@@ -470,15 +470,15 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} DocuVault. All rights reserved.
             </p>
             <div className="flex items-center gap-4 sm:gap-6 order-1 sm:order-2 flex-wrap justify-center sm:justify-end">
-              <Link href="/terms" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+              <Link href="/pages/terms" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
                 Terms
               </Link>
               <span className="text-gray-400 dark:text-slate-600">|</span>
-              <Link href="/privacy" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+              <Link href="/pages/privacy" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
                 Privacy
               </Link>
               <span className="text-gray-400 dark:text-slate-600">|</span>
-              <Link href="/cookies" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+              <Link href="/pages/cookies" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
                 Cookies
               </Link>
             </div>
