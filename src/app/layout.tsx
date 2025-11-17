@@ -1,39 +1,24 @@
-import { UserProvider } from "@/context/UserContext";
-import { UploadedFilesProvider } from "@/context/UploadedFilesContext";
-import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import FAQPage from "@/components/Faq";
-import { Toaster } from "react-hot-toast";
-import { Analytics } from "@vercel/analytics/react";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
-// This now works!
+import ClientProviders from "../components/ClientProviders";
+
 export const metadata = {
-  title: "iDocReminder – Secure Document Storage & Reminders",
+  title: "iDocReminder – Secure Document Storage & Smart Reminders",
   description:
-    "Store, manage, and access your important documents securely with iDocReminder. Smart reminders, cloud sync, and easy access.",
+    "Store, manage, and access your important documents securely with iDocReminder. Smart reminders, cloud sync, and fast access.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth">
       <body className="flex flex-col min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 transition-colors">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SessionProviderWrapper>
-            <UserProvider>
-              <UploadedFilesProvider>
-                <Navbar />
-                <main className="flex-1">{children}</main>
-                <FAQPage />
-                <Footer />
-                <Analytics />
-                <Toaster position="top-right" />
-              </UploadedFilesProvider>
-            </UserProvider>
-          </SessionProviderWrapper>
-        </ThemeProvider>
+        <ClientProviders>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </ClientProviders>
       </body>
     </html>
   );
