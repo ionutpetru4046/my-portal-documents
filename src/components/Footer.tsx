@@ -431,7 +431,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="mailto:support@DocuVault.com" 
+                  href="mailto:support@iDocReminder.com" 
                   className="flex items-center gap-3 text-slate-400 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors group font-medium"
                 >
                   <div className="w-5 h-5 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0 group-hover:bg-purple-500/30 transition">
