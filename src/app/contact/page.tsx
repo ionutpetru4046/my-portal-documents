@@ -48,8 +48,8 @@ export default function ContactPage() {
       icon: FiMail,
       title: "Email",
       description: "Send us an email anytime",
-      contact: "support@DocuVault.com",
-      link: "mailto:support@DocuVault.com",
+      contact: "support@DocuStore.com",
+      link: "mailto:support@DocuStore.com",
       color: "blue",
     },
     {

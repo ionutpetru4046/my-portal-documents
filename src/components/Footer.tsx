@@ -288,7 +288,7 @@ export default function Footer() {
                   />
                 </div>
                 <span className="text-2xl font-bold bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  DocuVault
+                  DocuStore
                 </span>
               </div>
             </Link>
@@ -437,7 +437,7 @@ export default function Footer() {
                   <div className="w-5 h-5 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0 group-hover:bg-purple-500/30 transition">
                     <FiMail className="text-purple-400" size={16} />
                   </div>
-                  <span className="text-sm md:text-base">support@DocuVault.com</span>
+                  <span className="text-sm md:text-base">support@DocuStore.com</span>
                 </a>
               </li>
               <li>
