@@ -407,7 +407,7 @@ export default function Navbar() {
                           <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center group-hover:bg-slate-600 transition">
                             <FiUser size={16} className="text-slate-300" />
                           </div>
-                          <span className="text-sm font-medium">Profile</span>
+                          <span className="text-sm text-white font-medium">Profile</span>
                         </Link>
                         <Link
                           href="/dashboard"
@@ -482,11 +482,11 @@ export default function Navbar() {
                         </div>
                         <Link href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
                           <FiUser size={16} className="text-slate-300" />
-                          <span className="text-sm">Profile</span>
+                          <span className="text-sm text-white">Profile</span>
                         </Link>
                         <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
                           <FiFileText size={16} className="text-slate-300" />
-                          <span className="text-sm">Dashboard</span>
+                          <span className="text-sm text-white">Dashboard</span>
                         </Link>
                         <div className="border-t border-slate-700" />
                         <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 transition text-sm">
