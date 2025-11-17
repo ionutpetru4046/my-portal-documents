@@ -147,16 +147,6 @@ export default function DashboardHome() {
         )}
       </AnimatePresence>
 
-      {/* Mobile Toggle Button */}
-      {!sidebarOpen && (
-        <button
-          onClick={() => setSidebarOpen(true)}
-          className="sm:hidden fixed top-4 left-4 bg-slate-900/90 p-2 rounded-md border border-slate-800 text-white z-50 shadow-md"
-        >
-          <FiMenu size={20} />
-        </button>
-      )}
-
       {/* Main Content */}
       <div className="flex-1 relative z-10 px-4 sm:px-8 py-6 sm:py-10 max-w-7xl mx-auto w-full">
         {/* Header */}
