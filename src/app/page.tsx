@@ -301,7 +301,7 @@ export default function HomePage() {
           <Reveal animation="fade-up">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
-                Why Choose DocuStore
+                Why Choose iDocReminder
               </h2>
               <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
                 Everything you need to manage documents securely and efficiently
