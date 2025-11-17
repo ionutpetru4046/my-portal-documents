@@ -205,7 +205,7 @@ export default function HomePage() {
                 Trusted by Leading Companies
               </h3>
               <p className="text-gray-600 dark:text-slate-400 transition-colors">
-                Join organizations that secure their documents with DocuStore
+                Join organizations that secure their documents with iDocReminder
               </p>
             </div>
           </Reveal>
@@ -396,7 +396,7 @@ export default function HomePage() {
 
           <Reveal animation="fade-up" delay={50}>
             <p className="text-lg text-gray-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto transition-colors">
-              Join thousands of users who trust DocuStore to manage their important documents. Get started for free today.
+              Join thousands of users who trust iDocReminder to manage their important documents. Get started for free today.
             </p>
           </Reveal>
 
@@ -452,7 +452,7 @@ export default function HomePage() {
                 Trusted by Leading Companies
               </h3>
               <p className="text-gray-600 dark:text-slate-400 transition-colors">
-                Join organizations that secure their documents with DocuStore
+                Join organizations that secure their documents with iDocReminder
               </p>
             </div>
           </Reveal>
