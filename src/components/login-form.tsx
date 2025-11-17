@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { supabase } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -20,34 +21,55 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const result = await signIn("credentials", {
       email,
       password,
+      redirect: false,
     });
 
-    setLoading(false);
-
-    if (error) {
-      toast.error(error.message);
+    if (result?.error) {
+      setLoading(false);
+      toast.error(result.error || "Login failed");
     } else {
       toast.success("Login successful!");
-      router.push("/dashboard");
+      
+      // Wait for session to be established before redirecting
+      // Use a small delay to ensure session is ready
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Force a session refresh and then redirect
+      router.refresh();
+      
+      // Wait a bit more for the refresh to complete
+      setTimeout(() => {
+        setLoading(false);
+        router.push("/dashboard");
+      }, 300);
     }
   };
 
   const handleGoogleLogin = async () => {
     setLoading(true);
 
-    const redirectTo = `${window.location.origin}/dashboard`;
+    // Redirect to callback page that will handle OAuth
+    const redirectTo = `${window.location.origin}/auth/callback`;
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo },
+      options: { 
+        redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
+      },
     });
 
-    setLoading(false);
-
-    if (error) toast.error(error.message);
+    if (error) {
+      setLoading(false);
+      toast.error(error.message);
+    }
+    // Note: setLoading(false) is not called here because we're redirecting
   };
 
   return (

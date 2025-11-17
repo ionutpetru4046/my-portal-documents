@@ -34,8 +34,14 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) token.id = user.id;
+    async jwt({ token, user, trigger, session: sessionData }) {
+      if (user) {
+        token.id = user.id;
+      }
+      // Handle Supabase OAuth users
+      if (trigger === "signIn" && sessionData?.supabaseUserId) {
+        token.id = sessionData.supabaseUserId;
+      }
       return token;
     },
   },

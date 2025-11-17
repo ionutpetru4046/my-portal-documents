@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const { user, setUser } = useUser();
+  const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [adminDropdown, setAdminDropdown] = useState(false);
@@ -92,18 +94,30 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
+    // Sign out from both Supabase and NextAuth
     await supabase.auth.signOut();
+    await signOut({ redirect: false });
     setUser(null);
-    router.push("auth/login");
+    router.push("/auth/login");
+    router.refresh(); // Refresh to clear any cached session data
     closeMobileMenu();
   };
+
+  // Get current user from either context or session
+  const currentUser = user || (session?.user ? {
+    id: session.user.id,
+    email: session.user.email || "",
+    name: session.user.name || session.user.email || "User",
+    avatar: session.user.image || "",
+    role: "user"
+  } : null);
 
   const navLinkClass = (href: string) =>
     `text-slate-300 hover:text-white transition-colors duration-200 font-medium text-sm ${
       pathname === href ? "text-white" : ""
     }`;
 
-  const isAdmin = user?.role === "admin";
+  const isAdmin = currentUser?.role === "admin";
 
   const quickLinksData = [
     { icon: FiHome, href: "/", label: "Home", description: "Back to homepage", color: "blue" },
@@ -140,7 +154,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition group">
+          <Link href={session?.user ? "/dashboard" : "/"} className="flex items-center gap-2.5 hover:opacity-80 transition group">
             <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               <Image
                 src="/Digital-document-logo.png"
@@ -159,7 +173,7 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
             {/* Dashboard Link */}
-            {user && (
+            {currentUser && (
               <Link href="/dashboard" className={`px-3 py-2 rounded-lg transition-all ${navLinkClass("/dashboard")} hover:bg-slate-800`}>
                 Dashboard
               </Link>
@@ -359,7 +373,7 @@ export default function Navbar() {
             </div>
             {/* Desktop User Menu */}
             <div className="hidden lg:flex items-center gap-3">
-              {user ? (
+              {currentUser ? (
                 <div className="relative" ref={menuRef}>
                   <button
                     aria-label="User menu"
@@ -367,21 +381,21 @@ export default function Navbar() {
                     onClick={() => setMenuOpen((v) => !v)}
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      {user.avatar ? (
+                      {currentUser.avatar ? (
                         <img
-                          src={user.avatar}
+                          src={currentUser.avatar}
                           alt="avatar"
                           className="w-7 h-7 rounded-lg object-cover border border-slate-600 group-hover:border-slate-500 transition"
                         />
                       ) : (
                         <div className="w-7 h-7 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-slate-600">
                           <span className="text-xs font-bold text-white">
-                            {user.name?.charAt(0).toUpperCase() || "U"}
+                            {currentUser.name?.charAt(0).toUpperCase() || "U"}
                           </span>
                         </div>
                       )}
                       <span className="text-sm font-medium text-slate-300 group-hover:text-white transition max-w-[120px] truncate">
-                        {user.name}
+                        {currentUser.name}
                       </span>
                     </div>
                     <FiChevronDown size={16} className={`text-slate-400 shrink-0 transition-transform duration-300 ${menuOpen ? 'rotate-180' : ''}`} />
@@ -397,10 +411,10 @@ export default function Navbar() {
                       >
                         <div className="px-4 py-4 border-b border-slate-700 bg-slate-900/50">
                           <div className="text-xs text-slate-400 font-medium mb-1.5">Signed in as</div>
-                          <div className="text-sm font-medium text-white truncate">{user.email}</div>
+                          <div className="text-sm font-medium text-white truncate">{currentUser.email}</div>
                         </div>
                         <Link
-                          href="/profile"
+                          href="/pages/profile"
                           onClick={() => setMenuOpen(false)}
                           className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition-colors group"
                         >
@@ -454,17 +468,17 @@ export default function Navbar() {
 
             {/* Mobile - Show user avatar or hamburger */}
             <div className="flex lg:hidden items-center gap-2">
-              {user && (
+              {currentUser && (
                 <div className="relative" ref={menuRef}>
                   <button
                     onClick={() => setMenuOpen(!menuOpen)}
                     className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center justify-center transition-all"
                   >
-                    {user.avatar ? (
-                      <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-lg object-cover" />
+                    {currentUser.avatar ? (
+                      <img src={currentUser.avatar} alt="avatar" className="w-10 h-10 rounded-lg object-cover" />
                     ) : (
                       <div className="w-10 h-10 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
-                        {user.name?.charAt(0).toUpperCase() || "U"}
+                        {currentUser.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
                   </button>
@@ -478,9 +492,9 @@ export default function Navbar() {
                       >
                         <div className="px-4 py-3 border-b border-slate-700 bg-slate-900/50">
                           <div className="text-xs text-slate-400 mb-1">Signed in as</div>
-                          <div className="text-sm font-medium text-white truncate">{user.email}</div>
+                          <div className="text-sm font-medium text-white truncate">{currentUser.email}</div>
                         </div>
-                        <Link href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
+                        <Link href="pages/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
                           <FiUser size={16} className="text-slate-300" />
                           <span className="text-sm text-white">Profile</span>
                         </Link>
@@ -552,19 +566,19 @@ export default function Navbar() {
               </div>
 
               {/* User Info */}
-              {user && (
+              {currentUser && (
                 <div className="p-4 border-b border-slate-800 bg-slate-800/50 shrink-0">
                   <div className="flex items-center gap-3">
-                    {user.avatar ? (
-                      <img src={user.avatar} alt="avatar" className="w-12 h-12 rounded-lg object-cover border-2 border-slate-700" />
+                    {currentUser.avatar ? (
+                      <img src={currentUser.avatar} alt="avatar" className="w-12 h-12 rounded-lg object-cover border-2 border-slate-700" />
                     ) : (
                       <div className="w-12 h-12 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-slate-700 font-bold">
-                        {user.name?.charAt(0).toUpperCase() || "U"}
+                        {currentUser.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold truncate">{user.name}</div>
-                      <div className="text-xs text-slate-400 truncate">{user.email}</div>
+                      <div className="font-semibold truncate">{currentUser.name}</div>
+                      <div className="text-xs text-slate-400 truncate">{currentUser.email}</div>
                     </div>
                   </div>
                 </div>
@@ -572,7 +586,7 @@ export default function Navbar() {
 
               {/* Navigation */}
               <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-                {user && (
+                {currentUser && (
                   <Link
                     href="/dashboard"
                     className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition"
@@ -653,7 +667,7 @@ export default function Navbar() {
 
               {/* Bottom Actions */}
               <div className="p-4 border-t border-slate-800 space-y-2 shrink-0">
-                {user ? (
+                {currentUser ? (
                   <>
                     <Link
                       href="/profile"

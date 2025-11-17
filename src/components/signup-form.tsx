@@ -41,13 +41,23 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
 
   const handleGoogleSignup = async () => {
     setLoading(true);
-    const redirectTo = `${window.location.origin}/dashboard`;
+    // Redirect to callback page that will handle OAuth
+    const redirectTo = `${window.location.origin}/auth/callback`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo },
+      options: { 
+        redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
+      },
     });
-    setLoading(false);
-    if (error) toast.error(error.message);
+    if (error) {
+      setLoading(false);
+      toast.error(error.message);
+    }
+    // Note: setLoading(false) is not called here because we're redirecting
   };
 
   return (

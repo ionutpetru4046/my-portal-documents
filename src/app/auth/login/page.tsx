@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import { LoginForm } from "@/components/login-form";
+import { LoginForm } from "../../../components/login-form";
 
 export default function LoginPage() {
-  return (
-    <main className="flex flex-col items-center justify-center bg-gray-50">
-      <LoginForm className="w-full max-w-md" />
-    </main>
-  );
+  // Always show the login form
+  // Users can access this page even if already logged in
+  // They can log out first if they want to switch accounts
+  return <LoginForm />;
 }

@@ -1,5 +1,3 @@
-"use client";
-
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "next-themes";
 import { UserProvider } from "@/context/UserContext";

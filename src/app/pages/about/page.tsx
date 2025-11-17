@@ -21,7 +21,7 @@ export default function AboutPage() {
   const handleDashboardClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!user) {
       e.preventDefault();
-      router.push("auth/login");
+      router.push("/auth/login");
     }
   };
 
@@ -167,7 +167,7 @@ export default function AboutPage() {
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
-              href="/subscribe"
+              href="/pages/subscribe"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg transition-all"
             >
               View Plans
@@ -398,7 +398,7 @@ export default function AboutPage() {
               <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
-              href="/contact"
+              href="/pages/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 border border-gray-300 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg font-semibold transition-all"
             >
               Get in Touch

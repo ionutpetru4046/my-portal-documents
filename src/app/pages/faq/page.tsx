@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import { FiChevronDown, FiSearch, FiHelpCircle, FiShield, FiClock, FiUsers, FiDownload, FiShare2 } from "react-icons/fi";
+import { FiSearch, FiHelpCircle, FiShield, FiClock, FiUsers, FiDownload, FiShare2 } from "react-icons/fi";
 
 export default function FAQPage() {
   const [searchQuery, setSearchQuery] = useState("");
