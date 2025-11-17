@@ -288,7 +288,7 @@ export default function Footer() {
                   />
                 </div>
                 <span className="text-2xl font-bold bg-linear-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  DocuStore
+                  iDocReminder
                 </span>
               </div>
             </Link>
