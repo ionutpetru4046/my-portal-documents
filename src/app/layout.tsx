@@ -1,5 +1,3 @@
-"use client";
-
 import { UserProvider } from "@/context/UserContext";
 import { UploadedFilesProvider } from "@/context/UploadedFilesContext";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
@@ -10,6 +8,13 @@ import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+
+// This now works!
+export const metadata = {
+  title: "iDocReminder – Secure Document Storage & Reminders",
+  description:
+    "Store, manage, and access your important documents securely with iDocReminder. Smart reminders, cloud sync, and easy access.",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
