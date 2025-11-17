@@ -55,16 +55,6 @@ const testimonials: Testimonial[] = [
     rating: 5,
     metrics: { label: 'Compliance Score', value: '99.8%' },
   },
-  {
-    id: 5,
-    name: 'Lisa Wong',
-    role: 'Head of Operations',
-    company: 'CloudTech Ventures',
-    image: 'https://images.unsplash.com/photo-1517404215814-8eed20b7f5a9?w=500&h=500&fit=crop',
-    content: 'Integrating with our existing tools was seamless. The team was up and running in a matter of hours, not weeks.',
-    rating: 5,
-    metrics: { label: 'Setup Time', value: '2 hours' },
-  },
 ];
 
 const StarRating = ({ rating }: { rating: number }) => (
@@ -263,7 +253,7 @@ export default function TestimonialsSection() {
                         transition={{ delay: 0.5 }}
                         className="text-xl md:text-2xl text-gray-100 leading-relaxed font-medium mb-8"
                       >
-                        "{testimonials[current].content}"
+                        &quot;{testimonials[current].content}&quot;
                       </motion.p>
                     </div>
 
