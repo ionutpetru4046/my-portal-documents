@@ -127,7 +127,7 @@ export default function AboutPage() {
           >
             <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
             <span className="text-sm font-semibold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              About DocuVault
+              About iDocReminder
             </span>
           </motion.div>
 
@@ -149,7 +149,7 @@ export default function AboutPage() {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-lg sm:text-xl text-gray-600 dark:text-slate-400 max-w-3xl mx-auto mb-10 transition-colors"
           >
-            DocuVault is a modern document management platform designed to help professionals and teams store, organize, and access their documents securely. Built with privacy, security, and user experience in mind.
+            iDocReminder is a modern document management platform designed to help professionals and teams store, organize, and access their documents securely. Built with privacy, security, and user experience in mind.
           </motion.p>
 
           <motion.div
@@ -222,7 +222,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
-              Why Choose DocuVault?
+              Why Choose iDocReminder?
             </h2>
             <p className="text-gray-600 dark:text-slate-400 text-lg max-w-2xl mx-auto transition-colors">
               We combine powerful features with an intuitive interface to make document management effortless.
@@ -340,13 +340,13 @@ export default function AboutPage() {
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 transition-colors">Our Story</h2>
             <p className="text-gray-700 dark:text-slate-400 text-lg leading-relaxed mb-6 transition-colors">
-              DocuVault was born from a simple observation: most document management solutions were either too complicated, not secure enough, or required expensive enterprise deals. We knew there had to be a better way.
+              iDocReminder was born from a simple observation: most document management solutions were either too complicated, not secure enough, or required expensive enterprise deals. We knew there had to be a better way.
             </p>
             <p className="text-gray-700 dark:text-slate-400 text-lg leading-relaxed mb-6 transition-colors">
               In 2023, our team of security experts, designers, and developers came together with a shared vision: to create the most user-friendly, secure, and modern document management platform available. We spent months researching, designing, and testing to ensure that every feature serves a purpose and every interaction feels natural.
             </p>
             <p className="text-gray-700 dark:text-slate-400 text-lg leading-relaxed transition-colors">
-              Today, DocuVault helps thousands of professionals and teams worldwide manage their documents with confidence. We&apos;re committed to continuous improvement, listening to our users, and pushing the boundaries of what&apos;s possible in document management.
+              Today, iDocReminder helps thousands of professionals and teams worldwide manage their documents with confidence. We&apos;re committed to continuous improvement, listening to our users, and pushing the boundaries of what&apos;s possible in document management.
             </p>
           </motion.div>
         </div>
