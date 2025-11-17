@@ -674,14 +674,14 @@ export default function Navbar() {
                 ) : (
                   <>
                     <Link
-                      href="/login"
+                      href="/auth/login"
                       className="block px-4 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-center transition font-medium text-sm"
                       onClick={closeMobileMenu}
                     >
                       Login
                     </Link>
                     <Link
-                      href="/signup"
+                      href="/auth/signup"
                       className="block px-4 py-3 rounded-lg bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center transition font-medium text-sm"
                       onClick={closeMobileMenu}
                     >
