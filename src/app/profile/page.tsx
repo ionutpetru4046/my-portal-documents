@@ -213,19 +213,6 @@ export default function ProfilePage() {
           </div>
           
           <div className="flex items-center gap-4">
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2.5 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors duration-200 border border-slate-300 dark:border-slate-700"
-              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {isDark ? (
-                <FiSun className="w-5 h-5 text-slate-700 dark:text-slate-300" />
-              ) : (
-                <FiMoon className="w-5 h-5 text-slate-700 dark:text-slate-300" />
-              )}
-            </button>
-
             {/* Notification Bell */}
             <div className="relative">
               <button
