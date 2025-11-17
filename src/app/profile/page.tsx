@@ -132,30 +132,48 @@ export default function ProfilePage() {
     toast.success("Profile updated!");
   };
 
-  const handleAvatarClick = () => fileInputRef.current?.click();
+  const handleAvatarClick = () => {
+    console.log("Avatar clicked, opening file picker...");
+    fileInputRef.current?.click();
+  };
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !user) return;
 
     const file = e.target.files[0];
+    
+    console.log("File selected:", file.name, file.type, file.size);
+    
     const fileExt = file.name.split(".").pop();
     const fileName = `${user.id}.${fileExt}`;
     const filePath = `avatars/${fileName}`;
+
+    console.log("Attempting upload to:", filePath);
 
     const { error: uploadError } = await supabase.storage
       .from("documents")
       .upload(filePath, file, { upsert: true });
 
-    if (uploadError) return toast.error("Failed to upload avatar");
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      return toast.error(`Failed to upload avatar: ${uploadError.message}`);
+    }
+
+    console.log("Upload successful, getting public URL...");
 
     const { data } = supabase.storage.from("documents").getPublicUrl(filePath);
     const publicUrl = data.publicUrl;
+
+    console.log("Public URL:", publicUrl);
 
     const { error: updateError } = await supabase.auth.updateUser({
       data: { avatar: publicUrl },
     });
 
-    if (updateError) return toast.error("Failed to update avatar");
+    if (updateError) {
+      console.error("Update error:", updateError);
+      return toast.error(`Failed to update avatar: ${updateError.message}`);
+    }
 
     setUser({ ...user, avatar: publicUrl });
     toast.success("Avatar updated!");
@@ -271,20 +289,35 @@ export default function ProfilePage() {
                 <div className="h-24 bg-linear-to-r from-blue-600 to-purple-600"></div>
                 <div className="p-6 relative">
                   <div className="flex flex-col items-center -mt-16 mb-6">
-                    <div className="relative group mb-4">
-                      <img
-                        src={user.avatar || "/default-avatar.png"}
-                        alt="Avatar"
-                        className="w-28 h-28 rounded-full border-4 border-slate-50 dark:border-slate-900 shadow-lg object-cover"
-                      />
-                      <button
+                    <div className="relative mb-4">
+                      <div 
                         onClick={handleAvatarClick}
-                        className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-full flex items-center justify-center transition-all duration-300"
+                        className="relative w-28 h-28 rounded-full border-4 border-slate-50 dark:border-slate-900 shadow-lg cursor-pointer group overflow-hidden"
                       >
-                        <FiUpload className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </button>
-                      <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={handleAvatarChange} />
+                        {user.avatar ? (
+                          <img
+                            src={user.avatar}
+                            alt="Avatar"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-3xl font-bold">
+                            {(user.name || user.email || 'U').charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center transition-all duration-300">
+                          <FiUpload className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                      </div>
                     </div>
+                    
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      ref={fileInputRef} 
+                      className="hidden" 
+                      onChange={handleAvatarChange} 
+                    />
                     
                     <h2 className="text-xl font-bold text-slate-900 dark:text-white text-center">{user.name || "User"}</h2>
                     <p className="text-slate-600 dark:text-slate-400 text-sm text-center mt-1">{user.email}</p>
