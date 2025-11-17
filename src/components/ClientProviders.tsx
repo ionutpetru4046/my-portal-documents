@@ -8,7 +8,6 @@ import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import { Toaster } from "react-hot-toast";
 
 // Allowed in client components:
-const FAQPage = dynamic(() => import("@/components/Faq"));
 const Analytics = dynamic(() =>
   import("@vercel/analytics/react").then((m) => m.Analytics)
 );
@@ -20,9 +19,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
         <UserProvider>
           <UploadedFilesProvider>
             {children}
-
             {/* Safe here because we are in a client component */}
-            <FAQPage />
             <Analytics />
             <Toaster position="top-right" />
           </UploadedFilesProvider>
