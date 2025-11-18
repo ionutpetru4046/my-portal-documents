@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import toast from "react-hot-toast";
@@ -143,20 +143,16 @@ export default function CallbackPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="text-red-500 mb-4">⚠️</div>
-          <p className="text-red-500 font-semibold mb-2">Error</p>
-          <p className="text-gray-500 text-sm mb-4">{error}</p>
-          <p className="text-gray-400 text-xs">Redirecting to login...</p>
-        </div>
+  const content = error ? (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <div className="text-red-500 mb-4">⚠️</div>
+        <p className="text-red-500 font-semibold mb-2">Error</p>
+        <p className="text-gray-500 text-sm mb-4">{error}</p>
+        <p className="text-gray-400 text-xs">Redirecting to login...</p>
       </div>
-    );
-  }
-
-  return (
+    </div>
+  ) : (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -164,6 +160,19 @@ export default function CallbackPage() {
         <p className="text-gray-400 text-xs mt-2">Please wait...</p>
       </div>
     </div>
+  );
+
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-500">Completing sign in with Google...</p>
+        </div>
+      </div>
+    }>
+      {content}
+    </Suspense>
   );
 }
 

@@ -34,7 +34,7 @@ function formatDate(dateStr: string) {
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { setUser } = useUser();
+  const { setUser, user } = useUser();
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [isDark, setIsDark] = useState(true);
@@ -128,7 +128,7 @@ export default function ProfilePage() {
       toast.error("Failed to update profile");
       return;
     }
-    setUser?.((u: any) => ({ ...u, ...formData }));
+    setUser?.(user ? { ...user, ...formData } : null);
     setEditMode(false);
     toast.success("Profile updated!");
   };
@@ -148,7 +148,7 @@ export default function ProfilePage() {
     const publicUrl = data.publicUrl;
     const { error: updateError } = await supabase.auth.updateUser({ data: { avatar: publicUrl } });
     if (updateError) return toast.error(`Failed to update avatar: ${updateError.message}`);
-    setUser?.((u: any) => ({ ...u, avatar: publicUrl }));
+    setUser?.(user ? { ...user, avatar: publicUrl } : null);
     toast.success("Avatar updated!");
   };
 
