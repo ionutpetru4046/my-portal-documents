@@ -11,6 +11,7 @@ import { supabase } from "@/lib/supabaseClient";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import { FiUpload, FiCalendar, FiBell, FiTrash2, FiShare2, FiArrowLeft, FiX, FiChevronLeft, FiChevronRight, FiFile, FiClock, FiEye } from "react-icons/fi";
+import { useUser } from "@/context/UserContext";
 
 interface DocumentType {
   id: string;
@@ -34,8 +35,8 @@ export default function CategoryPage() {
   const params = useParams();
   const category = params?.category;
   const router = useRouter();
+  const { user } = useUser();
 
-  const [user, setUser] = useState<UserType | null>(null);
   const [documents, setDocuments] = useState<DocumentType[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [expirationDate, setExpirationDate] = useState("");
@@ -70,47 +71,47 @@ export default function CategoryPage() {
     setIsDark(shouldBeDark);
   }, []);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) return toast.error("You must be logged in");
-      setUser({
-        id: data.user.id,
-        email: data.user.email ?? "",
-        user_metadata: data.user.user_metadata,
-      });
-    };
-    fetchUser();
-  }, []);
+  // Remove useSession, status, extract values from user context
+  const userId = user?.id;
+  const userEmail = user?.email;
+  const userName = user?.name || userEmail;
+  const userAvatar = user?.avatar;
 
+  // If not authenticated, block UI or redirect
+  useEffect(() => {
+    if (!userId) {
+      router.push("/auth/login");
+    }
+  }, [userId, router]);
+
+  // Fetch documents only if authenticated
   const fetchDocuments = async () => {
-    if (!user?.id) return;
+    if (!userId) return;
     const { data, error } = await supabase
       .from("documents")
       .select("*")
-      .eq("userID", user.id)
+      .eq("userID", userId)
       .eq("category", category)
       .order("created_at", { ascending: false });
-
     if (error) toast.error("Failed to fetch documents");
     else setDocuments(data || []);
   };
 
   useEffect(() => {
-    if (user && category) fetchDocuments();
-  }, [user, category]);
+    if (userId && category) fetchDocuments();
+  }, [userId, category]);
 
   useEffect(() => {
-    if (!user?.id || !category) return;
+    if (!userId || !category) return;
     const channel = supabase
-      .channel(`documents-${user.id}-${category}`)
+      .channel(`documents-${userId}-${category}`)
       .on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
           table: "documents",
-          filter: `userID=eq.${user.id},category=eq.${category}`,
+          filter: `userID=eq.${userId},category=eq.${category}`,
         },
         (payload) => {
           if (payload.eventType === "INSERT") {
@@ -130,37 +131,32 @@ export default function CategoryPage() {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [user, category]);
+  }, [userId, category]);
 
+  // Fix uploads: check userId before upload; use NextAuth user info
   const handleUpload = async () => {
-    if (!file || !user) return;
+    if (!file || !userId) return toast.error("You must be logged in");
     setUploading(true);
-
     try {
       const filePath = `${category}/${file.name}`;
       const { error: uploadError } = await supabase.storage
         .from("documents")
         .upload(filePath, file, { upsert: true });
-
       if (uploadError) throw new Error(uploadError.message);
-
       const { data } = supabase.storage.from("documents").getPublicUrl(filePath);
       const publicUrl = data?.publicUrl;
-
       const { error: dbError } = await supabase.from("documents").insert([
         {
           name: file.name,
           path: filePath,
           url: publicUrl,
-          userID: user.id,
+          userID: userId,
           category,
           expiration_date: expirationDate || null,
           reminder_at: reminderAt ? new Date(reminderAt).toISOString() : null,
         },
       ]);
-
       if (dbError) throw new Error(dbError.message);
-
       toast.success("File uploaded successfully!");
       fetchDocuments();
       setFile(null);
@@ -169,7 +165,6 @@ export default function CategoryPage() {
     } catch (err: any) {
       toast.error(err.message);
     }
-
     setUploading(false);
   };
 

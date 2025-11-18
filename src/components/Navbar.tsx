@@ -494,7 +494,7 @@ export default function Navbar() {
                           <div className="text-xs text-slate-400 mb-1">Signed in as</div>
                           <div className="text-sm font-medium text-white truncate">{currentUser.email}</div>
                         </div>
-                        <Link href="pages/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
+                        <Link href="/pages/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-700/50 transition group">
                           <FiUser size={16} className="text-slate-300" />
                           <span className="text-sm text-white">Profile</span>
                         </Link>
@@ -670,7 +670,7 @@ export default function Navbar() {
                 {currentUser ? (
                   <>
                     <Link
-                      href="/profile"
+                      href="/pages/profile"
                       className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition text-sm font-medium"
                       onClick={closeMobileMenu}
                     >
