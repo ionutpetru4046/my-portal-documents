@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import toast from "react-hot-toast";
 
-export default function CallbackPage() {
+function CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,6 @@ export default function CallbackPage() {
         console.log("Hash:", typeof window !== "undefined" ? window.location.hash : "N/A");
         
         // First, check if Supabase already handled the OAuth automatically
-        // Supabase OAuth with PKCE might automatically create the session
         const { data: { session: existingSession }, error: sessionError } = await supabase.auth.getSession();
         
         console.log("Existing session check:", existingSession ? "Found" : "Not found", sessionError);
@@ -36,10 +35,9 @@ export default function CallbackPage() {
         }
 
         // If no existing session, try to get code from URL
-        // Check both query params and hash (Supabase might use either)
         let code = searchParams.get("code");
         
-        // Also check hash fragment (Supabase OAuth with PKCE uses hash)
+        // Also check hash fragment
         if (!code && typeof window !== "undefined") {
           const hash = window.location.hash;
           if (hash) {
@@ -67,7 +65,6 @@ export default function CallbackPage() {
           return;
         }
 
-        // If we have a code, exchange it for a session
         if (code) {
           console.log("Exchanging code for session...");
           
@@ -102,8 +99,6 @@ export default function CallbackPage() {
           return;
         }
 
-        // If no code and no session, wait a bit and check again
-        // Supabase might be processing the OAuth in the background
         console.log("No code found, checking for session...");
         await new Promise(resolve => setTimeout(resolve, 1000));
         
@@ -118,7 +113,6 @@ export default function CallbackPage() {
           return;
         }
 
-        // If still no session, show error
         console.error("No code and no session found");
         setError("Unable to complete sign in. Please try again.");
         toast.error("Unable to complete sign in");
@@ -138,21 +132,24 @@ export default function CallbackPage() {
       }
     };
 
-    // Only run once when component mounts
     handleCallback();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const content = error ? (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <div className="text-red-500 mb-4">⚠️</div>
-        <p className="text-red-500 font-semibold mb-2">Error</p>
-        <p className="text-gray-500 text-sm mb-4">{error}</p>
-        <p className="text-gray-400 text-xs">Redirecting to login...</p>
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="text-red-500 mb-4">⚠️</div>
+          <p className="text-red-500 font-semibold mb-2">Error</p>
+          <p className="text-gray-500 text-sm mb-4">{error}</p>
+          <p className="text-gray-400 text-xs">Redirecting to login...</p>
+        </div>
       </div>
-    </div>
-  ) : (
+    );
+  }
+
+  return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -161,7 +158,9 @@ export default function CallbackPage() {
       </div>
     </div>
   );
+}
 
+export default function CallbackPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-screen">
@@ -171,8 +170,7 @@ export default function CallbackPage() {
         </div>
       </div>
     }>
-      {content}
+      <CallbackContent />
     </Suspense>
   );
 }
-
