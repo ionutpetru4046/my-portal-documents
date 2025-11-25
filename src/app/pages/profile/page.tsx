@@ -2,13 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
-import { FiEdit, FiTrash2, FiCheckCircle, FiFileText, FiActivity, FiBell, FiUpload, FiTrendingUp, FiCalendar, FiClock, FiAlertCircle, FiX, FiLogOut, FiMoon, FiSun } from "react-icons/fi";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { FiEdit, FiCheckCircle, FiFileText, FiActivity, FiBell, FiUpload, FiAlertCircle, FiX, FiMoon, FiSun } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import toast, { Toaster } from "react-hot-toast";
 import { supabase } from "@/lib/supabaseClient";
-import Reveal from "@/components/Reveal";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
@@ -17,6 +14,13 @@ interface Notif {
   name: string;
   type: "expiring" | "expired" | "reminder";
   info: string;
+}
+
+interface RecentDoc {
+  id: string;
+  name: string;
+  created_at: string;
+  expiration_date?: string;
 }
 
 function daysUntil(dateStr: string) {
@@ -32,7 +36,6 @@ function formatDate(dateStr: string) {
 }
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
   const router = useRouter();
   const { setUser, user } = useUser();
   const [editMode, setEditMode] = useState(false);
@@ -44,17 +47,51 @@ export default function ProfilePage() {
   const [notifCount, setNotifCount] = useState(0);
   const [notifList, setNotifList] = useState<Notif[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [recentDocs, setRecentDocs] = useState<any[]>([]);
+  const [recentDocs, setRecentDocs] = useState<RecentDoc[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Use NextAuth session directly for user info
-  const userId = session?.user?.id;
-  const userName = session?.user?.name || session?.user?.email || "User";
-  const userEmail = session?.user?.email || "";
-  const userAvatar = session?.user?.image || "";
+  // Use Supabase auth directly for user info
+  const [userId, setUserId] = useState<string | null>(null);
+  const [userName, setUserName] = useState("User");
+  const [userEmail, setUserEmail] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+
+  // Fetch user data and handle authentication
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data: { user: supabaseUser }, error } = await supabase.auth.getUser();
+
+      if (error || !supabaseUser) {
+        router.push("/auth/login");
+        return;
+      }
+
+      setUserId(supabaseUser.id);
+      setUserName(supabaseUser.user_metadata?.name || supabaseUser.email || "User");
+      setUserEmail(supabaseUser.email || "");
+      setUserAvatar(supabaseUser.user_metadata?.avatar || "");
+
+      // Set user in context
+      const userData = {
+        id: supabaseUser.id,
+        email: supabaseUser.email || "",
+        name: supabaseUser.user_metadata?.name || supabaseUser.email || "User",
+        avatar: supabaseUser.user_metadata?.avatar || "",
+        role: supabaseUser.user_metadata?.role || "user",
+      };
+      setUser(userData);
+
+      setLoading(false);
+    };
+
+    fetchUserData();
+  }, [router, setUser]);
 
   useEffect(() => {
-    setFormData({ name: userName, email: userEmail });
-  }, [userName, userEmail]);
+    if (userId) {
+      setFormData({ name: userName, email: userEmail });
+    }
+  }, [userId, userName, userEmail]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -113,7 +150,9 @@ export default function ProfilePage() {
       setNotifCount(count);
       setNotifList(notifs);
     }
-    fetchDocumentStats();
+    if (userId) {
+      fetchDocumentStats();
+    }
   }, [userId]);
 
   // Profile update logic
@@ -158,7 +197,7 @@ export default function ProfilePage() {
   const accent = "bg-linear-to-br from-blue-500 via-purple-500 to-cyan-500";
 
   // Rendering logic
-  if (status === "loading") {
+  if (loading || !userId) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white dark:bg-slate-950">
         <div className="text-center">
@@ -167,11 +206,6 @@ export default function ProfilePage() {
         </div>
       </div>
     );
-  }
-
-  if (status !== "authenticated" || !userId) {
-    router.push("/auth/login");
-    return null;
   }
 
   return (
