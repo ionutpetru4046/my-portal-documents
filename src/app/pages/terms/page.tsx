@@ -91,19 +91,19 @@ const termsSections = [
     title: "6. Intellectual Property Rights",
     icon: FiLock,
     color: "pink",
-    content: "All content, logos, graphics, software, and proprietary information on DocuVault are the exclusive property of DocuVault or its licensors and are protected by international intellectual property laws. You are granted a limited, non-exclusive license to use DocuVault for personal or business purposes, but you may not reproduce, modify, distribute, or transmit any content without our prior written consent. Your documents and uploaded content remain your intellectual property, and we claim no rights over them."
+    content: "All content, logos, graphics, software, and proprietary information on iDocReminder are the exclusive property of iDocReminer or its licensors and are protected by international intellectual property laws. You are granted a limited, non-exclusive license to use iDocReminder for personal or business purposes, but you may not reproduce, modify, distribute, or transmit any content without our prior written consent. Your documents and uploaded content remain your intellectual property, and we claim no rights over them."
   },
   {
     title: "7. User-Generated Content",
     icon: FiFileText,
     color: "cyan",
-    content: "DocuVault does not claim ownership of documents, files, or data you upload to our platform. You retain full ownership and control over your content. By using DocuVault, you grant us a worldwide, non-exclusive license to use, store, backup, and transmit your documents solely for providing and improving our services. You are solely responsible for ensuring that you have the legal right to upload and share any documents on our platform."
+    content: "iDocReminder does not claim ownership of documents, files, or data you upload to our platform. You retain full ownership and control over your content. By using iDocReminder, you grant us a worldwide, non-exclusive license to use, store, backup, and transmit your documents solely for providing and improving our services. You are solely responsible for ensuring that you have the legal right to upload and share any documents on our platform."
   },
   {
     title: "8. Privacy & Data Protection",
     icon: FiShield,
     color: "blue",
-    content: "Your privacy is extremely important to us. DocuVault complies with GDPR, CCPA, and other data protection regulations. We collect minimal personal information necessary to provide our services. Your data is processed securely and never sold to third parties. We use cookies and analytics to improve your experience. You can request data access, modification, or deletion at any time through your account settings. For detailed information, please review our Privacy Policy."
+    content: "Your privacy is extremely important to us. iDocReminder complies with GDPR, CCPA, and other data protection regulations. We collect minimal personal information necessary to provide our services. Your data is processed securely and never sold to third parties. We use cookies and analytics to improve your experience. You can request data access, modification, or deletion at any time through your account settings. For detailed information, please review our Privacy Policy."
   },
   {
     title: "9. Payment & Billing",
@@ -127,25 +127,25 @@ const termsSections = [
     title: "10. Termination & Account Closure",
     icon: FiClock,
     color: "orange",
-    content: "You may terminate your account at any time through your account settings. DocuVault reserves the right to suspend or terminate your access without notice for violation of these Terms. Upon termination, your documents will be accessible for 30 days for backup purposes, after which they will be permanently deleted. We are not liable for any loss of data after deletion."
+    content: "You may terminate your account at any time through your account settings. iDocReminder reserves the right to suspend or terminate your access without notice for violation of these Terms. Upon termination, your documents will be accessible for 30 days for backup purposes, after which they will be permanently deleted. We are not liable for any loss of data after deletion."
   },
   {
     title: "11. Limitation of Liability",
     icon: FiAlertCircle,
     color: "pink",
-    content: "To the maximum extent permitted by law, DocuVault shall not be liable for any indirect, incidental, consequential, special, or punitive damages, including loss of data, profits, or business interruption, even if we have been advised of the possibility of such damages. Our total liability is limited to the amount you paid for services in the past 12 months. This limitation applies to all claims, whether in contract, tort, or otherwise."
+    content: "To the maximum extent permitted by law, iDocReminder shall not be liable for any indirect, incidental, consequential, special, or punitive damages, including loss of data, profits, or business interruption, even if we have been advised of the possibility of such damages. Our total liability is limited to the amount you paid for services in the past 12 months. This limitation applies to all claims, whether in contract, tort, or otherwise."
   },
   {
     title: "12. Changes to Terms & Service",
     icon: FiFileText,
     color: "blue",
-    content: "DocuVault may update these Terms & Conditions or service features at any time. Material changes will be communicated via email or a prominent notice on our platform. Your continued use of DocuVault following such changes constitutes your acceptance of the updated terms. We recommend reviewing these terms periodically for updates."
+    content: "iDocReminder may update these Terms & Conditions or service features at any time. Material changes will be communicated via email or a prominent notice on our platform. Your continued use of iDocReminder following such changes constitutes your acceptance of the updated terms. We recommend reviewing these terms periodically for updates."
   },
   {
     title: "13. Compliance & Legal",
     icon: FiFileText,
     color: "purple",
-    content: "These Terms & Conditions are governed by and construed in accordance with applicable laws. Any disputes arising from these terms shall be resolved through binding arbitration. DocuVault complies with all applicable regulations including GDPR, HIPAA (where applicable), SOC 2 Type II certification, and industry-standard security practices. Users must comply with all applicable laws in their jurisdiction."
+    content: "These Terms & Conditions are governed by and construed in accordance with applicable laws. Any disputes arising from these terms shall be resolved through binding arbitration. iDocReminder complies with all applicable regulations including GDPR, HIPAA (where applicable), SOC 2 Type II certification, and industry-standard security practices. Users must comply with all applicable laws in their jurisdiction."
   },
 ];
 
@@ -224,7 +224,7 @@ export default function TermsPage() {
             Terms & Conditions
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Please read these terms carefully. By using DocuVault, you agree to comply with all the terms outlined below.
+            Please read these terms carefully. By using iDocReminder  , you agree to comply with all the terms outlined below.
           </p>
         </motion.div>
 
@@ -236,7 +236,7 @@ export default function TermsPage() {
           className="backdrop-blur-xl bg-slate-900/50 border border-slate-800 rounded-xl p-6 md:p-8 mb-8"
         >
           <p className="text-slate-300 text-center leading-relaxed">
-            Welcome to <span className="font-bold text-blue-400">DocuVault</span>, a modern document management platform designed to help professionals securely store, organize, and share their important documents. These Terms & Conditions govern your use of our services and establish the rights and responsibilities of both DocuVault and our users. Please read them thoroughly before proceeding.
+            Welcome to <span className="font-bold text-blue-400">iDocReminder</span>, a modern document management platform designed to help professionals securely store, organize, and share their important documents. These Terms & Conditions govern your use of our services and establish the rights and responsibilities of both DocuVault and our users. Please read them thoroughly before proceeding.
           </p>
         </motion.div>
 
@@ -313,7 +313,7 @@ export default function TermsPage() {
             <span className="font-semibold text-slate-300">Last Updated:</span> October 24, 2025
           </p>
           <p className="text-slate-500 text-xs max-w-2xl mx-auto">
-            These Terms & Conditions are subject to change. We will notify you of any significant changes via email or a prominent notice on our platform. Your continued use of DocuVault indicates your acceptance of any updated terms.
+            These Terms & Conditions are subject to change. We will notify you of any significant changes via email or a prominent notice on our platform. Your continued use of iDocReminder indicates your acceptance of any updated terms.
           </p>
         </motion.div>
 
