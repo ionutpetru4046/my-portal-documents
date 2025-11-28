@@ -9,7 +9,7 @@ const termsSections = [
     title: "1. Acceptance of Terms",
     icon: FiFileText,
     color: "blue",
-    content: "By accessing or using DocuVault and our document management services, you accept these Terms & Conditions and agree to be bound by them. These terms apply to all users, including casual browsers and registered account holders. If you do not agree with any part of these terms, you must not use our services. Your continued use of DocuVault constitutes your acceptance of these terms."
+    content: "By accessing or using iDocReminder and our document management services, you accept these Terms & Conditions and agree to be bound by them. These terms apply to all users, including casual browsers and registered account holders. If you do not agree with any part of these terms, you must not use our services. Your continued use of iDocReminer constitutes your acceptance of these terms."
   },
   {
     title: "2. Service Description",
@@ -17,7 +17,7 @@ const termsSections = [
     color: "purple",
     content: (
       <div className="space-y-3">
-        <p>DocuVault is a cloud-based document management platform that allows users to:</p>
+        <p>iDocReminder is a cloud-based document management platform that allows users to:</p>
         <ul className="list-disc list-inside space-y-2 text-slate-400">
           <li>Upload, store, and organize documents securely</li>
           <li>Set expiration dates and receive reminders for important documents</li>
@@ -35,7 +35,7 @@ const termsSections = [
     color: "cyan",
     content: (
       <div className="space-y-3">
-        <p className="text-slate-400">As a DocuVault user, you agree to:</p>
+        <p className="text-slate-400">As iDocReminder user, you agree to:</p>
         <ul className="list-disc list-inside space-y-2 text-slate-400">
           <li>Provide accurate, complete, and current information during registration</li>
           <li>Maintain the confidentiality of your account credentials and password</li>
@@ -53,14 +53,14 @@ const termsSections = [
     color: "green",
     content: (
       <div className="space-y-3">
-        <p className="text-slate-400">DocuVault provides secure document storage with the following terms:</p>
+        <p className="text-slate-400">iDocReminder provides secure document storage with the following terms:</p>
         <ul className="list-disc list-inside space-y-2 text-slate-400">
           <li>Your documents are encrypted with AES-256 encryption both in transit and at rest</li>
           <li>Storage limits depend on your subscription plan (Starter: 1GB, Pro: 50GB, Business: 500GB, Enterprise: Unlimited)</li>
           <li>You retain all rights to your documents and can delete them at any time</li>
           <li>Deleted documents are moved to Trash and permanently deleted after 30 days</li>
           <li>We maintain automated daily backups to prevent data loss</li>
-          <li>DocuVault does not access, modify, or share your documents without your explicit consent</li>
+          <li>iDocReminder does not access, modify, or share your documents without your explicit consent</li>
           <li>You are responsible for maintaining backups of critical documents</li>
         </ul>
       </div>
@@ -72,17 +72,17 @@ const termsSections = [
     color: "orange",
     content: (
       <div className="space-y-3">
-        <p className="text-slate-400">You agree not to use DocuVault to:</p>
+        <p className="text-slate-400">You agree not to use iDocReminder to:</p>
         <ul className="list-disc list-inside space-y-2 text-slate-400">
           <li>Store or distribute illegal content, malware, or viruses</li>
           <li>Attempt unauthorized access to other accounts or systems</li>
           <li>Violate any applicable laws, regulations, or intellectual property rights</li>
           <li>Harass, threaten, or defame other users</li>
           <li>Engage in phishing, fraud, or financial manipulation</li>
-          <li>Reverse engineer, decompile, or attempt to derive the source code of DocuVault</li>
+          <li>Reverse engineer, decompile, or attempt to derive the source code of iDocReminder</li>
           <li>Interfere with or disrupt the normal operation of our services</li>
           <li>Bypass security measures or access restrictions</li>
-          <li>Use automated tools to access DocuVault without authorization</li>
+          <li>Use automated tools to access iDocReminder without authorization</li>
         </ul>
       </div>
     )
