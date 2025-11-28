@@ -467,7 +467,7 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <p className="text-center sm:text-left order-2 sm:order-1">
-              &copy; {new Date().getFullYear()} DocuVault. All rights reserved.
+              &copy; {new Date().getFullYear()} iDocReminder. All rights reserved.
             </p>
             <div className="flex items-center gap-4 sm:gap-6 order-1 sm:order-2 flex-wrap justify-center sm:justify-end">
               <Link href="/pages/terms" className="text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
